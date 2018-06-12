@@ -2,9 +2,9 @@
   <div id="app">
     <el-container>
       <!-- 页眉 -->
-      <el-header>
+      <!-- <el-header>
         <app-header></app-header>
-      </el-header>
+      </el-header> -->
       <!-- 主体 -->
       <el-container>
         <!-- 左侧菜单栏 -->
@@ -17,9 +17,9 @@
             <router-view/>
           </el-main>
           <!-- 页脚 -->
-          <el-footer>
+          <!-- <el-footer>
             <app-footer></app-footer>
-          </el-footer>
+          </el-footer> -->
         </el-container>
       </el-container>
     </el-container>
@@ -27,15 +27,30 @@
 </template>
 
 <script>
+// import Vuex from "vuex";
+// import Vue from "vue";
+
 import appHeader from "@/components/appHeader";
 import leftMenu from "@/components/leftMenu";
 import appFooter from "@/components/appFooter";
+// import store from "@/store/store";
+// Vue.use(Vuex);
 export default {
   components: {
     appHeader,
     leftMenu,
     appFooter
   }
+  // ,
+  // computed: {
+  //   menus() {
+  //     return this.$stro.menus;
+  //   }
+  // },
+  // mounted() {
+  //   console.info(this.$stroe);
+
+  // }
 };
 </script>
 

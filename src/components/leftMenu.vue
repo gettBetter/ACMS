@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row class="tac">
-            <el-col :span="24">
+            <el-col :span="24" v-for="menu in menus" :key="menu.index" :class="'leftmenu'+menu.index">
                 <el-menu
                 default-active="1"
                 class="el-menu-vertical-demo"
@@ -10,35 +10,27 @@
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b">
-                <el-submenu index="1">
+               
+                <el-submenu :index="menu.index" >
                     <template slot="title">
                         <i class="el-icon-location"></i>
-                        <span>导航一</span>
+                    <span>{{menu.name}}</span>
                     </template>
-                    <el-menu-item index="1-1">选项1</el-menu-item>
-                    <el-menu-item index="1-2">选项2</el-menu-item>
-                    <el-menu-item index="1-3">选项3</el-menu-item>
+                    <el-menu-item  v-for="clildMenu in menu.children" :index="clildMenu.index" :key="clildMenu.index">{{clildMenu.name}}</el-menu-item> 
                 </el-submenu>
-                <el-menu-item index="2">
-                    <i class="el-icon-menu"></i>
-                    <span slot="title">导航二</span>
-                </el-menu-item>
-                <el-menu-item index="3" >
-                    <i class="el-icon-document"></i>
-                    <span slot="title">导航三</span>
-                </el-menu-item>
-                <el-menu-item index="4">
-                    <i class="el-icon-setting"></i>
-                    <span slot="title">导航四</span>
-                </el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
+
+        <!-- {{menus}} -->
     </div>
 </template>
 
 <script>
 export default {
+  //   data() {
+  //     return {};
+  //   },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -46,13 +38,21 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     }
+  },
+  mounted() {
+    // this.init();
+  },
+  computed: {
+    menus() {
+      return this.$parent.$store.getters.menus;
+    }
   }
 };
 </script>
 
 <style scoped>
-.aside {
-  text-align: left;
+.leftmenu3 .el-icon-arrow-down {
+  display: none;
 }
 </style>
 

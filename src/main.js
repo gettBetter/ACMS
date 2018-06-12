@@ -6,6 +6,7 @@ import router from './router'
 import store from '@/store/store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
 import appHeader from "@/components/appHeader";
 import leftMenu from "@/components/leftMenu";
 import appFooter from "@/components/appFooter";
@@ -24,9 +25,18 @@ new Vue({
   },
   template: '<App/>',
   data: {
-
+    // menu
   },
-  mounted() {
-    // console.log('123', this.store)
+  // mounted() {
+  //   // console.log('123', this.store)
+  //   menus: {
+  //     return this.$store.getters.menus;
+  //   }
+  // },
+  computed: {
+    menus() {
+      // console.info('a', this.$store.getters.menus)
+      return this.$store.getters.menus;
+    }
   }
 })
