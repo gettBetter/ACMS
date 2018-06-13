@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row class="tac">
-            <el-col :span="24" v-for="menu in menus" :key="menu.index" :class="'leftmenu'+menu.index">
+            <el-col :span="24" >
                 <el-menu
                 default-active="1"
                 class="el-menu-vertical-demo"
@@ -9,15 +9,18 @@
                 @close="handleClose"
                 background-color="#545c64"
                 text-color="#fff"
-                active-text-color="#ffd04b">
-               
-                <el-submenu :index="menu.index" >
-                    <template slot="title">
-                        <i class="el-icon-location"></i>
-                    <span>{{menu.name}}</span>
-                    </template>
-                    <el-menu-item  v-for="clildMenu in menu.children" :index="clildMenu.index" :key="clildMenu.index">{{clildMenu.name}}</el-menu-item> 
-                </el-submenu>
+                active-text-color="#ffd04b"
+                >
+                    <el-submenu :index="menu.index" 
+                    v-for="menu in menus" 
+                    :key="menu.index" 
+                    :class="'leftmenu'+menu.index">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>{{menu.name}}</span>
+                        </template>
+                        <el-menu-item  v-for="clildMenu in menu.children" :index="clildMenu.index" :key="clildMenu.index">{{clildMenu.name}}</el-menu-item> 
+                    </el-submenu>
                 </el-menu>
             </el-col>
         </el-row>
@@ -39,9 +42,7 @@ export default {
       console.log(key, keyPath);
     }
   },
-  mounted() {
-    // this.init();
-  },
+  mounted() {},
   computed: {
     menus() {
       return this.$parent.$store.getters.menus;
@@ -50,7 +51,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .leftmenu3 .el-icon-arrow-down {
   display: none;
 }

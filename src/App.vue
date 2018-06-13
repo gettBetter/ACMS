@@ -8,8 +8,8 @@
       <!-- 主体 -->
       <el-container>
         <!-- 左侧菜单栏 -->
-        <el-aside width="200px">
-          <left-menu></left-menu>
+        <el-aside width="199px">
+          <nav-menu></nav-menu>
         </el-aside>
         <!-- 主体视图区 -->
         <el-container>
@@ -31,14 +31,14 @@
 // import Vue from "vue";
 
 import appHeader from "@/components/appHeader";
-import leftMenu from "@/components/leftMenu";
+import navMenu from "@/components/navMenu";
 import appFooter from "@/components/appFooter";
 // import store from "@/store/store";
 // Vue.use(Vuex);
 export default {
   components: {
     appHeader,
-    leftMenu,
+    navMenu,
     appFooter
   }
   // ,

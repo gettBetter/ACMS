@@ -8,7 +8,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 import appHeader from "@/components/appHeader";
-import leftMenu from "@/components/leftMenu";
+import navMenu from "@/components/navMenu";
 import appFooter from "@/components/appFooter";
 
 Vue.use(ElementUI);
