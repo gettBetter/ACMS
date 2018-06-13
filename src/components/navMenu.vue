@@ -10,13 +10,15 @@
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b"
+                router
+                unique-opened
                 >
                     <el-submenu :index="menu.index" 
                     v-for="menu in menus" 
                     :key="menu.index" 
-                    :class="'leftmenu'+menu.index">
+                    :class="menu.index">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-menu"></i>
                             <span>{{menu.name}}</span>
                         </template>
                         <el-menu-item  v-for="clildMenu in menu.children" :index="clildMenu.index" :key="clildMenu.index">{{clildMenu.name}}</el-menu-item> 
@@ -46,13 +48,16 @@ export default {
   computed: {
     menus() {
       return this.$parent.$store.getters.menus;
+    },
+    onRouts() {
+      return this.$route.path.replace("/", "");
     }
   }
 };
 </script>
 
 <style>
-.leftmenu3 .el-icon-arrow-down {
+.card .el-icon-arrow-down {
   display: none;
 }
 </style>

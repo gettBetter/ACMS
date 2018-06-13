@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>role</p>  
+        <p>device</p>  
     </div>
 </template>
 

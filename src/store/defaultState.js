@@ -1,25 +1,25 @@
 export default {
   menus: [{
-      index: '1',
+      index: 'admin',
       name: '管理员权限管理',
       children: [{
-          index: '1-1',
+          index: 'user',
           name: '用户管理'
         },
         {
-          index: '1-2',
+          index: 'role',
           name: '角色管理'
         },
         {
-          index: '1-3',
+          index: 'menu',
           name: '菜单权限'
         },
         {
-          index: '1-4',
+          index: 'areaaccess',
           name: '区域、门禁管理权限'
         },
         {
-          index: '1-5',
+          index: 'permissionCopy',
           name: '权限复制功能'
         }
       ]
@@ -28,57 +28,57 @@ export default {
       index: '2',
       name: '人事管理',
       children: [{
-          index: '2-1',
+          index: 'depart',
           name: '部门管理'
         },
         {
-          index: '2-2',
+          index: 'personal',
           name: '人员管理'
         },
         {
-          index: '2-3',
+          index: 'personnelGroup',
           name: '人员分组'
         }
       ]
     },
     {
-      index: '3',
+      index: 'card',
       name: '发卡管理'
     },
     {
-      index: '4',
+      index: 'accesscontrol',
       name: '门禁管理',
       children: [{
-          index: '4-1',
+          index: 'device',
           name: '门禁设备管理'
         },
         {
-          index: '4-2',
+          index: 'basicSetting',
           name: '门禁基本设置'
         },
         {
-          index: '4-3',
+          index: 'permissionSetting',
           name: '权限设置'
         },
         {
-          index: '4-4',
+          index: 'eMap',
           name: '电子地图及实事监控'
         },
         {
-          index: '4-5',
+          index: 'specialPermission',
           name: '日历特殊开门权限'
         }
       ]
     },
     {
-      index: '5',
+      index: 'querytrack',
       name: '查询跟踪',
       children: [{
-          index: '5-1',
+          index: 'alertReport',
           name: '门禁报警报表'
         },
         {
-          index: '5-2',
+          index: 'recordReport',
           name: '打卡记录报表'
         }
       ]

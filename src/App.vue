@@ -14,7 +14,7 @@
         <!-- 主体视图区 -->
         <el-container>
           <el-main>
-            <router-view/>
+            <router-view/> 
           </el-main>
           <!-- 页脚 -->
           <!-- <el-footer>
