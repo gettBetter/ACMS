@@ -2,19 +2,25 @@
   <div id="app">
     <el-container>
       <!-- 页眉 -->
-      <!-- <el-header>
+      <el-header>
         <app-header></app-header>
-      </el-header> -->
+      </el-header>
       <!-- 主体 -->
-      <el-container>
+      <el-container style="margin-top:2px;">
         <!-- 左侧菜单栏 -->
         <el-aside width="199px">
-          <nav-menu></nav-menu>
+          <!-- <nav-menu></nav-menu> -->
+          <!-- <slot></slot> -->
+          <keep-alive>
+            <router-view name="sideBar"></router-view>
+          </keep-alive>
         </el-aside>
         <!-- 主体视图区 -->
         <el-container>
           <el-main>
-            <router-view/> 
+            <keep-alive>
+              <router-view/> 
+            </keep-alive>
           </el-main>
           <!-- 页脚 -->
           <!-- <el-footer>
@@ -27,30 +33,16 @@
 </template>
 
 <script>
-// import Vuex from "vuex";
-// import Vue from "vue";
-
 import appHeader from "@/components/appHeader";
 import navMenu from "@/components/navMenu";
 import appFooter from "@/components/appFooter";
-// import store from "@/store/store";
-// Vue.use(Vuex);
+
 export default {
   components: {
     appHeader,
     navMenu,
     appFooter
   }
-  // ,
-  // computed: {
-  //   menus() {
-  //     return this.$stro.menus;
-  //   }
-  // },
-  // mounted() {
-  //   console.info(this.$stroe);
-
-  // }
 };
 </script>
 
@@ -103,4 +95,7 @@ body > .el-container {
 user agent stylesheet div {
   display: block;
 }
+/* .el-header {
+  background-color: #545c64;
+} */
 </style>

@@ -21,11 +21,7 @@
                             <i class="el-icon-menu"></i>
                             <span>{{menu.name}}</span>
                         </template>
-                        <el-menu-item  
-                        v-for="clildMenu in menu.children" 
-                        :index="clildMenu.index" 
-                        :key="clildMenu.index"
-                        >{{clildMenu.name}}</el-menu-item> 
+                        <el-menu-item  v-for="clildMenu in menu.children" :index="clildMenu.index" :key="clildMenu.index">{{clildMenu.name}}</el-menu-item> 
                     </el-submenu>
                 </el-menu>
             </el-col>

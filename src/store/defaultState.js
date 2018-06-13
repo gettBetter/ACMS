@@ -3,40 +3,40 @@ export default {
       index: 'admin',
       name: '管理员权限管理',
       children: [{
-          index: 'user',
+          index: '/admin/user',
           name: '用户管理'
         },
         {
-          index: 'role',
+          index: '/admin/role',
           name: '角色管理'
         },
         {
-          index: 'menu',
+          index: '/admin/menu',
           name: '菜单权限'
         },
         {
-          index: 'areaaccess',
+          index: '/admin/mareaaccess',
           name: '区域、门禁管理权限'
         },
         {
-          index: 'permissionCopy',
+          index: '/admin/mpermissionCopy',
           name: '权限复制功能'
         }
       ]
     },
     {
-      index: '2',
+      index: 'personnel',
       name: '人事管理',
       children: [{
-          index: 'depart',
+          index: '/personnel/depart',
           name: '部门管理'
         },
         {
-          index: 'personal',
+          index: '/personnel/personal',
           name: '人员管理'
         },
         {
-          index: 'personnelGroup',
+          index: '/personnel/personalGroup',
           name: '人员分组'
         }
       ]
@@ -83,5 +83,6 @@ export default {
         }
       ]
     }
-  ]
+  ],
+  children: [],
 }

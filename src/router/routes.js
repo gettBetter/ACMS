@@ -2,43 +2,78 @@ export default {
   mode: 'history',
   routes: [{
       path: '/',
-      component: () =>
-        import ('@/pages/admin/user')
+      components: {
+        default: () =>
+          import ('@/pages/admin/user'),
+        sideBar: () =>
+          import ('@/pages/sideBar/admin')
+      }
     },
     {
-      path: '/user',
-      component: () =>
-        import ('@/pages/admin/user')
+      path: '/admin',
+      components: {
+        default: () =>
+          import ('@/pages/admin/user'),
+        sideBar: () =>
+          import ('@/pages/sideBar/admin')
+      }
     },
     {
-      path: '/role',
-      component: () =>
-        import ('@/pages/admin/role')
+      path: '/admin/user',
+      components: {
+        default: () =>
+          import ('@/pages/admin/user'),
+        sideBar: () =>
+          import ('@/pages/sideBar/admin')
+      }
     },
     {
-      path: '/menu',
+      path: '/admin/role',
+      components: {
+        default: () =>
+          import ('@/pages/admin/role'),
+        sideBar: () =>
+          import ('@/pages/sideBar/admin')
+      }
+    },
+    {
+      path: '/admin/menu',
       component: () =>
         import ('@/pages/admin/menu')
     },
     {
-      path: '/permissionCopy',
+      path: '/admin/areaaccess',
+      component: () =>
+        import ('@/pages/admin/areaaccess')
+    },
+    {
+      path: '/admin/permissionCopy',
       component: () =>
         import ('@/pages/admin/permissionCopy')
     },
     {
-      path: '/depart',
+      path: '/personnel',
       component: () =>
         import ('@/pages/personnel/depart')
     },
     {
-      path: '/personal',
+      path: '/personnel/depart',
+      component: () =>
+        import ('@/pages/personnel/depart')
+    },
+    {
+      path: '/personnel/personal',
       component: () =>
         import ('@/pages/personnel/personal')
     },
     {
-      path: '/personalGroup',
-      component: () =>
-        import ('@/pages/personnel/personalGroup')
+      path: '/personnel/personalGroup',
+      components: {
+        default: () =>
+          import ('@/pages/personnel/personalGroup'),
+        // sideBar: () =>
+        //   import ('@/pages/sideBar/personnel')
+      }
     },
     {
       path: '/card',
@@ -46,37 +81,47 @@ export default {
         import ('@/pages/card/card')
     },
     {
-      path: '/device',
+      path: '/accesscontrol',
       component: () =>
         import ('@/pages/accesscontrol/device')
     },
     {
-      path: '/basicSetting',
+      path: '/accesscontrol/device',
+      component: () =>
+        import ('@/pages/accesscontrol/device')
+    },
+    {
+      path: '/accesscontrol/basicSetting',
       component: () =>
         import ('@/pages/accesscontrol/basicSetting')
     },
     {
-      path: '/permissionSetting',
+      path: '/accesscontrol/permissionSetting',
       component: () =>
         import ('@/pages/accesscontrol/permissionSetting')
     },
     {
-      path: '/eMap',
+      path: '/accesscontrol/eMap',
       component: () =>
         import ('@/pages/accesscontrol/eMap')
     },
     {
-      path: '/specialPermission',
+      path: '/accesscontrol/specialPermission',
       component: () =>
         import ('@/pages/accesscontrol/specialPermission')
     },
     {
-      path: '/alertReport',
+      path: '/querytrack',
       component: () =>
         import ('@/pages/querytrack/alertReport')
     },
     {
-      path: '/recordReport',
+      path: '/querytrack/alertReport',
+      component: () =>
+        import ('@/pages/querytrack/alertReport')
+    },
+    {
+      path: '/querytrack/recordReport',
       component: () =>
         import ('@/pages/querytrack/recordReport')
     }
