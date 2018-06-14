@@ -10,13 +10,9 @@ export default {
   components: {
     tpl
   },
-  methods: {},
-  mounted() {
-    console.info("aaa");
-  },
   computed: {
     menus() {
-      this.$parent.$store.commit("getChildren", "admin");
+      this.$parent.$store.commit("getChildren", "/admin");
       return this.$parent.$store.getters.children;
     },
     onRoutes() {

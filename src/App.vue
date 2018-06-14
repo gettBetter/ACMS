@@ -8,12 +8,11 @@
       <!-- 主体 -->
       <el-container style="margin-top:2px;">
         <!-- 左侧菜单栏 -->
-        <el-aside width="199px">
-          <!-- <nav-menu></nav-menu> -->
-          <!-- <slot></slot> -->
-          <keep-alive>
+        <el-aside width="199px"  v-if="hasCHildren">
+          <!-- <keep-alive>
             <router-view name="sideBar"></router-view>
-          </keep-alive>
+          </keep-alive> -->
+          <sidebar :menus="menus"></sidebar> 
         </el-aside>
         <!-- 主体视图区 -->
         <el-container>
@@ -34,14 +33,49 @@
 
 <script>
 import appHeader from "@/components/appHeader";
-import navMenu from "@/components/navMenu";
-import appFooter from "@/components/appFooter";
+import sidebar from "@/components/sidebar";
+// import navMenu from "@/components/navMenu";
+// import appFooter from "@/components/appFooter";
 
 export default {
+  // props: ["menus"],
   components: {
     appHeader,
-    navMenu,
-    appFooter
+    sidebar
+  },
+  data() {
+    return {
+      // hasCHildren: false
+    };
+  },
+  computed: {
+    menus() {
+      let path = this.$route.path;
+
+      if (path == "/") {
+        path = "/admin";
+      }
+
+      path = path.match(/\/\w+/g)[0];
+      this.$parent.$store.commit("getChildren", path);
+      return this.$parent.$store.getters.children;
+    },
+    hasCHildren() {
+      let path = this.$route.path;
+      console.info(path);
+      if (path == "/") {
+        path = "/admin";
+      }
+
+      path = path.match(/\/\w+/g)[0];
+
+      console.info(path);
+      this.$parent.$store.commit("getChildren", path);
+      return !!this.$parent.$store.getters.children;
+    }
+  },
+  mounted() {
+    console.info(this.$route.path);
   }
 };
 </script>

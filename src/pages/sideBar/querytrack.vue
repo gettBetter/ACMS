@@ -12,7 +12,7 @@ export default {
   },
   computed: {
     menus() {
-      this.$parent.$store.commit("getChildren", "/card");
+      this.$parent.$store.commit("getChildren", "/querytrack");
       return this.$parent.$store.getters.children;
     },
     onRoutes() {

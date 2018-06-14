@@ -1,6 +1,6 @@
 export default {
   menus: [{
-      index: 'admin',
+      index: '/admin',
       name: '管理员权限管理',
       children: [{
           index: '/admin/user',
@@ -15,17 +15,17 @@ export default {
           name: '菜单权限'
         },
         {
-          index: '/admin/mareaaccess',
+          index: '/admin/areaaccess',
           name: '区域、门禁管理权限'
         },
         {
-          index: '/admin/mpermissionCopy',
+          index: '/admin/permissionCopy',
           name: '权限复制功能'
         }
       ]
     },
     {
-      index: 'personnel',
+      index: '/personnel',
       name: '人事管理',
       children: [{
           index: '/personnel/depart',
@@ -42,43 +42,43 @@ export default {
       ]
     },
     {
-      index: 'card',
+      index: '/card',
       name: '发卡管理'
     },
     {
-      index: 'accesscontrol',
+      index: '/accesscontrol',
       name: '门禁管理',
       children: [{
-          index: 'device',
+          index: '/accesscontrol/device',
           name: '门禁设备管理'
         },
         {
-          index: 'basicSetting',
+          index: '/accesscontrol/basicSetting',
           name: '门禁基本设置'
         },
         {
-          index: 'permissionSetting',
+          index: '/accesscontrol/permissionSetting',
           name: '权限设置'
         },
         {
-          index: 'eMap',
+          index: '/accesscontrol/eMap',
           name: '电子地图及实事监控'
         },
         {
-          index: 'specialPermission',
+          index: '/accesscontrol/specialPermission',
           name: '日历特殊开门权限'
         }
       ]
     },
     {
-      index: 'querytrack',
+      index: '/querytrack',
       name: '查询跟踪',
       children: [{
-          index: 'alertReport',
+          index: '/querytrack/alertReport',
           name: '门禁报警报表'
         },
         {
-          index: 'recordReport',
+          index: '/querytrack/recordReport',
           name: '打卡记录报表'
         }
       ]

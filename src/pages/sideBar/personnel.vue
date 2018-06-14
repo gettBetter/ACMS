@@ -12,12 +12,12 @@ export default {
   },
   computed: {
     menus() {
-      this.$parent.$store.commit("getChildren", "/card");
+      this.$parent.$store.commit("getChildren", "/personnel");
       return this.$parent.$store.getters.children;
-    },
-    onRoutes() {
-      return this.$route.path.replace("/", "");
     }
+    // onRoutes() {
+    //   this.$route.path.replace(/\/.+/g, "");
+    // }
   }
 };
 </script>

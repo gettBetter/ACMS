@@ -16,7 +16,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
   router,
   store,
@@ -27,15 +27,13 @@ new Vue({
   data: {
     // menu
   },
-  // mounted() {
-  //   // console.log('123', this.store)
-  //   menus: {
-  //     return this.$store.getters.menus;
-  //   }
-  // },
+  mounted() {
+    console.log('123', this.$store)
+
+  },
   computed: {
     menus() {
-      // console.info('a', this.$store.getters.menus)
+      console.info('a', this.$store.getters.menus)
       return this.$store.getters.menus;
     }
   }

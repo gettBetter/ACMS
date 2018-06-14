@@ -2,14 +2,23 @@
     <div>
         <el-menu :default-active="activeIndex" 
         class="el-menu-demo" 
-        mode="horizontal" @select="handleSelect"
+        mode="horizontal" 
+        @select="handleSelect"
         background-color="#b3c0d1"
         router
         >
-            <el-menu-item :index="menu.index"  v-for="menu in menus" 
+        
+            <el-menu-item  v-for="menu in menus" 
             :key="menu.index" 
+            :index="menu.index" 
             :class="menu.index"
-            >{{menu.name}}</el-menu-item>
+            >{{menu.name}} 
+            <!-- {menu.name}} 
+            <router-link tag="span" :to="menu.index">
+          {{menu.name}} 
+        </router-link> -->
+        
+        </el-menu-item>
         </el-menu>
     </div>
 </template>
@@ -18,24 +27,21 @@
 export default {
   data() {
     return {
-      activeIndex: "admin",
-      key: ""
-      //   activeIndex2: "1"
+      activeIndex: "admin"
     };
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log("1", key, keyPath);
-      this.key = key;
+      console.info(key, keyPath);
     }
   },
   computed: {
     menus() {
       return this.$parent.$store.getters.menus;
-    },
-    onRoutes() {
-      return this.$route.path.replace("/", "");
     }
+    // onRoutes() {
+    //   this.$route.path.replace(/\/.+/g, "");
+    // }
   }
 };
 </script>
