@@ -8,10 +8,7 @@
       <!-- 主体 -->
       <el-container style="margin-top:2px;">
         <!-- 左侧菜单栏 -->
-        <el-aside width="199px"  v-if="hasCHildren">
-          <!-- <keep-alive>
-            <router-view name="sideBar"></router-view>
-          </keep-alive> -->
+        <el-aside width="200px"  v-if="hasCHildren">
           <sidebar :menus="menus"></sidebar> 
         </el-aside>
         <!-- 主体视图区 -->
@@ -34,11 +31,8 @@
 <script>
 import appHeader from "@/components/appHeader";
 import sidebar from "@/components/sidebar";
-// import navMenu from "@/components/navMenu";
-// import appFooter from "@/components/appFooter";
 
 export default {
-  // props: ["menus"],
   components: {
     appHeader,
     sidebar
@@ -83,20 +77,20 @@ export default {
 <style>
 .el-header,
 .el-footer {
-  background-color: #b3c0d1;
+  background-color: #409eff;
   color: #333;
   text-align: center;
   line-height: 60px;
 }
 
 .el-aside {
-  background-color: #545c64;
   color: #333;
   line-height: 200px;
+  /* border-right: 1px solid #ccc; */
 }
 
 .el-main {
-  background-color: #e9eef3;
+  background-color: #f3f3f3;
   color: #333;
   text-align: center;
   line-height: 160px;

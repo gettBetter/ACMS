@@ -1,33 +1,35 @@
 <template>
     <div>
-        <el-menu :default-active="activeIndex" 
-        class="el-menu-demo" 
+       <el-row>
+          <el-col :span="2" style="text-align: center ">
+            <img :src="logoUrl" width="30px" style="margin-top:16px" />
+          </el-col>
+          <el-col :span="18" :offset="1">
+        <el-menu :default-active="menus[0].index" 
         mode="horizontal" 
         @select="handleSelect"
-        background-color="#b3c0d1"
+        background-color="#409EFF"
         router
         >
-        
-            <el-menu-item  v-for="menu in menus" 
-            :key="menu.index" 
-            :index="menu.index" 
-            :class="menu.index"
-            >{{menu.name}} 
-            <!-- {menu.name}} 
-            <router-link tag="span" :to="menu.index">
-          {{menu.name}} 
-        </router-link> -->
-        
+          <el-menu-item  v-for="menu in menus" 
+          :key="menu.index" 
+          :index="menu.index" 
+          :class="menu.index">
+            <!-- <i class="el-icon-document" ></i> -->
+            {{menu.name}}       
         </el-menu-item>
         </el-menu>
+         </el-col>
+    </el-row>
     </div>
 </template>
 
 <script>
+import logoUrl from "@/assets/logo.png";
 export default {
   data() {
     return {
-      activeIndex: "admin"
+      logoUrl
     };
   },
   methods: {
@@ -53,9 +55,9 @@ export default {
   background-color: #545c64;
 }
 .el-menu--horizontal > .el-menu-item {
-  width: 160px;
+  width: 120px;
   float: left;
-  margin: auto 20px;
+  margin: auto 10px;
   color: white;
   background-color: #545c64;
 }

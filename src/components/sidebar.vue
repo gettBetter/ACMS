@@ -3,8 +3,9 @@
         <el-row class="tac">
             <el-col :span="24">
                 <el-menu
-                default-active="1"
-                class="el-menu-vertical-demo"
+                :default-active="menus[0].index"
+                background-color="white"
+        
                 router
                 >
                 <el-menu-item :index="menu.index"  v-for="menu in menus" 
@@ -23,5 +24,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>

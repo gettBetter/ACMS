@@ -7,9 +7,10 @@
         </el-container>
         <el-container>
           <el-main>
-              <keep-alive>
+              <!-- <keep-alive>
                   <router-view/>
-              </keep-alive>
+              </keep-alive> -->
+              <p>card</p>    
           </el-main>
         </el-container>
     </div>

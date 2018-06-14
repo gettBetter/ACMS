@@ -7,6 +7,7 @@ export default {
     },
     {
       path: '/admin',
+      redirect: '/admin/user',
       component: () =>
         import ('@/components/admin'),
       children: [{
@@ -38,6 +39,7 @@ export default {
     },
     {
       path: '/personnel',
+      redirect: '/personnel/depart',
       component: () =>
         import ('@/components/personnel'),
       children: [{
@@ -60,10 +62,17 @@ export default {
     {
       path: '/card',
       component: () =>
-        import ('@/components/card')
+        import ('@/components/card'),
+      // children: [{
+      //   path: '/card/card',
+      //   component: () =>
+      //     import ('@/pages/card/card.vue')
+      // }
+      // ]
     },
     {
       path: '/accesscontrol',
+      redirect: '/accesscontrol/device',
       component: () =>
         import ('@/components/accesscontrol'),
       children: [{
@@ -95,6 +104,7 @@ export default {
     },
     {
       path: '/querytrack',
+      redirect: '/querytrack/alertReport',
       component: () =>
         import ('@/components/querytrack'),
       children: [{
