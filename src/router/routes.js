@@ -2,8 +2,13 @@ export default {
   mode: 'history',
   routes: [{
       path: '/',
+      redirect: '/admin/user',
+    },
+    {
+      path: '/login',
+      name: "login",
       component: () =>
-        import ('@/components/admin'),
+        import ('@/components/login')
     },
     {
       path: '/admin',
@@ -63,12 +68,6 @@ export default {
       path: '/card',
       component: () =>
         import ('@/components/card'),
-      // children: [{
-      //   path: '/card/card',
-      //   component: () =>
-      //     import ('@/pages/card/card.vue')
-      // }
-      // ]
     },
     {
       path: '/accesscontrol',
@@ -118,6 +117,11 @@ export default {
             import ('@/pages/querytrack/recordReport')
         }
       ]
+    },
+    {
+      path: '*',
+      component: () =>
+        import ('@/components/notfound'),
     }
   ]
 }

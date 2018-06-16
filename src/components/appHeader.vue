@@ -34,16 +34,13 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.info(key, keyPath);
+      // console.info(key, keyPath);
     }
   },
   computed: {
     menus() {
       return this.$parent.$store.getters.menus;
     }
-    // onRoutes() {
-    //   this.$route.path.replace(/\/.+/g, "");
-    // }
   }
 };
 </script>

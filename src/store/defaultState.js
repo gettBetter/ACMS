@@ -85,4 +85,5 @@ export default {
     }
   ],
   children: [],
+  mns: [],
 }

@@ -38,9 +38,7 @@ export default {
     sidebar
   },
   data() {
-    return {
-      // hasCHildren: false
-    };
+    return {};
   },
   computed: {
     menus() {
@@ -52,10 +50,14 @@ export default {
 
       path = path.match(/\/\w+/g)[0];
       this.$parent.$store.commit("getChildren", path);
+
+      this.$parent.$store.getters.children;
+
       return this.$parent.$store.getters.children;
     },
     hasCHildren() {
       let path = this.$route.path;
+
       console.info(path);
       if (path == "/") {
         path = "/admin";
@@ -65,11 +67,15 @@ export default {
 
       console.info(path);
       this.$parent.$store.commit("getChildren", path);
-      return !!this.$parent.$store.getters.children;
+      return !!this.$parent.$store.getters.children.length;
     }
   },
   mounted() {
-    console.info(this.$route.path);
+    // console.info(this.$route.path);
+    
+    // this.$get("/index/left").then(data => {
+    //   console.info("a", data);
+    // });
   }
 };
 </script>

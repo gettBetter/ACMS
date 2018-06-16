@@ -5,7 +5,6 @@
                 <el-menu
                 :default-active="menus[0].index"
                 background-color="white"
-        
                 router
                 >
                 <el-menu-item :index="menu.index"  v-for="menu in menus" 

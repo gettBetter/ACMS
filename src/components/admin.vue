@@ -1,10 +1,5 @@
 <template>
     <div class="adminpage">
-        <!-- <el-container style="margin-top:2px;">
-            <el-aside width="200px">
-                <sidebar :menus="menus"></sidebar> 
-            </el-aside>
-        </el-container> -->
         <el-container>
           <el-main>
               <keep-alive>
@@ -26,6 +21,9 @@ export default {
       this.$parent.$store.commit("getChildren", "/admin");
       return this.$parent.$store.getters.children;
     }
+  },
+  mounted() {
+    console.info(this.menus);
   }
 };
 </script>
