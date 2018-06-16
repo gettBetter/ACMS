@@ -3,6 +3,7 @@ import qs from 'qs';
 
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL = '';
+// axios.defaults.withCredentials = true
 
 if (process.env.NODE_ENV == 'development') {
   axios.defaults.baseURL = 'http://203.195.236.217:9000/admin';
@@ -18,11 +19,21 @@ axios.interceptors.request.use(
     config.data = qs.stringify(config.data);
     config.headers = {
       'Content-Type': 'application/x-www-form-urlencoded'
+      // ,
+      // 'Authorization': token
     }
+
+    // debugger
     if (token) {
-      config.params = {
-        'token': qs.parse(token)
-      }
+      // config.params = {
+      //   'token': token.token,
+      //   'username': token.username
+      // }
+      const param = JSON.parse(token);
+      console.info('token', JSON.parse(token))
+
+      // config.params = `?token=${param.token}&username=${param.username}`
+      config.url += '/token/' + param.token + '/username/' + param.username
     }
     return config;
   },

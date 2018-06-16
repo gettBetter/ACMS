@@ -10,30 +10,35 @@ export default {
       state.children = []
     }
   },
-  setMns(state, mns) {
-    console.info('mns', mns)
-    const menus = [];
-
-    // for (let p in mns) {
-    //   console.info(mns[p])
-    //   let menu = {
-    //     name: p,
-    //     children: []
-    //   };
-    //   for (let prop in mns[p]) {
-
-    //     console.info(mns[p][prop])
-    //     let item = mns[p][prop].split(':');
-    //     let child = [];
-
-    //     menu.index = item[1].match(/\/\w+/g)[0]
-    //     child.push({
-    //       index: item[1],
-    //       name: item[0]
+  setMenus(state, data) {
+    // const menus = data.map(item => {
+    //   return {
+    //     name: item.name,
+    //     path: item.path,
+    //     component: () =>
+    //       import (item.component),
+    //     children: item.children.map(val => {
+    //       return {
+    //         name: val.name,
+    //         path: val.path,
+    //         component: () =>
+    //           import (val.component)
+    //       };
     //     })
-    //   }
-    // }
+    //   };
+    // });
 
-    // state.mns = munus
+    //   menus.push({
+    //     path: "/",
+    //     redirect: "/admin/user"
+    //   });
+    //   menus.push({
+    //     path: "/index",
+    //     redirect: "/admin/user"
+    //   });
+    const menu = []
+    
+
+    state.menus = menus
   }
 }

@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import Router from './router'
 import store from '@/store/store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -14,13 +14,30 @@ import {
 }
 from '@/utils/axiosConf'
 
+Vue.use(ElementUI)
+Vue.config.productionTip = false
 Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 
 
-Vue.use(ElementUI)
-// 
-Vue.config.productionTip = false
+const routes = [...store.getters.menus];
+console.info(store)
+routes.push({
+  path: "/login",
+  name: "login",
+  component: () =>
+    import ("@/components/login")
+});
+routes.push({
+  path: "*",
+  component: () =>
+    import ("@/components/notfound")
+});
+const router = new Router({
+  mode: 'history',
+  routes
+})
+
 const token = sessionStorage.userToken
 router.beforeEach((to, from, next) => {
   if (!token && to.fullPath !== '/login') {

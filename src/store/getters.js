@@ -4,5 +4,8 @@ export default {
   },
   children(state) {
     return state.children
+  },
+  getMenus(state) {
+    return state.menus
   }
 }

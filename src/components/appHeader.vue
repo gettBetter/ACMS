@@ -5,16 +5,17 @@
             <img :src="logoUrl" width="30px" style="margin-top:16px" />
           </el-col>
           <el-col :span="18" :offset="1">
-        <el-menu :default-active="menus[0].index" 
+        <el-menu :default-active="menus[0].path" 
         mode="horizontal" 
         @select="handleSelect"
         background-color="#409EFF"
         router
         >
-          <el-menu-item  v-for="menu in menus" 
-          :key="menu.index" 
-          :index="menu.index" 
-          :class="menu.index">
+          <el-menu-item  
+          v-for="menu in menus" 
+          :key="menu.path" 
+          :index="menu.path" 
+          >
             <!-- <i class="el-icon-document" ></i> -->
             {{menu.name}}       
         </el-menu-item>
@@ -39,6 +40,7 @@ export default {
   },
   computed: {
     menus() {
+      console.info(this.$parent.$store.getters.menus);
       return this.$parent.$store.getters.menus;
     }
   }

@@ -47,6 +47,39 @@ export default {
     };
   },
   methods: {
+    congMenus(data) {
+      //   const menus = data.map(item => {
+      //     return {
+      //       name: item.name,
+      //       path: item.path,
+      //       component: () => import(item.component),
+      //       children: item.children.map(val => {
+      //         return {
+      //           name: val.name,
+      //           path: val.path,
+      //           component: () => import(val.component)
+      //         };
+      //       })
+      //     };
+      //   });
+      //   //   menus.push({
+      //   //     path: "/",
+      //   //     redirect: "/admin/user"
+      //   //   });
+      //   //   menus.push({
+      //   //     path: "/index",
+      //   //     redirect: "/admin/user"
+      //   //   });
+      //   menus.push({
+      //     path: "/login",
+      //     name: "login",
+      //     component: () => import("@/components/login")
+      //   });
+      //   menus.push({
+      //     path: "*",
+      //     component: () => import("@/components/notfound")
+      //   });
+    },
     onSubmit() {
       if (this.username && this.password) {
         console.info("this", this);
@@ -64,7 +97,13 @@ export default {
                 })
               );
 
-              console.info("token333", sessionStorage.userToken);
+              this.$get("/index/left").then(data => {
+                // let menus = confMenus(data.menu);
+                // console.info("menus", menus);
+                this.$store.commit("setMenus", data);
+              });
+
+              //   console.info("token333", sessionStorage.userToken);
               this.loginError = false;
               this.$router.push({ path: "/" });
             },
