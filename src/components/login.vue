@@ -93,7 +93,7 @@ export default {
 
                 // debugger;
                 // console.info("$router2", this.$router.options.routes);
-                this.$router.push({ path: "/main" });
+                this.$router.push({ path: "/" });
                 // this.$router.push({ path: "/first" });
               });
             },

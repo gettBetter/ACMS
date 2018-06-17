@@ -28,7 +28,7 @@ export default new Router({
       path: '/',
       name: "index",
       component: () =>
-        import ('@/components/pages/first/firstchild')
+        import ('@/components/pages/second/secondchild')
     }
     // ...generateRoutesFromMenu(menuModule.state.items)
   ]
