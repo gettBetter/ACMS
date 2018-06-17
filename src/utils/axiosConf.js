@@ -1,9 +1,9 @@
 import axios from 'axios';
 import qs from 'qs';
-
+import router from '@/router'
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL = '';
-// axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true 
 
 if (process.env.NODE_ENV == 'development') {
   axios.defaults.baseURL = 'http://203.195.236.217:9000/admin';
@@ -15,24 +15,13 @@ if (process.env.NODE_ENV == 'development') {
 axios.interceptors.request.use(
   config => {
     const token = sessionStorage.userToken;
-
     config.data = qs.stringify(config.data);
     config.headers = {
       'Content-Type': 'application/x-www-form-urlencoded'
-      // ,
-      // 'Authorization': token
     }
 
-    // debugger
     if (token) {
-      // config.params = {
-      //   'token': token.token,
-      //   'username': token.username
-      // }
       const param = JSON.parse(token);
-      console.info('token', JSON.parse(token))
-
-      // config.params = `?token=${param.token}&username=${param.username}`
       config.url += '/token/' + param.token + '/username/' + param.username
     }
     return config;
@@ -44,22 +33,24 @@ axios.interceptors.request.use(
 
 
 // http response 拦截器
-// axios.interceptors.response.use(
-//   response => {
-//     // if (response.data.errCode == 2) {
-//     //   router.push({
-//     //     path: "/login",
-//     //     querry: {
-//     //       redirect: router.currentRoute.fullPath
-//     //     } //从哪个页面跳转
-//     //   })
-//     // }
-//     return qs.parse(response);
-//   },
-//   error => {
-//     return Promise.reject(error)
-//   }
-// )
+console.info(router)
+axios.interceptors.response.use(
+  response => {
+    if (!response.success) {
+      router.push({
+        path: "/login",
+        querry: {
+          redirect: router.currentRoute.fullPath
+        } //从哪个页面跳转
+      })
+    }
+    return response;
+    // return qs.parse(response);
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 
 
 /**

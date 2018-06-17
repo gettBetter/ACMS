@@ -62,48 +62,50 @@ export default {
       });
     },
     onSubmit() {
-      // if (this.username && this.password) {
-      console.info("this", this);
-      this.$post("/login/Login_chk", {
-        // username: this.username,
-        // password: this.password
+      if (this.username && this.password) {
+     
+        this.$post("/login/Login_chk", {
+          username: this.username,
+          password: this.password
+          // username: "admin",
+          // password: "admin"
+        })
+          .then(
+            data => {
+              if (!data.success) {
+                // alert("用户登录认证失败，请重新登录");
+              }
+              sessionStorage.setItem(
+                "userToken",
+                JSON.stringify({
+                  username: data.username,
+                  token: data.token
+                })
+              );
 
-        username: "admin",
-        password: "admin"
-      })
-        .then(
-          data => {
-            sessionStorage.setItem(
-              "userToken",
-              JSON.stringify({
-                username: data.username,
-                token: data.token
-              })
-            );
+              this.loginError = false;
+              this.$get("/index/left").then(data => {
+                const menu = this.confMenus(data.menu);
 
-            this.loginError = false;
-            this.$get("/index/left").then(data => {
-              const menu = this.confMenus(data.menu);
+                console.info(menu);
+                this.$router.addRoutes(menu);
+                this.$parent.$store.commit("setMenus", menu);
+                sessionStorage.setItem("userMenus", JSON.stringify(menu));
 
-              console.info(menu);
-              this.$router.addRoutes(menu);
-              this.$parent.$store.commit("setMenus", menu);
-              sessionStorage.setItem("userMenus", JSON.stringify(menu));
-
-              // console.info("$router2", this.$router.options.routes);
-              this.$router.push({ path: "/main" });
-              // this.$router.push({ path: "/first" });
-            });
-          },
-          data => {
-            this.loginError = true;
-            console.info("133", data);
-          }
-        )
-        .catch(err => console.info(err));
-      // } else {
-      //   alert("error");
-      // }
+                // console.info("$router2", this.$router.options.routes);
+                this.$router.push({ path: "/main" });
+                // this.$router.push({ path: "/first" });
+              });
+            },
+            data => {
+              this.loginError = true;
+              // console.info("133", data);
+            }
+          )
+          .catch(err => console.info(err));
+      } else {
+        alert("error");
+      }
     }
   },
   computed: {
@@ -121,6 +123,7 @@ export default {
     }
   },
   mounted() {
+    sessionStorage.clear();
     // console.info(this.$parent.$http);
   }
 };
