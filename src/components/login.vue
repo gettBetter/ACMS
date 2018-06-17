@@ -36,7 +36,14 @@
 </template>
 
 <script>
-import qs from "qs";
+// import qs from "qs";
+// import { confMenus, confRoutes } from "@/utils/tool";
+// import tool from "@/utils/tool";
+
+// import { confMenus, confRoutes } from "@/utils/tool";
+// import { post, get } from "@/utils/tool";
+// console.info(confMenus, confRoutes);
+// console.info(tool.confMenus, tool.confRoutes);
 // import Vue from "vue";
 // import Router from "vue-router";
 // import store from "@/store/store";
@@ -49,88 +56,87 @@ export default {
       loginError: false
     };
   },
-  methods: {
-    confMenus(data) {
-      return data.map(item => {
-        return {
-          name: item.name,
-          path: item.path,
-          component: () => import(item.component),
-          children: item.chilren.map(val => {
-            return {
-              name: val.name,
-              path: val.path,
-              component: () => import(val.component)
-            };
-          })
-        };
-      });
-    },
-    confRoutes(data) {
-      data.forEach(item => {
-        this.$router.options.routes.push({
-          name: item.name,
-          path: item.path,
-          component: () => import(item.component),
-          children: item.chilren.map(val => {
-            return {
-              name: val.name,
-              path: val.path,
-              component: () => import(val.component)
-            };
-          })
-        });
-      });
-    },
-    onSubmit() {
-      // if (this.username && this.password) {
-      console.info("this", this);
-      this.$post("/login/Login_chk", {
-        // username: this.username,
-        // password: this.password
+  // methods: {
+  //   confMenus(data) {
+  //     return data.map(item => {
+  //       return {
+  //         name: item.name,
+  //         path: item.path,
+  //         // component: () => import(item.component),
+  //         children: item.chilren.map(val => {
+  //           return {
+  //             name: val.name,
+  //             path: val.path
+  //             // ,
+  //             // component: () => import(val.component)
+  //           };
+  //         })
+  //       };
+  //     });
+  //   },
 
-        username: "admin",
-        password: "admin"
-      })
-        .then(
-          data => {
-            sessionStorage.setItem(
-              "userToken",
-              JSON.stringify({
-                username: data.username,
-                token: data.token
-              })
-            );
-            this.loginError = false;
+  //   confRoutes(data) {
+  //     data.forEach(item => {
+  //       this.$router.options.routes.push({
+  //         name: item.name,
+  //         path: item.path,
+  //         component: () => import(item.component),
+  //         children: item.chilren.map(val => {
+  //           return {
+  //             name: val.name,
+  //             path: val.path,
+  //             component: () => import(val.component)
+  //           };
+  //         })
+  //       });
+  //     });
+  //   },
+  //   onSubmit() {
+  //     // console.info(confMenus, confRoutes);
+  //     // if (this.username && this.password) {
+  //     console.info("this", this);
+  //     this.$post("/login/Login_chk", {
+  //       // username: this.username,
+  //       // password: this.password
 
-            this.$get("/index/left").then(data => {
-              const menus = this.confMenus(data.menu);
-              this.$store.commit("setMenus", menus);
-              // console.info("$router", this.$router.options.routes);
-              // console.info("$store", this.$store);
+  //       username: "admin",
+  //       password: "admin"
+  //     })
+  //       .then(
+  //         data => {
+  //           sessionStorage.setItem(
+  //             "userToken",
+  //             JSON.stringify({
+  //               username: data.username,
+  //               token: data.token
+  //               // menus
+  //             })
+  //           );
 
-              // const menus = [...this.$store.getters.menus];
-              // this.$router.options.routes = this.$router.options.routes.concat(
-              //   menus
-              // );
-              this.confRoutes(data.menu);
-              console.info(menus);
-              console.info("$router", this.$router.options.routes);
+  //           this.loginError = false;
+  //           this.$get("/index/left").then(data => {
+  //             const menus = this.confMenus(data.menu);
+  //             this.$store.commit("setMenus", menus);
 
-              this.$router.push({ path: "/first" });
-            });
-          },
-          data => {
-            this.loginError = true;
-            console.info("133", data);
-          }
-        )
-        .catch(err => console.info(err));
-      // } else {
-      //   alert("error");
-      // }
-    }
-  },
+  //             this.confRoutes(data.menu);
+  //             console.info(menus);
+  //             console.info("$router", this.$router.options.routes);
+  //             sessionStorage.setItem("userRoutes", JSON.stringify(data.menu));
+
+  //             this.$router.push({ path: "/first" });
+  //           });
+  //         },
+  //         data => {
+  //           this.loginError = true;
+  //           console.info("133", data);
+  //         }
+  //       )
+  //       .catch(err => console.info(err));
+  //     // } else {
+  //     //   alert("error");
+  //     // }
+  //   }
+  // },
   computed: {
     menus() {
       return [];

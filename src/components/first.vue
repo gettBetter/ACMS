@@ -11,11 +11,7 @@
 </template>
 
 <script>
-// import sidebar from "./sidebar";
 export default {
-  //   components: {
-  //     sidebar
-  //   },
   computed: {
     path() {
       return this.$route.path;

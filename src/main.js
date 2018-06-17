@@ -11,35 +11,68 @@ import axios from 'axios'
 import {
   post,
   get
-}
-from '@/utils/axiosConf'
+} from '@/utils/axiosConf'
+
+// import tool from "@/utils/tool";
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 
+import login from '@/components/login';
 
-const routes = [...store.getters.menus];
-console.info(store)
+const routes = [];
+
 routes.push({
   path: "/login",
   name: "login",
-  component: () =>
-    import ("@/components/login")
+  component: login
 });
-routes.push({
-  path: "*",
-  component: () =>
-    import ("@/components/notfound")
-});
+// routes.push({
+//   path: "*",
+//   component: () =>
+//     import ("@/components/notfound")
+// });
+
+console.info('length', routes)
+
+console.info('outside')
+
+
+const token = sessionStorage.userToken
+
+
+const userRoutes = token && JSON.parse(sessionStorage.userRoutes)
+// debugger
+// if (token && routes.length < 3)
+//   // debugger
+//   userRoutes.forEach(item => {
+//     // debugger
+//     routes.push({
+//       name: item.name,
+//       path: item.path,
+//       component: () =>
+//         import (item.component),
+//       children: item.chilren.map(val => {
+//         return {
+//           name: val.name,
+//           path: val.path,
+//           component: () =>
+//             import (val.component)
+//         };
+//       })
+//     });
+//   });
+// console.info('length', routes)
 const router = new Router({
   mode: 'history',
   routes
 })
 
-const token = sessionStorage.userToken
 router.beforeEach((to, from, next) => {
+  // debugger
+  console.info(to, from)
   if (!token && to.fullPath !== '/login') {
     next({
       name: 'login',
@@ -63,12 +96,19 @@ const app = new Vue({
 
   },
   beforeMount() {
-    this.$store.dispatch("getMns");
+    console.info('before')
+
+
+
   },
   mounted() {
 
   },
   computed: {
 
+  },
+  destroyed() {
+    console.info('123')
+    debugger
   }
 })

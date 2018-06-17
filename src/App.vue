@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
       <!-- 页眉 -->
-      <el-header>
+      <el-header v-if="logined">
         <app-header></app-header>
       </el-header>
       <!-- 主体 -->
@@ -45,7 +45,7 @@ export default {
       let path = this.$route.path;
 
       if (path == "/") {
-        path = "/admin";
+        path = "/second";
       }
 
       path = path.match(/\/\w+/g)[0];
@@ -68,6 +68,9 @@ export default {
       console.info(path);
       this.$parent.$store.commit("getChildren", path);
       return !!this.$parent.$store.getters.children.length;
+    },
+    logined() {
+      return !!sessionStorage.userToken;
     }
   },
   mounted() {
@@ -75,11 +78,24 @@ export default {
     // this.$get("/index/left").then(data => {
     //   console.info("a", data);
     // });
+    console.info(this.hasCHildren, this.menus);
   }
 };
 </script>
 
 <style>
+html body {
+  width: 100%;
+  height: 100%;
+}
+
+body > .el-container {
+  margin-bottom: 40px;
+  height: 100%;
+}
+#app {
+  height: 100%;
+}
 .el-header,
 .el-footer {
   background-color: #409eff;
@@ -99,13 +115,10 @@ export default {
   color: #333;
   text-align: center;
   line-height: 160px;
+  height: 100%;
 }
 .el-menu {
   width: 200px;
-}
-
-body > .el-container {
-  margin-bottom: 40px;
 }
 
 .el-container:nth-child(5) .el-aside,

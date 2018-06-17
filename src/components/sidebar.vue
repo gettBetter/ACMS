@@ -9,7 +9,8 @@
                 >
                 <el-menu-item :index="menu.path"  v-for="menu in menus" 
                     :key="menu.path" 
-                    :class="menu.path">{{menu.name}}</el-menu-item>
+                    :class="menu.path"
+                    @click="showRouter">{{menu.name}}</el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
@@ -19,7 +20,14 @@
 <script>
 export default {
   props: ["menus"],
-  mounted() {}
+  mounted() {
+    console.info(this.$router.options);
+  },
+  methods: {
+    showRouter() {
+      console.info(this.$router);
+    }
+  }
 };
 </script>
 
