@@ -11,22 +11,6 @@ export default {
     }
   },
   setMenus(state, menus) {
-    // debugger;
-
-
-    // menus.push({
-    //   path: "/",
-    //   redirect: "/admin/user"
-    // });
-    // menus.push({
-    //   path: "/index",
-    //   redirect: "/admin/user"
-    // });
-    // const menu = []
-
-
     state.menus = menus
-
-    // console.info(state.menus)
   }
 }

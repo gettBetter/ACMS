@@ -38,14 +38,13 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      // console.info(key, keyPath);
+      //
     }
   },
   computed: {
     menus() {
       let nemu = this.$parent.$store.getters.menus;
       if (sessionStorage.userToken && nemu.length > 0) {
-        console.info(this.$parent.$store.getters.menus);
         return nemu;
       } else {
         return [];

@@ -8,4 +8,5 @@ export default {
   getMenus(state) {
     return state.menus
   }
+
 }

@@ -41,44 +41,16 @@ export default {
     return {};
   },
   computed: {
-    menus() {
-      let path = this.$route.path;
-
-      if (path == "/") {
-        path = "/second";
-      }
-
-      path = path.match(/\/\w+/g)[0];
-      this.$parent.$store.commit("getChildren", path);
-
-      this.$parent.$store.getters.children;
-
-      return this.$parent.$store.getters.children;
-    },
-    hasCHildren() {
-      let path = this.$route.path;
-
-      
-      if (path == "/") {
-        path = "/second";
-      }
-
-      path = path.match(/\/\w+/g)[0];
-
-      
-      this.$parent.$store.commit("getChildren", path);
-      return !!this.$parent.$store.getters.children.length;
-    },
     logined() {
       return !!sessionStorage.userToken;
     }
   },
   mounted() {
-    // 
+    // console.info(this.$route.path);
     // this.$get("/index/left").then(data => {
-    //   
+    //   console.info("a", data);
     // });
-    // 
+    console.info(this.hasCHildren, this.menus);
   }
 };
 </script>
