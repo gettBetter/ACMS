@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
-import router from '@/router'
-axios.defaults.timeout = 5000;
+// import router from '@/router'
+// axios.defaults.timeout = 5000;
 axios.defaults.baseURL = '';
 // axios.defaults.withCredentials = true 
 
@@ -33,24 +33,24 @@ axios.interceptors.request.use(
 
 
 // http response 拦截器
-console.info(router)
-axios.interceptors.response.use(
-  response => {
-    if (!response.success) {
-      router.push({
-        path: "/login",
-        querry: {
-          redirect: router.currentRoute.fullPath
-        } //从哪个页面跳转
-      })
-    }
-    return response;
-    // return qs.parse(response);
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
+// console.info(router)
+// axios.interceptors.response.use(
+//   response => {
+//     if (response.success != "true") {
+//       // router.push({
+//       //   path: "/login",
+//       //   querry: {
+//       //     redirect: router.currentRoute.fullPath
+//       //   } //从哪个页面跳转
+//       // })
+//     }
+//     return response;
+//     // return qs.parse(response);
+//   },
+//   error => {
+//     return Promise.reject(error)
+//   }
+// )
 
 
 /**

@@ -63,7 +63,6 @@ export default {
     },
     onSubmit() {
       if (this.username && this.password) {
-     
         this.$post("/login/Login_chk", {
           username: this.username,
           password: this.password
@@ -72,9 +71,9 @@ export default {
         })
           .then(
             data => {
-              if (!data.success) {
-                // alert("用户登录认证失败，请重新登录");
-              }
+              // if (!data.success) {
+              //   // alert("用户登录认证失败，请重新登录");
+              // }
               sessionStorage.setItem(
                 "userToken",
                 JSON.stringify({
@@ -92,6 +91,7 @@ export default {
                 this.$parent.$store.commit("setMenus", menu);
                 sessionStorage.setItem("userMenus", JSON.stringify(menu));
 
+                // debugger;
                 // console.info("$router2", this.$router.options.routes);
                 this.$router.push({ path: "/main" });
                 // this.$router.push({ path: "/first" });
@@ -100,6 +100,7 @@ export default {
             data => {
               this.loginError = true;
               // console.info("133", data);
+              alert(data.msg);
             }
           )
           .catch(err => console.info(err));
