@@ -60,7 +60,7 @@ export default {
 
       console.info(path);
       if (path == "/") {
-        path = "/admin";
+        path = "/second";
       }
 
       path = path.match(/\/\w+/g)[0];
@@ -72,7 +72,6 @@ export default {
   },
   mounted() {
     // console.info(this.$route.path);
-    
     // this.$get("/index/left").then(data => {
     //   console.info("a", data);
     // });

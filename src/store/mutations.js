@@ -1,7 +1,7 @@
 export default {
-  getChildren(state, index) {
+  getChildren(state, path) {
     const indexSate = state.menus.filter(
-      v => v.index == index
+      v => v.path == path
     )[0]
 
     if (indexSate && 'children' in indexSate) {
@@ -10,35 +10,23 @@ export default {
       state.children = []
     }
   },
-  setMenus(state, data) {
-    // const menus = data.map(item => {
-    //   return {
-    //     name: item.name,
-    //     path: item.path,
-    //     component: () =>
-    //       import (item.component),
-    //     children: item.children.map(val => {
-    //       return {
-    //         name: val.name,
-    //         path: val.path,
-    //         component: () =>
-    //           import (val.component)
-    //       };
-    //     })
-    //   };
-    // });
+  setMenus(state, menus) {
+    // debugger;
 
-    //   menus.push({
-    //     path: "/",
-    //     redirect: "/admin/user"
-    //   });
-    //   menus.push({
-    //     path: "/index",
-    //     redirect: "/admin/user"
-    //   });
-    const menu = []
-    
+
+    // menus.push({
+    //   path: "/",
+    //   redirect: "/admin/user"
+    // });
+    // menus.push({
+    //   path: "/index",
+    //   redirect: "/admin/user"
+    // });
+    // const menu = []
+
 
     state.menus = menus
+
+    // console.info(state.menus)
   }
 }

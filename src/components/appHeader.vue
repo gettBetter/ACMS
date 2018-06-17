@@ -5,22 +5,25 @@
             <img :src="logoUrl" width="30px" style="margin-top:16px" />
           </el-col>
           <el-col :span="18" :offset="1">
-        <el-menu :default-active="menus[0].path" 
-        mode="horizontal" 
-        @select="handleSelect"
-        background-color="#409EFF"
-        router
-        >
-          <el-menu-item  
-          v-for="menu in menus" 
-          :key="menu.path" 
-          :index="menu.path" 
-          >
-            <!-- <i class="el-icon-document" ></i> -->
-            {{menu.name}}       
-        </el-menu-item>
-        </el-menu>
-         </el-col>
+            <el-menu :default-active="menus[0].path" 
+            mode="horizontal" 
+            @select="handleSelect"
+            background-color="#409EFF"
+            router
+            >
+              <el-menu-item  
+              v-for="menu in menus" 
+              :key="menu.path" 
+              :index="menu.path" 
+              >
+                <!-- <i class="el-icon-document" ></i> -->
+                {{menu.name}}       
+            </el-menu-item>
+            </el-menu>
+          </el-col>
+          <!-- <el-col :span="2" :offset="1">
+            wecome {{username}}
+          </el-col>  -->
     </el-row>
     </div>
 </template>
@@ -40,8 +43,18 @@ export default {
   },
   computed: {
     menus() {
-      console.info(this.$parent.$store.getters.menus);
-      return this.$parent.$store.getters.menus;
+      let nemu = this.$parent.$store.getters.menus;
+      if (sessionStorage.userToken && nemu.length > 0) {
+        console.info(this.$parent.$store.getters.menus);
+        return nemu;
+      } else {
+        return [];
+      }
+    },
+    username() {
+      if (sessionStorage.userToken) {
+        return JSON.parse(sessionStorage.userToken).username;
+      }
     }
   }
 };

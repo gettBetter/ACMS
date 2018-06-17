@@ -5,7 +5,7 @@ import store from '@/store/store'
 Vue.use(Router)
 
 
-console.info(this)
+// console.info(this)
 
 // export default new Router(routes)
 

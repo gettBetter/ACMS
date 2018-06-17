@@ -37,6 +37,9 @@
 
 <script>
 import qs from "qs";
+// import Vue from "vue";
+// import Router from "vue-router";
+// import store from "@/store/store";
 export default {
   data() {
     return {
@@ -47,75 +50,85 @@ export default {
     };
   },
   methods: {
-    congMenus(data) {
-      //   const menus = data.map(item => {
-      //     return {
-      //       name: item.name,
-      //       path: item.path,
-      //       component: () => import(item.component),
-      //       children: item.children.map(val => {
-      //         return {
-      //           name: val.name,
-      //           path: val.path,
-      //           component: () => import(val.component)
-      //         };
-      //       })
-      //     };
-      //   });
-      //   //   menus.push({
-      //   //     path: "/",
-      //   //     redirect: "/admin/user"
-      //   //   });
-      //   //   menus.push({
-      //   //     path: "/index",
-      //   //     redirect: "/admin/user"
-      //   //   });
-      //   menus.push({
-      //     path: "/login",
-      //     name: "login",
-      //     component: () => import("@/components/login")
-      //   });
-      //   menus.push({
-      //     path: "*",
-      //     component: () => import("@/components/notfound")
-      //   });
+    confMenus(data) {
+      return data.map(item => {
+        return {
+          name: item.name,
+          path: item.path,
+          component: () => import(item.component),
+          children: item.chilren.map(val => {
+            return {
+              name: val.name,
+              path: val.path,
+              component: () => import(val.component)
+            };
+          })
+        };
+      });
+    },
+    confRoutes(data) {
+      data.forEach(item => {
+        this.$router.options.routes.push({
+          name: item.name,
+          path: item.path,
+          component: () => import(item.component),
+          children: item.chilren.map(val => {
+            return {
+              name: val.name,
+              path: val.path,
+              component: () => import(val.component)
+            };
+          })
+        });
+      });
     },
     onSubmit() {
-      if (this.username && this.password) {
-        console.info("this", this);
-        this.$post("/login/Login_chk", {
-          username: this.username,
-          password: this.password
-        })
-          .then(
-            data => {
-              sessionStorage.setItem(
-                "userToken",
-                JSON.stringify({
-                  username: data.username,
-                  token: data.token
-                })
-              );
+      // if (this.username && this.password) {
+      console.info("this", this);
+      this.$post("/login/Login_chk", {
+        // username: this.username,
+        // password: this.password
 
-              this.$get("/index/left").then(data => {
-                // let menus = confMenus(data.menu);
-                // console.info("menus", menus);
-                this.$store.commit("setMenus", data);
-              });
+        username: "admin",
+        password: "admin"
+      })
+        .then(
+          data => {
+            sessionStorage.setItem(
+              "userToken",
+              JSON.stringify({
+                username: data.username,
+                token: data.token
+              })
+            );
+            this.loginError = false;
 
-              //   console.info("token333", sessionStorage.userToken);
-              this.loginError = false;
-              this.$router.push({ path: "/" });
-            },
-            data => {
-              this.loginError = true;
-              console.info("133", data);
-            }
-          )
-          .catch(err => console.info(err));
-      } else {
-        alert("error");
-      }
+            this.$get("/index/left").then(data => {
+              const menus = this.confMenus(data.menu);
+              this.$store.commit("setMenus", menus);
+              // console.info("$router", this.$router.options.routes);
+              // console.info("$store", this.$store);
+
+              // const menus = [...this.$store.getters.menus];
+              // this.$router.options.routes = this.$router.options.routes.concat(
+              //   menus
+              // );
+              this.confRoutes(data.menu);
+              console.info(menus);
+              console.info("$router", this.$router.options.routes);
+
+              this.$router.push({ path: "/first" });
+            });
+          },
+          data => {
+            this.loginError = true;
+            console.info("133", data);
+          }
+        )
+        .catch(err => console.info(err));
+      // } else {
+      //   alert("error");
+      // }
     }
   },
   computed: {
@@ -133,7 +146,7 @@ export default {
     }
   },
   mounted() {
-    console.info(this.$parent.$http);
+    // console.info(this.$parent.$http);
   }
 };
 </script>

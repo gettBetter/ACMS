@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 
-axios.defaults.timeout = 5000;
+// axios.defaults.timeout = 5000;
 axios.defaults.baseURL = '';
 // axios.defaults.withCredentials = true
 
