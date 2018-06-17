@@ -23,9 +23,7 @@ export default {
   mounted() {
     // console.info(this.$router.options);
   },
-  methods: {
-
-  },
+  methods: {},
   computed: {
     currentPath() {
       return this.$route.path;

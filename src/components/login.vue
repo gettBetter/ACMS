@@ -36,7 +36,14 @@
 </template>
 
 <script>
-// import MenuUtils from "@/utils/MenuUtils";
+// import lazyLoading from "@/utils/lazyLoading";
+// console.info(aaa);
+sessionStorage.clear();
+
+import MenuUtils from "@/utils/MenuUtils";
+const routers = [];
+
+import router from "@/router";
 export default {
   data() {
     return {
@@ -49,13 +56,19 @@ export default {
   methods: {
     confMenus(data) {
       return data.map(item => {
+        let menu = Object.assign({}, item);
         return {
-          name: item.name,
-          path: item.path,
-          children: item.chilren.map(val => {
+          name: menu.name,
+          path: menu.path,
+          // component: () => import(item.component),
+          component: lazyLoading(menu.path, true),
+          children: menu.chilren.map(val => {
             return {
               name: val.name,
-              path: val.path
+              path: val.path,
+              // component: () => import(val.component)
+              // component: resolve => require([val.component], resolve)
+              component: lazyLoading(val.path)
             };
           })
         };
@@ -82,18 +95,33 @@ export default {
                 })
               );
 
+              console.info("$router", this.$router);
               this.loginError = false;
               this.$get("/index/left").then(data => {
-                const menu = this.confMenus(data.menu);
-
-                console.info(menu);
-                this.$router.addRoutes(menu);
-                this.$parent.$store.commit("setMenus", menu);
-                sessionStorage.setItem("userMenus", JSON.stringify(menu));
+                // const menu = this.confMenus(data.menu);
 
                 // debugger;
+                // router.addRoutes(menu);
+                // addRoutes
+
+                // this.$parent.$store.commit("setMenus", menu);
+
+                //---
+                // this.addMenu(data.menu);
+                // if (!this.isLoadRoutes) {
+                //   this.$router.addRoutes(this.menuitems);
+                //   this.loadRoutes();
+                // }
+                //---
+                // router.addRoutes(menu);
+                this.$parent.$store.commit("setMenus", data.menu);
+                MenuUtils(routers, data.menu);
+
+                this.$router.addRoutes(routers);
+                sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
+
                 // console.info("$router2", this.$router.options.routes);
-                this.$router.push({ path: "/" });
+                router.push({ path: "*", replace: true });
                 // this.$router.push({ path: "/first" });
               });
             },
@@ -108,6 +136,7 @@ export default {
         alert("error");
       }
     }
+    // ...mapActions(["addMenu", "loadRoutes"])
   },
   computed: {
     menus() {
@@ -122,9 +151,13 @@ export default {
         password: this.password
       });
     }
+    // ...mapGetters([
+    //   "menuitems",
+    //   "isLoadRoutes"
+    //   // ...
+    // ])
   },
   mounted() {
-    sessionStorage.clear();
     // console.info(this.$parent.$http);
   }
 };

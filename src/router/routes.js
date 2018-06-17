@@ -14,16 +14,16 @@ export default {
       component: () =>
         import ('@/components/notfound'),
     },
-    ...generateRoutesFromMenu(menuModule.state.items)
+    // ...generateRoutesFromMenu(menuModule.state.items)
   ]
 }
 
-function generateRoutesFromMenu(menu = [], routes = []) {
-  for (let i = 0, l = menu.length; i < l; i++) {
-    let item = menu[i]
-    if (item.path) {
-      routes.push(item)
-    }
-  }
-  return routes
-}
+// function generateRoutesFromMenu(menu = [], routes = []) {
+//   for (let i = 0, l = menu.length; i < l; i++) {
+//     let item = menu[i]
+//     if (item.path) {
+//       routes.push(item)
+//     }
+//   }
+//   return routes
+// }

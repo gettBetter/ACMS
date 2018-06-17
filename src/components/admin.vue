@@ -17,13 +17,13 @@ export default {
   //     sidebar
   //   },
   computed: {
-    menus() {
+    menu() {
       this.$parent.$store.commit("getChildren", "/admin");
       return this.$parent.$store.getters.children;
     }
   },
   mounted() {
-    console.info(this.menus);
+    console.info(this.menu);
   }
 };
 </script>

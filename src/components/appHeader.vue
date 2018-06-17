@@ -5,19 +5,20 @@
             <img :src="logoUrl" width="30px" style="margin-top:16px" />
           </el-col>
           <el-col :span="18" :offset="1">
-            <el-menu :default-active="menus[0].path" 
+            <el-menu 
+            :default-active="currentPath.match(/\/\w+/g)[0]"
             mode="horizontal" 
             @select="handleSelect"
             background-color="#409EFF"
             router
             >
               <el-menu-item  
-              v-for="menu in menus" 
-              :key="menu.path" 
-              :index="menu.path" 
+              v-for="item in menu" 
+              :key="item.path" 
+              :index="item.path" 
               >
                 <!-- <i class="el-icon-document" ></i> -->
-                {{menu.name}}       
+                {{item.name}}       
             </el-menu-item>
             </el-menu>
           </el-col>
@@ -42,13 +43,16 @@ export default {
     }
   },
   computed: {
-    menus() {
+    menu() {
       let nemu = this.$parent.$store.getters.menus;
       if (sessionStorage.userToken && nemu.length > 0) {
         return nemu;
       } else {
         return [];
       }
+    },
+    currentPath() {
+      return this.$route.path;
     },
     username() {
       if (sessionStorage.userToken) {

@@ -13,6 +13,8 @@ import {
   get
 } from '@/utils/axiosConf'
 
+import MenuUtils from '@/utils/MenuUtils'
+
 // import tool from "@/utils/tool";
 
 Vue.use(ElementUI)
@@ -25,15 +27,29 @@ const token = sessionStorage.userToken
 const userMenus = sessionStorage.userMenus
 
 if (token && userMenus) {
-  const menus = JSON.parse(userMenus)
-  console.info(router, userMenus)
-  router.addRoutes(menus);
-  store.commit("setMenus", menus);
+
+  // let routes = []
+  // MenuUtils(routes, userMenus)
+  // router.addRoutes(routes)
+  // const menus = JSON.parse(userMenus)
+
+  // console.info('menusmenus', menus)
+  // // console.info(router, userMenus)
+  // router.addRoutes(menus);
+  // store.commit("setMenus", menus);
+  //---
+  // store.commit(ADD_MENU, permission)
+  // router.addRoutes(store.state.menu.items)
+  //---
 }
 
 
 router.beforeEach((to, from, next) => {
   // debugger
+  if (userMenus && to.path === '/login') {
+    sessionStorage.clear()
+    store.commit(ADD_MENU, [])
+  }
 
   if (!token && to.fullPath !== '/login') {
     next({
