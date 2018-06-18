@@ -126,7 +126,9 @@ export default {
   //     this.getUserList();
   //   },
   computed: {
- 
+    // currentData() {
+    //   return this.userList / this.pageCurSize / (this.currentPage - 1);
+    // },
     userList() {
       return this.$parent.$store.getters.userList;
     },
@@ -146,18 +148,10 @@ export default {
 };
 </script>
 
-<style scoped>
-.el-main {
-  line-height: 0;
-}
+<style>
 .el-table th {
   text-align: center;
   line-height: 40px;
-}
-.block {
-  text-align: right;
-  matgin-top: 20px;
-  margin-bottom: 20px;
 }
 </style>
 

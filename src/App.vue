@@ -3,13 +3,13 @@
     <el-container>
       <!-- 页眉 -->
       <el-header v-if="logined">
-        <app-header></app-header>
+        <app-header :menus="menus"></app-header>
       </el-header>
       <!-- 主体 -->
       <el-container style="margin-top:2px;">
         <!-- 左侧菜单栏 -->
         <el-aside width="200px"  v-if="hasCHildren">
-          <sidebar :menus="menus"></sidebar> 
+          <sidebar :children="children"></sidebar> 
         </el-aside>
         <!-- 主体视图区 -->
         <el-container>
@@ -41,31 +41,31 @@ export default {
     return {};
   },
   computed: {
-    menus() {
+    children() {
       let path = this.$route.path;
-
       if (path == "/") {
         path = "/second";
       }
-
       path = path.match(/\/\w+/g)[0];
       this.$parent.$store.commit("getChildren", path);
-
-      this.$parent.$store.getters.children;
-
       return this.$parent.$store.getters.children;
+    },
+    menus() {
+      let path = this.$route.path;
+      if (path == "/") {
+        path = "/second";
+      }
+      path = path.match(/\/\w+/g)[0];
+      this.$parent.$store.commit("getChildren", path);
+      return this.$parent.$store.getters.getMenus;
     },
     hasCHildren() {
       let path = this.$route.path;
 
-      
       if (path == "/") {
         path = "/second";
       }
-
       path = path.match(/\/\w+/g)[0];
-
-      
       this.$parent.$store.commit("getChildren", path);
       return !!this.$parent.$store.getters.children.length;
     },
@@ -74,11 +74,7 @@ export default {
     }
   },
   mounted() {
-    // 
-    // this.$get("/index/left").then(data => {
-    //   
-    // });
-    // 
+    console.info(this.hasCHildren, this.menus, this.children);
   }
 };
 </script>

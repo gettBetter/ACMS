@@ -13,7 +13,7 @@ import {
   get
 } from '@/utils/axiosConf'
 
-import MenuUtils from '@/utils/MenuUtils'
+// import MenuUtils from '@/utils/MenuUtils'
 
 // import tool from "@/utils/tool";
 
@@ -26,39 +26,63 @@ Vue.prototype.$post = post;
 const token = sessionStorage.userToken
 const userMenus = sessionStorage.userMenus
 
+// const avilableMenus = [];
+
+// function getMenus(data, getData) {
+//   data.forEach(item => {
+//     getData.push(item.path)
+//     if (!item.chilren) {
+//       getMenus(item.chilren, getData)
+//     }
+//   })
+// }
+
+
 if (token && userMenus) {
 
-  // let routes = []
-  // MenuUtils(routes, userMenus)
-  // router.addRoutes(routes)
-  // const menus = JSON.parse(userMenus)
+  const menus = JSON.parse(userMenus)
 
-  // console.info('menusmenus', menus)
-  // // console.info(router, userMenus)
-  // router.addRoutes(menus);
-  // store.commit("setMenus", menus);
-  //---
-  // store.commit(ADD_MENU, permission)
-  // router.addRoutes(store.state.menu.items)
-  //---
+  store.commit("setMenus", menus);
+
+  // getMenus(menus, avilableMenus)
+  // console.info(avilableMenus)
+
 }
+// else {
+//   router.push({
+//     path: '/login'
+//   })
+// }
 
 
 router.beforeEach((to, from, next) => {
-  // debugger
-  if (userMenus && to.path === '/login') {
-    sessionStorage.clear()
-    store.commit(ADD_MENU, [])
-  }
+  next()
+  // if (to.path === '/login') {
+  // sessionStorage.clear()
+  // store.commit(ADD_MENU, [])
+  // }
+  // else 
 
-  if (!token && to.fullPath !== '/login') {
-    next({
-      name: 'login',
-      replace: true
-    })
-  } else {
-    next()
-  }
+  // if (!token && to.fullPath !== '/login') {
+  //   next({
+  //     name: 'login',
+  //     replace: true
+  //   })
+  // } else {
+  //   next()
+  // }
+  // else if (avilableMenus.indexOf(to.fullPath) == -1) {
+  //   next({
+  //     name: 'login',
+  //     replace: true
+  //   })
+  // } 
+  // else {
+  //   next()
+  // }
+
+  // if(to.)
+
 })
 /* eslint-disable no-new */
 
@@ -73,20 +97,8 @@ const app = new Vue({
   data: {
 
   },
-  beforeMount() {
-    // 
-
-
-
-  },
-  mounted() {
-
-  },
-  computed: {
-
-  },
-  destroyed() {
-    // 
-    debugger
-  }
+  beforeMount() {},
+  mounted() {},
+  computed: {},
+  destroyed() {}
 })

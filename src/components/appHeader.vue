@@ -6,19 +6,19 @@
           </el-col>
           <el-col :span="18" :offset="1">
             <el-menu 
-            :default-active="currentPath.match(/\/\w+/g)[0]"
+            :default-active="currentPath.match(/\/\w+/g) ? currentPath.match(/\/\w+/g)[0] : ''"
             mode="horizontal" 
             @select="handleSelect"
             background-color="#409EFF"
             router
             >
               <el-menu-item  
-              v-for="item in menu" 
-              :key="item.path" 
-              :index="item.path" 
+              v-for="menu in menus" 
+              :key="menu.path" 
+              :index="menu.path" 
               >
                 <!-- <i class="el-icon-document" ></i> -->
-                {{item.name}}       
+                {{menu.name}}       
             </el-menu-item>
             </el-menu>
           </el-col>
@@ -37,20 +37,22 @@ export default {
       logoUrl
     };
   },
+  props: ["menus"],
   methods: {
     handleSelect(key, keyPath) {
       //
     }
   },
   computed: {
-    menu() {
-      let nemu = this.$parent.$store.getters.menus;
-      if (sessionStorage.userToken && nemu.length > 0) {
-        return nemu;
-      } else {
-        return [];
-      }
-    },
+    // menu() {
+    //   let _menu = this.$parent.$store.getters.menus;
+    //   console.info(_menu)
+    //   if (sessionStorage.userToken && _menu.length > 0) {
+    //     return _menu;
+    //   } else {
+    //     return [];
+    //   }
+    // },
     currentPath() {
       return this.$route.path;
     },

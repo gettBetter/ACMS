@@ -36,14 +36,7 @@
 </template>
 
 <script>
-// import lazyLoading from "@/utils/lazyLoading";
-// console.info(aaa);
-sessionStorage.clear();
-
-import MenuUtils from "@/utils/MenuUtils";
-const routers = [];
-
-import router from "@/router";
+// sessionStorage.clear();
 export default {
   data() {
     return {
@@ -54,27 +47,28 @@ export default {
     };
   },
   methods: {
-    confMenus(data) {
-      return data.map(item => {
-        let menu = Object.assign({}, item);
-        return {
-          name: menu.name,
-          path: menu.path,
-          // component: () => import(item.component),
-          component: lazyLoading(menu.path, true),
-          children: menu.chilren.map(val => {
-            return {
-              name: val.name,
-              path: val.path,
-              // component: () => import(val.component)
-              // component: resolve => require([val.component], resolve)
-              component: lazyLoading(val.path)
-            };
-          })
-        };
-      });
-    },
+    // confMenus(data) {
+    //   return data.map(item => {
+    //     let menu = Object.assign({}, item);
+    //     return {
+    //       name: menu.name,
+    //       path: menu.path,
+    //       // component: () => import(item.component),
+    //       component: lazyLoading(menu.path, true),
+    //       children: menu.chilren.map(val => {
+    //         return {
+    //           name: val.name,
+    //           path: val.path,
+    //           // component: () => import(val.component)
+    //           // component: resolve => require([val.component], resolve)
+    //           component: lazyLoading(val.path)
+    //         };
+    //       })
+    //     };
+    //   });
+    // },
     onSubmit() {
+      const that = this;
       if (this.username && this.password) {
         this.$post("/login/Login_chk", {
           username: this.username,
@@ -94,35 +88,15 @@ export default {
                   token: data.token
                 })
               );
-
-              console.info("$router", this.$router);
               this.loginError = false;
               this.$get("/index/left").then(data => {
                 // const menu = this.confMenus(data.menu);
 
-                // debugger;
-                // router.addRoutes(menu);
-                // addRoutes
+                that.$parent.$store.commit("setMenus", data.menu);
+                // console.info(this.$parent.$store.getters.getMenus);
 
-                // this.$parent.$store.commit("setMenus", menu);
-
-                //---
-                // this.addMenu(data.menu);
-                // if (!this.isLoadRoutes) {
-                //   this.$router.addRoutes(this.menuitems);
-                //   this.loadRoutes();
-                // }
-                //---
-                // router.addRoutes(menu);
-                this.$parent.$store.commit("setMenus", data.menu);
-                MenuUtils(routers, data.menu);
-
-                this.$router.addRoutes(routers);
                 sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
-
-                // console.info("$router2", this.$router.options.routes);
-                router.push({ path: "*", replace: true });
-                // this.$router.push({ path: "/first" });
+                that.$router.push({ path: "/" });
               });
             },
             data => {

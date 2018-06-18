@@ -3,14 +3,14 @@
         <el-row class="tac">
             <el-col :span="24">
                 <el-menu
-                :default-active="currentPath.match(/\/\w+/g).length>1 ? currentPath : menus[0].path"
+                :default-active="currentPath.match(/\/\w+/g).length>1 ? currentPath : children[0].path"
                 background-color="white"
                 router
                 >
-                <el-menu-item :index="menu.path"  v-for="menu in menus" 
-                    :key="menu.path" 
-                    :class="menu.path"
-                    >{{menu.name}}</el-menu-item>
+                <el-menu-item :index="child.path"  v-for="child in children" 
+                    :key="child.path" 
+                    :class="child.path"
+                    >{{child.name}}</el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  props: ["menus"],
+  props: ["children"],
   mounted() {
     // console.info(this.$router.options);
   },

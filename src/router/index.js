@@ -7,67 +7,73 @@ Vue.use(Router);
 
 export default new Router({
   mode: "history",
-    scrollBehavior: () => ({
-      y: 0
-    }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: [{
       path: "/login",
       name: "login",
       component: () =>
-        import ("@/components/login.vue")
+        import ("@/components/login")
     },
     {
       path: "*",
       component: () =>
-        import ("@/components/notfound.vue")
+        import ("@/components/notfound")
     },
-    // {
-    //   path: "/",
-    //   name: "index",
-    //   component: () =>
-    //     import ("@/components/pages/second/secondchild.vue")
-    // }
-    // ...generateRoutesFromMenu(menuModule.state.items)
+    {
+      path: "/",
+      name: "index",
+      redirect: '/second'
+    },
+    {
+      path: "/first",
+      name: "first",
+      redirect: '/first/firstchild',
+      component: () =>
+        import ("@/components/first"),
+      children: [{
+          path: "/first/firstchild",
+          component: () =>
+            import ("@/components/pages/first/firstchild"),
+        },
+        {
+          path: "/first/secondchild",
+          component: () =>
+            import ("@/components/pages/first/secondchild"),
+        },
+        {
+          path: "/first/threechild",
+          component: () =>
+            import ("@/components/pages/first/threechild"),
+        }
+      ]
+    },
+    {
+      path: "/second",
+      name: "second",
+      redirect: '/second/firstchild',
+      component: () =>
+        import ("@/components/second"),
+      children: [{
+          path: "/second/firstchild",
+
+          component: () =>
+            import ("@/components/pages/second/firstchild")
+        },
+        {
+          path: "/second/secondchild",
+
+          component: () =>
+            import ("@/components/pages/second/secondchild")
+        },
+        {
+          path: "/second/threechild",
+
+          component: () =>
+            import ("@/components/pages/second/threechild")
+        }
+      ]
+    }
   ]
 });
-
-
-// export default new Router({
-//   mode: 'history', // Demo is living in GitHub.io, so required!  
-//   // linkActiveClass: 'is-active',
-//   scrollBehavior: () => ({
-//     y: 0
-//   }),
-//   routes: [{
-//       path: '/login',
-//       component: () =>
-//         import ("@/components/login.vue"),
-//       meta: {
-//         expanded: false,
-//         show: false
-//       },
-//       name: 'Login'
-//     },
-//     {
-//       path: '/',
-//       component: () =>
-//         import ("@/components/notfound.vue"),
-//       meta: {
-//         expanded: false,
-//         show: false
-//       }
-//     },
-//     ...generateRoutesFromMenu(menuModule.state.items)
-//   ]
-// })
-
-
-// function generateRoutesFromMenu(menu = [], routes = []) {
-//   for (let i = 0, l = menu.length; i < l; i++) {
-//     let item = menu[i]
-//     if (item.path) {
-//       routes.push(item)
-//     }
-//   }
-//   return routes
-// }
