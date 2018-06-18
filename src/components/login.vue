@@ -36,7 +36,7 @@
 </template>
 
 <script>
-// sessionStorage.clear();
+sessionStorage.clear();
 export default {
   data() {
     return {
@@ -73,8 +73,6 @@ export default {
         this.$post("/login/Login_chk", {
           username: this.username,
           password: this.password
-          // username: "admin",
-          // password: "admin"
         })
           .then(
             data => {
@@ -96,7 +94,9 @@ export default {
                 // console.info(this.$parent.$store.getters.getMenus);
 
                 sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
-                that.$router.push({ path: "/" });
+                setTimeout(() => {
+                  that.$router.push({ path: "/" });
+                }, 1000);
               });
             },
             data => {

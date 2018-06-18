@@ -11,21 +11,7 @@
 </template>
 
 <script>
-export default {
-  computed: {
-    // path() {
-    //   return this.$route.path;
-    // },
-    // menus() {
-    //   console.info(this.path);
-    //   this.$parent.$store.commit("getChildren", this.path);
-    //   return this.$parent.$store.getters.children;
-    // }
-  }
-  // mounted() {
-  // console.info(this.menus);
-  // }
-};
+export default {};
 </script>
 
 

@@ -112,6 +112,7 @@ body > .el-container {
   text-align: center;
   line-height: 160px;
   height: 100%;
+  padding: 10px;
 }
 .el-menu {
   width: 200px;
@@ -137,6 +138,13 @@ body > .el-container {
 user agent stylesheet div {
   display: block;
 }
+.el-table td {
+  padding: 4px 0;
+}
+.el-table th {
+  padding: 8px 0;
+}
+
 /* .el-header {
   background-color: #545c64;
 } */

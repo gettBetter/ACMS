@@ -10,5 +10,8 @@ export default {
   },
   userList(state) {
     return state.userList
+  },
+  depTree(state) {
+    return state.depTree
   }
 }
