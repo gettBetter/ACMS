@@ -59,7 +59,7 @@ router.beforeEach((to, from, next) => {
     store.commit("setMenus", menus);
     if (!accessMenu.includes(to.path)) {
       next({
-        path: '/login',
+        path: '*',
         replace: true
       })
     }
