@@ -13,10 +13,6 @@ import {
   get
 } from '@/utils/axiosConf'
 
-// import MenuUtils from '@/utils/MenuUtils'
-
-// import tool from "@/utils/tool";
-
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.$get = get;
@@ -26,7 +22,7 @@ Vue.prototype.$post = post;
 const token = sessionStorage.userToken
 const userMenus = sessionStorage.userMenus
 
-// const avilableMenus = [];
+const accessMenu = [];
 
 // function getMenus(data, getData) {
 //   data.forEach(item => {
@@ -37,52 +33,45 @@ const userMenus = sessionStorage.userMenus
 //   })
 // }
 
+if (token) {
+  const userMenus = JSON.parse(userMenus);
+  userMenus.forEach(item => {
+    accessMenu.push(item.path)
+    if (item.chilren) {
+      item.chilren.forEach(child => {
+        accessMenu.push(child.path)
+      })
+    }
+  })
 
-if (token && userMenus) {
-
-  const menus = JSON.parse(userMenus)
-
-  store.commit("setMenus", menus);
-
-  // getMenus(menus, avilableMenus)
-  // console.info(avilableMenus)
-
+  console.info(accessMenu)
 }
-// else {
-//   router.push({
-//     path: '/login'
-//   })
-// }
+
 
 
 router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    sessionStorage.clear()
+  }
+
+  if (to.path !== '/login' && token && userMenus) {
+    const menus = JSON.parse(userMenus)
+    store.commit("setMenus", menus);
+    if (!accessMenu.includes(to.path)) {
+      next({
+        path: '/login',
+        replace: true
+      })
+    }
+  }
+  if (!token && to.fullPath !== '/login') {
+    next({
+      path: '/login',
+      replace: true
+    })
+  }
+
   next()
-  // if (to.path === '/login') {
-  // sessionStorage.clear()
-  // store.commit(ADD_MENU, [])
-  // }
-  // else 
-
-  // if (!token && to.fullPath !== '/login') {
-  //   next({
-  //     name: 'login',
-  //     replace: true
-  //   })
-  // } else {
-  //   next()
-  // }
-  // else if (avilableMenus.indexOf(to.fullPath) == -1) {
-  //   next({
-  //     name: 'login',
-  //     replace: true
-  //   })
-  // } 
-  // else {
-  //   next()
-  // }
-
-  // if(to.)
-
 })
 /* eslint-disable no-new */
 

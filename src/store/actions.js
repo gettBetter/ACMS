@@ -34,5 +34,19 @@ export default {
         }
       },
       data => alert(data.data.msg))
+  },
+  getUserEditData(store, param) {
+    debugger
+    axios.get('/user/user_edit_data', param).then(data => {
+        if (data.data.success == true) {
+          // debugger
+          // console.info(data)
+          console.info('setUserEditData', data)
+          // store.commit('setUserEditData', data.data.deptree)
+        } else {
+          alert(data.data.msg)
+        }
+      },
+      data => alert(data.data.msg))
   }
 }

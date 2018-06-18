@@ -20,10 +20,6 @@
 <script>
 export default {
   props: ["children"],
-  mounted() {
-    // console.info(this.$router.options);
-  },
-  methods: {},
   computed: {
     currentPath() {
       return this.$route.path;

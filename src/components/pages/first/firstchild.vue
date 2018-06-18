@@ -228,7 +228,8 @@ export default {
       defaultProps: {
         children: "children",
         label: "label"
-      }
+      },
+      userEditData: {}
     };
   },
   methods: {
@@ -264,11 +265,19 @@ export default {
       };
 
       this.$post("/user/user_del", param)
-        .then(data => console.info(data), data => console.info(data))
+        .then(
+          data => {
+            if (data.sucess != false) {
+              this.$parent.$store.dispatch("getUserList");
+            }
+          },
+          data => console.info(data)
+        )
         .catch(err => alert(err));
     },
     popupEdit(recored) {
       // debugger;
+      this.getUserEditData({ id: recored.emp_indx });
       this.userInfo = recored;
       console.info(this.userInfo);
       this.dialogFormVisible = true;
@@ -297,6 +306,10 @@ export default {
       this.$parent.$store.dispatch("getDepTree");
       this.depData = this.$parent.$store.getters.depTree;
       console.info("this.depData", this.depData);
+    },
+    getUserEditData(param) {
+      this.$parent.$store.dispatch("getUserEditData", param);
+      this.userEditData = this.$parent.$store.getters.userEditData;
     }
   },
   //   prev-click

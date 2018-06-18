@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
       <!-- 页眉 -->
-      <el-header v-if="logined">
+      <el-header>
         <app-header :menus="menus"></app-header>
       </el-header>
       <!-- 主体 -->
@@ -18,10 +18,6 @@
               <router-view/> 
             </keep-alive>
           </el-main>
-          <!-- 页脚 -->
-          <!-- <el-footer>
-            <app-footer></app-footer>
-          </el-footer> -->
         </el-container>
       </el-container>
     </el-container>
@@ -51,13 +47,7 @@ export default {
       return this.$parent.$store.getters.children;
     },
     menus() {
-      let path = this.$route.path;
-      if (path == "/") {
-        path = "/second";
-      }
-      path = path.match(/\/\w+/g)[0];
-      this.$parent.$store.commit("getChildren", path);
-      return this.$parent.$store.getters.getMenus;
+      return this.$parent.$store.getters.menus;
     },
     hasCHildren() {
       let path = this.$route.path;
@@ -68,13 +58,10 @@ export default {
       path = path.match(/\/\w+/g)[0];
       this.$parent.$store.commit("getChildren", path);
       return !!this.$parent.$store.getters.children.length;
-    },
-    logined() {
-      return !!sessionStorage.userToken;
     }
   },
   mounted() {
-    console.info(this.hasCHildren, this.menus, this.children);
+    console.info("saaa");
   }
 };
 </script>
