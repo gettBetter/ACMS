@@ -1,8 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-//---
-// import menuModule from '@store/menu'
-//---
+
 Vue.use(Router);
 
 export default new Router({
@@ -25,54 +23,51 @@ export default new Router({
     {
       path: "/",
       name: "index",
-      redirect: '/second'
+      redirect: '/admin'
     },
     {
-      path: "/first",
-      name: "first",
-      redirect: '/first/firstchild',
+      path: "/personal",
+      name: "personal",
+      redirect: '/personal/setting',
       component: () =>
-        import ("@/components/first"),
+        import ("@/components/personal"),
       children: [{
-          path: "/first/firstchild",
-          component: () =>
-            import ("@/components/pages/first/firstchild"),
-        },
-        {
-          path: "/first/secondchild",
-          component: () =>
-            import ("@/components/pages/first/secondchild"),
-        },
-        {
-          path: "/first/threechild",
-          component: () =>
-            import ("@/components/pages/first/threechild"),
-        }
-      ]
+        path: "/personal/setting",
+        component: () =>
+          import ("@/components/pages/personal/setting"),
+      }]
     },
     {
-      path: "/second",
-      name: "second",
-      redirect: '/second/firstchild',
+      path: "/admin",
+      name: "admin",
+      redirect: '/admin/user',
       component: () =>
-        import ("@/components/second"),
+        import ("@/components/admin"),
       children: [{
-          path: "/second/firstchild",
-
+          path: "/admin/user",
           component: () =>
-            import ("@/components/pages/second/firstchild")
+            import ("@/components/pages/admin/user")
         },
         {
-          path: "/second/secondchild",
-
+          path: "/admin/dep",
           component: () =>
-            import ("@/components/pages/second/secondchild")
+            import ("@/components/pages/admin/dep")
         },
         {
-          path: "/second/threechild",
-
+          path: "/admin/role",
           component: () =>
-            import ("@/components/pages/second/threechild")
+            import ("@/components/pages/admin/role")
+        },
+        {
+          path: "/admin/menu",
+          component: () =>
+            import ("@/components/pages/admin/menu")
+        },
+        {
+          path: "/admin/userinfo",
+          name: "userinfo",
+          component: () =>
+            import ("@/components/panel/userinfo")
         }
       ]
     }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        /first/firstchild
+        menu
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        /first/thirdchild
+        /personal/setting
   </div>
 </template>
 

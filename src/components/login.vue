@@ -94,6 +94,7 @@ export default {
                 // console.info(this.$parent.$store.getters.getMenus);
 
                 sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
+
                 setTimeout(() => {
                   that.$router.push({ path: "/" });
                 }, 1000);

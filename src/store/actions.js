@@ -27,7 +27,7 @@ export default {
         if (data.data.success == true) {
           // debugger
           // console.info(data)
-          console.info('deptree', data.data.deptree)
+          console.info('setDepTree', data.data.deptree)
           store.commit('setDepTree', data.data.deptree)
         } else {
           alert(data.data.msg)
@@ -36,17 +36,20 @@ export default {
       data => alert(data.data.msg))
   },
   getUserEditData(store, param) {
-    debugger
-    axios.get('/user/user_edit_data', param).then(data => {
-        if (data.data.success == true) {
+    // debugger
+    console.info(param)
+    axios.get('/user/user_edit_data', {
+      params: param
+    }).then(data => {
+        if (data.success == true) {
           // debugger
           // console.info(data)
-          console.info('setUserEditData', data)
-          // store.commit('setUserEditData', data.data.deptree)
+          // console.info('setUserEditData', data)
+          store.commit('setUserEditData', data.data)
         } else {
-          alert(data.data.msg)
+          alert(data.msg)
         }
       },
-      data => alert(data.data.msg))
+      data => alert(data.msg))
   }
 }

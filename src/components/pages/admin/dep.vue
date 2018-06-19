@@ -1,6 +1,6 @@
 <template>
     <div>
-        /first/secondchild
+        dep
   </div>
 </template>
 

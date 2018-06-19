@@ -14,16 +14,16 @@ if (process.env.NODE_ENV == 'development') {
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    const token = sessionStorage.userToken;
-    config.data = qs.stringify(config.data);
     config.headers = {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
-
+    const token = sessionStorage.userToken;
     if (token) {
       const param = JSON.parse(token);
       config.url += '/token/' + param.token + '/username/' + param.username
     }
+    config.data = qs.stringify(config.data);
+    console.info('axios', config)
     return config;
   },
   error => {

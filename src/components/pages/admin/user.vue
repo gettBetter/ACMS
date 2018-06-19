@@ -94,17 +94,15 @@
       </div>
     </el-card>
 
-    <el-dialog title="编辑用户信息" :visible.sync="dialogFormVisible">
+    <!-- <el-dialog title="编辑用户信息" :visible.sync="dialogFormVisible">
       <el-form :model="userInfo">
 
         <el-form-item label="用户ID：" :label-width="formLabelWidth">
-          <!-- <el-input v-model="userInfo.emp_indx" auto-complete="off"></el-input> -->
           <span>{{userInfo.emp_indx}}</span>
         </el-form-item>
 
         <el-form-item label="用户姓名：" :label-width="formLabelWidth">
           <el-input v-model="userInfo.emp_name" auto-complete="off"></el-input>
-          <!-- <span>{{userInfo.emp_name}}</span> -->
         </el-form-item>
 
         <el-form-item label="所属部门：" :label-width="formLabelWidth">
@@ -144,18 +142,16 @@
             <el-option label="类别2" value="female"></el-option>
           </el-select>
         </el-form-item>
-
+        
         <el-form-item label="证件号码：" :label-width="formLabelWidth">
           <el-input v-model="userInfo.crt_code" auto-complete="off"></el-input>
-          <!-- <span>{{userInfo.crt_code}}</span> -->
         </el-form-item>
-
       </el-form>
+      
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
-
         <el-dialog
         width="40%"
         min-height="200px"
@@ -169,61 +165,23 @@
           @node-click="handleNodeClick">
         </el-tree>
       </el-dialog>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 
 <script>
-import editUser from "@/components/popup/editUser";
+// import editUser from "@/components/popup/editUser";
 export default {
   data() {
     return {
       currentPage: 1,
-      //   pageSize: [10, 20, 50],
       pageCurSize: 10,
-      //   userList: []
       dialogTableVisible: false,
       dialogFormVisible: false,
       userInfo: {},
-      formLabelWidth: "120px",
+      // formLabelWidth: "120px",
       innerVisible: false,
-      // depData: [
-      //   {
-      //     label: "一级 1",
-      //     children: [
-      //       {
-      //         label: "二级 1-1",
-      //         children: [
-      //           {
-      //             label: "三级 1-1-1"
-      //           }
-      //         ]
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     label: "一级 2",
-      //     children: [
-      //       {
-      //         label: "二级 2-1",
-      //         children: [
-      //           {
-      //             label: "三级 2-1-1"
-      //           }
-      //         ]
-      //       },
-      //       {
-      //         label: "二级 2-2",
-      //         children: [
-      //           {
-      //             label: "三级 2-2-1"
-      //           }
-      //         ]
-      //       }
-      //     ]
-      //   }
-      // ],
       depData: [],
       defaultProps: {
         children: "children",
@@ -236,27 +194,27 @@ export default {
     // handleSizeChange(val) {
     //   console.log(`每页 ${val} 条`);
     // },
-    openDepTree() {
-      // new Promise(this.getDepTree()).then(() => (this.innerVisible = true));
-      // this.getDepTree();
-      // this.innerVisible = true;
-      // new Promise(resolve => resolve(this.getDepTree())).then(() => {
-      // setTimeout(() => {
-      this.innerVisible = true;
-      // }, 1000);
-      // });
-    },
-    handleNodeClick(data) {
-      this.userInfo.dep_name = data.label;
-      this.innerVisible = false;
-    },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
+    // openDepTree() {
+    //   // new Promise(this.getDepTree()).then(() => (this.innerVisible = true));
+    //   // this.getDepTree();
+    //   // this.innerVisible = true;
+    //   // new Promise(resolve => resolve(this.getDepTree())).then(() => {
+    //   // setTimeout(() => {
+    //   this.innerVisible = true;
+    //   // }, 1000);
+    //   // });
+    // },
+    // handleNodeClick(data) {
+    //   this.userInfo.dep_name = data.label;
+    //   this.innerVisible = false;
+    // },
+    // handleClose(done) {
+    //   this.$confirm("确认关闭？")
+    //     .then(_ => {
+    //       done();
+    //     })
+    //     .catch(_ => {});
+    // },
 
     delUser(recored) {
       console.info(recored);
@@ -277,12 +235,17 @@ export default {
     },
     popupEdit(recored) {
       // debugger;
-      this.getUserEditData({ id: recored.emp_indx });
-      this.userInfo = recored;
-      console.info(this.userInfo);
-      this.dialogFormVisible = true;
-      this.getDepTree();
+      // this.getUserEditData({ id: recored.emp_indx });
+      // this.userInfo = recored;
+      // console.info(this.userInfo);
+      // this.dialogFormVisible = true;
+      // this.getDepTree();
       // console.info(recored);
+      console.info(this.$parent.$router);
+      this.$parent.$router.push({
+        name: "userinfo",
+        params: { userId: recored.emp_indx }
+      });
     },
 
     handleCurrentChange(val) {

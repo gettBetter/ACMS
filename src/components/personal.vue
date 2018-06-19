@@ -1,5 +1,5 @@
 <template>
-    <div class="adminpage">
+    <div class="">
         <el-container>
           <el-main>
               <keep-alive>
@@ -11,10 +11,7 @@
 </template>
 
 <script>
-export default {
-  computed: {},
-  mounted() {}
-};
+export default {};
 </script>
 
 
