@@ -23,7 +23,7 @@ axios.interceptors.request.use(
       config.url += '/token/' + param.token + '/username/' + param.username
     }
     config.data = qs.stringify(config.data);
-    console.info('axios', config)
+
     return config;
   },
   error => {

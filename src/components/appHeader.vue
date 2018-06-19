@@ -45,15 +45,6 @@ export default {
     }
   },
   computed: {
-    // menu() {
-    //   let _menu = this.$parent.$store.getters.menus;
-    //   console.info(_menu)
-    //   if (sessionStorage.userToken && _menu.length > 0) {
-    //     return _menu;
-    //   } else {
-    //     return [];
-    //   }
-    // },
     currentPath() {
       return this.$route.path;
     },

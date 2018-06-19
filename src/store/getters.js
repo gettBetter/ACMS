@@ -19,5 +19,8 @@ export default {
   },
   userEditData(state) {
     return state.userEditData
+  },
+  userInfo(state){
+    return state.userInfo
   }
 }

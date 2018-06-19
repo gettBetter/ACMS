@@ -88,13 +88,8 @@ export default {
               );
               this.loginError = false;
               this.$get("/index/left").then(data => {
-                // const menu = this.confMenus(data.menu);
-
                 that.$parent.$store.commit("setMenus", data.menu);
-                // console.info(this.$parent.$store.getters.getMenus);
-
                 sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
-
                 setTimeout(() => {
                   that.$router.push({ path: "/" });
                 }, 1000);
@@ -102,7 +97,6 @@ export default {
             },
             data => {
               this.loginError = true;
-              // console.info("133", data);
               alert(data.msg);
             }
           )
@@ -126,14 +120,9 @@ export default {
         password: this.password
       });
     }
-    // ...mapGetters([
-    //   "menuitems",
-    //   "isLoadRoutes"
-    //   // ...
-    // ])
   },
   mounted() {
-    // console.info(this.$parent.$http);
+
   }
 };
 </script>

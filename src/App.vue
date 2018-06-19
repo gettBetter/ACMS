@@ -59,9 +59,6 @@ export default {
       this.$parent.$store.commit("getChildren", path);
       return !!this.$parent.$store.getters.children.length;
     }
-  },
-  mounted() {
-    console.info("saaa");
   }
 };
 </script>

@@ -14,20 +14,6 @@ export default {
       state.children = []
     }
   },
-  getMenu(state) {
-    // debugger
-    // const indexSate = state.menus.filter(
-    //   v => v.path == path
-    // )[0]
-
-    // if (indexSate && 'chilren' in indexSate) {
-    //   state.children = indexSate.chilren
-    // } else {
-    //   state.children = []
-    // }
-
-    
-  },
   setMenus(state, menus) {
     state.menus = menus
   },
@@ -39,6 +25,7 @@ export default {
   },
   setUserEditData(state, userEditData) {
     state.userEditData = userEditData
+    state.userInfo = userEditData.user_info[0]
   },
   // delUserList(state, delID) {
   //   debugger;

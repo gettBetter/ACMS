@@ -64,7 +64,7 @@ export default new Router({
             import ("@/components/pages/admin/menu")
         },
         {
-          path: "/admin/userinfo",
+          path: "/admin/userinfo/:userId",
           name: "userinfo",
           component: () =>
             import ("@/components/panel/userinfo")
