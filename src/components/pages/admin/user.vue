@@ -4,10 +4,11 @@
       <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>用户列表</span>
-        <el-button style="float: right;padding: 5px 20px;margin-top: -5px;" type="button"
-        @click="addUser">添加</el-button>
       </div>
-          <el-table
+
+      <el-button type="primary" style="margin-bottom:10px;"  @click="addUser">添加</el-button>
+          
+      <el-table
           :data="pageData"
           border>
           <el-table-column
@@ -193,10 +194,13 @@ export default {
 </script>
 
 <style >
+.el-card__header {
+  text-align: left;
+}
 .el-main {
   line-height: 0;
 }
-.el-table th {
+.el-table th,.el-table td {
   text-align: center;
   line-height: 40px;
 }
@@ -216,6 +220,7 @@ export default {
 
 .box-card {
   width: 100%;
+  
 }
 
 .el-card__header span {

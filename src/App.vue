@@ -68,6 +68,8 @@ html,
 body {
   width: 100%;
   height: 100%;
+  padding: 0;
+  margin: 0;
 }
 .container {
   height: 100%;
@@ -90,13 +92,13 @@ body > .el-container {
 .el-aside {
   color: #333;
   line-height: 200px;
+  overflow: hidden;
   /* border-right: 1px solid #ccc; */
 }
 
 .el-main {
   background-color: #f3f3f3;
   color: #333;
-  text-align: center;
   line-height: 160px;
   height: 100%;
   padding: 10px;
@@ -126,10 +128,10 @@ user agent stylesheet div {
   display: block;
 }
 .el-table td {
-  padding: 4px 0;
+  padding: 0;
 }
 .el-table th {
-  padding: 8px 0;
+  padding: 0;
 }
 
 /* .el-header {
