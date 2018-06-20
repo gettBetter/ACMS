@@ -11,6 +11,19 @@
           :data="pageData"
           border>
           <el-table-column
+            fixed="left"
+            label="操作"
+            >
+            <template slot-scope="scope">
+              <el-button 
+              @click="popupEdit(scope.row)"
+              type="text" size=""><i class="el-icon-edit"></i></el-button>
+
+              <el-button type="text" @click="delUser(scope.row)"><i class="el-icon-delete"></i></el-button>
+            </template>
+          </el-table-column>
+
+          <el-table-column
             prop="emp_indx"
             label="用户ID"
             >
@@ -61,27 +74,13 @@
             >
           </el-table-column>
           
-          <el-table-column
-            fixed="right"
-            label="操作"
-            >
-            <template slot-scope="scope">
-              <el-button 
-              @click="popupEdit(scope.row)"
-              type="text" size=""><i class="el-icon-edit"></i></el-button>
-
-              <el-button type="text" @click="delUser(scope.row)"><i class="el-icon-delete"></i></el-button>
-            </template>
-          </el-table-column>
         </el-table>
           <div class="block">
           <!-- @size-change="handleSizeChange" -->
           <!-- :page-sizes="pageSize" -->
           <el-pagination
-            
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-          
             :page-size="10"
             layout="total, prev, pager, next, jumper"
             :total="total">
@@ -139,9 +138,6 @@ export default {
         .catch(err => alert(err));
     },
     popupEdit(recored) {
-      // this.$parent.$store.commit("setDepTree", []);
-      // this.$parent.$store.commit("setUserEditData", {});
-      console.info(this.$parent.$router);
       this.$parent.$router.push({
         name: "userinfo",
         params: { userId: recored.emp_indx }

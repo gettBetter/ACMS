@@ -20,16 +20,16 @@ export default {
   setUserList(state, userlist) {
     state.userList = userlist
   },
-  setDepTree(state, depTree) {
-    state.depTree = depTree
-  },
-  setUserEditData(state, userEditData) {
-    state.userEditData = userEditData
-    state.userInfo = Object.keys(userEditData).length > 0 ? userEditData.user_info[0] : {}
-  },
-  setDepList(state, depList) {
-    state.depList = depList
-  }
+  // setDepTree(state, depTree) {
+  //   state.depTree = depTree
+  // },
+  // setUserEditData(state, userEditData) {
+  //   state.userEditData = userEditData
+  //   state.userInfo = Object.keys(userEditData).length > 0 ? userEditData.user_info[0] : {}
+  // },
+  // setDepList(state, depList) {
+  //   state.depList = depList
+  // }
   // delUserList(state, delID) {
   //   debugger;
   //   state.userList = state.userLi.filter(item => id != item.emp_indx)

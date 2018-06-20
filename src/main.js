@@ -31,22 +31,41 @@ router.beforeEach((to, from, next) => {
   // if (to.path == '/unauthority') {
   //   next()
   // }
-  if (to.path !== '/login' && to.path == '/unauthority' && token && userMenus) {
+  if (to.path !== '/login' && to.path !== '/unauthority' && token && userMenus) {
     const menus = JSON.parse(userMenus)
     store.commit("setMenus", menus);
+    // debugger
+    let acceptMenus = ["/", "*", "/login", "/unauthority"];
 
-    const acceptMenu = ["/", "*", "/login", "/unauthority"];
-    menus.forEach(item => {
-      acceptMenu.push(item.path)
-      if (item.chilren) {
-        item.chilren.forEach(item =>
-          acceptMenu.push(item.path))
+    if (sessionStorage.acceptMenus) {
+      acceptMenus = JSON.parse(sessionStorage.acceptMenus)
+    } else {
+      menus.forEach(item => {
+        acceptMenus.push(item.path)
+        if (item.chilren) {
+          item.chilren.forEach(item =>
+            acceptMenus.push(item.path))
+        }
+      })
+      sessionStorage.setItem('acceptMenus', JSON.stringify(acceptMenus))
+    }
+
+    let accept = false;
+    if (acceptMenus.some(menu => to.path == menu)) {
+      accept = true
+    } else {
+      let pathChunk = to.path.match(/\/\w+/g);
+      let parentPath = `${pathChunk[0]}${pathChunk[1]}`
+
+      console.info('parentPath', parentPath)
+      if (acceptMenus.some(menu => parentPath == menu)) {
+        accept = true
       }
-    })
+    }
 
-    if (!acceptMenu.includes(to.path)) {
+    if (!accept) {
       next({
-        path: 'unauthority',
+        path: '/unauthority',
         replace: true
       })
     }

@@ -70,13 +70,13 @@ export default new Router({
             import ("@/components/pages/admin/menu")
         },
         {
-          path: "/admin/userinfo/:userId",
+          path: "/admin/user/userinfo/:userId",
           name: "userinfo",
           component: () =>
             import ("@/components/panel/userinfo")
         },
         {
-          path: "/admin/adduser/",
+          path: "/admin/user/adduser/",
           name: "adduser",
           component: () =>
             import ("@/components/panel/adduser")

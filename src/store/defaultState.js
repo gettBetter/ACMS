@@ -3,9 +3,9 @@ export default {
   children: [],
   menus: [],
   userList: [],
-  depTree: [],
-  userEditData: {},
-  userInfo: {},
-  depList:{},
+  // depTree: [],
+  // userEditData: {},
+  // userInfo: {},
+  // depList:{},
 
 }

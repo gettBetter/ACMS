@@ -256,9 +256,30 @@
           </el-row>
 
           <el-row>
-            <el-col :span="11" :offset="1"> 
+            <!-- <el-col :span="11" :offset="1"> 
               <el-form-item  :label-width="formLabelWidth" label="注册时间：" >
                 <span>{{userInfo.reg_time}}</span>
+              </el-form-item>
+            </el-col> -->
+
+            <!-- v-for="opt in userEditData.role_list"
+                    :label="opt.bas_name"  
+                    :value="opt.bas_indx"
+                    :key="opt.bas_indx" -->
+            <el-col :span="11" :offset="1">
+              <el-form-item  :label-width="formLabelWidth" label="是否管理员：">
+                <el-select v-model="userInfo.usr_isok ">
+                  <!-- <el-option v-for="opt in userEditData.role_list"
+                    :label="opt.bas_name"  
+                    :value="opt.bas_indx"
+                    :key="opt.bas_indx">
+                  </el-option> -->
+                   <!-- <el-select> -->
+                  <el-option value="1" label="是" >
+                  </el-option>
+                  <el-option value="0" label="否" > 
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="11" :offset="1">
@@ -268,16 +289,29 @@
             </el-col>
           </el-row>  
 
+          <el-row>
+            <el-col :span="11" :offset="1"> 
+              <el-form-item  :label-width="formLabelWidth" label="注册时间：" >
+                <span>{{userInfo.reg_time}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>    
         </el-col>
+
+        
 
         <el-col :span="5">  
           <div>照片在这里</div>
         </el-col>
       </el-row>
     </el-form>
-    <el-row class="text-right">
-       <el-button type="primary" @click="submit">确定</el-button>
-       <el-button>取消</el-button>
+
+    <el-row >
+      <!-- <el-col :span="4" :offset="20">  -->
+        <el-button class="submit-btn" type="primary" @click="submit" width="90px">确定</el-button>
+        <el-button class="cancel-btn" width="90px"
+        @click="cancel">取消</el-button>
+       <!-- </el-col>  -->
     </el-row>
 
 
@@ -312,7 +346,9 @@ export default {
       treeVisible: false,
       userEditData: {},
       depTreeData: [],
-      userInfo: {}
+      userInfo: {},
+      originalData: {},
+      userId: ""
     };
   },
   methods: {
@@ -321,7 +357,6 @@ export default {
         this.$get("/user/user_edit_data", param).then(
           data => {
             if (data.success == true) {
-              // this.userEditData = data.data;
               resolve(data);
             } else {
               alert(data.msg);
@@ -338,8 +373,6 @@ export default {
           data => {
             if (data.success == true) {
               resolve(data);
-              // this.depTreeData = data.data.deptree;
-              // console.info("deptree", data.data.deptree);
             } else {
               alert(data.msg);
             }
@@ -349,11 +382,8 @@ export default {
       });
     },
     handleNodeClick(node) {
-      // handleNodeClick(data) {
-      //   userInfo.dep_index = node.dep_rank;
-      // userInfo.dep_name = node.dep_name;
+      console.info(node);
       this.treeVisible = false;
-      // },
     },
     getDiffer(newData, oldData) {
       const differ = {};
@@ -364,58 +394,45 @@ export default {
       }
       return differ;
     },
-    getDepCn(depData, depIndex) {
-      let depCN = "";
-      let getCn = function() {
-        depData.forEach(item => {
-          if (item.dep_rank == depIndex) {
-            depCN = item.name;
-          } else {
-            if (item.children) {
-              getCn(item.children, depIndex);
-            }
-          }
-        });
-
-        return depCN;
-      };
-    },
     openDepTree() {
+      this.getDepTree().then(data => {
+        this.depTreeData = data.deptree;
+      });
       this.treeVisible = true;
     },
     submit() {
-      if (JSON.stringify(this.userInfo) != JSON.stringify(this.copyData)) {
-        const params = this.getDiffer(this.userInfo, this.copyData);
-        debugger;
-        params.id = this.userInfo.emp_indx;
-        this.$post("/user/user_edit_save", params).then(
-          data => console.info(data),
-          data => console.info(data)
-        );
+      if (JSON.stringify(this.userInfo) != JSON.stringify(this.originalData)) {
+        const params = this.getDiffer(this.userInfo, this.originalData);
+        params.emp_indx = this.userInfo.emp_indx;
+        this.$post("/user/user_edit_save", params)
+          .then(data => {
+            this.$router.go(-1);
+          })
+          .catch(err => alert(err));
       } else {
         alert("数据未修改");
       }
+    },
+    cancel() {
+      this.$router.go(-1);
     }
   },
-  computed: {
-    userId() {
-      console.info("111");
-      return this.$route.params.userId;
-    }
-  },
-  beforeMount() {},
-  mounted() {
+  computed: {},
+  activated() {
+    this.userId = this.$route.params.userId;
+    this.userInfo = {};
+    this.userEditData = [];
     console.info(this.userId);
     this.getUserEditData({ emp_indx: this.userId }).then(data => {
-      console.info("edit", data);
       this.userInfo = data.user_info[0];
       this.userEditData = data;
+      this.originalData = JSON.parse(JSON.stringify(data.user_info[0]));
     });
   }
 };
 </script>
 
-<style>
+<style scoped>
 .el-card__header span {
   line-height: 27px;
 }
@@ -444,6 +461,10 @@ export default {
 }
 .el-form-item__label {
   text-align: left;
+}
+.submit-btn,
+.cancle-btn {
+  width: 160px;
 }
 </style>
 
