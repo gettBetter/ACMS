@@ -279,6 +279,23 @@
        <el-button type="primary" @click="submit">确定</el-button>
        <el-button>取消</el-button>
     </el-row>
+
+
+    <el-dialog
+        width="40%"
+        min-height="200px"
+        title="选择部门"
+        :visible.sync="treeVisible"
+        append-to-body>
+        <el-tree
+          :data="depTreeData"
+          :props="treeProp"
+          highlight-current
+          accordion
+          @node-click="handleNodeClick">
+        </el-tree>
+      </el-dialog>
+
     </el-card>
   </div>
 </template>
@@ -286,16 +303,23 @@
 export default {
   data() {
     return {
+      treeProp: {
+        label: "name",
+        children: "children"
+      },
       depCn: "",
-      formLabelWidth: "120px"
-      // copy:
-      // treeDataDone: false,
-      // userDataDone: false,
-      // treeData: null,
-      // userData: null
+      formLabelWidth: "120px",
+      treeVisible: false
     };
   },
   methods: {
+    handleNodeClick(node) {
+      // handleNodeClick(data) {
+      //   userInfo.dep_index = node.dep_rank;
+      // userInfo.dep_name = node.dep_name;
+      this.treeVisible = false;
+      // },
+    },
     getDiffer(newData, oldData) {
       const differ = {};
       for (let p in newData) {
@@ -305,12 +329,31 @@ export default {
       }
       return differ;
     },
-    openDepTree() {},
+    getDepCn(depData, depIndex) {
+      let depCN = "";
+      let getCn = function() {
+        depData.forEach(item => {
+          if (item.dep_rank == depIndex) {
+            depCN = item.name;
+          } else {
+            if (item.children) {
+              getCn(item.children, depIndex);
+            }
+          }
+        });
+
+        return depCN;
+      };
+    },
+    openDepTree() {
+      this.treeVisible = true;
+    },
     submit() {
       if (JSON.stringify(this.userInfo) != JSON.stringify(this.copyData)) {
         const params = this.getDiffer(this.userInfo, this.copyData);
+        // const params = this.userInfo;
         console.info(params);
-        this.$post("/user/user_edit_data", params).then(
+        this.$post("/user/user_edit_save", params).then(
           data => console.info(data),
           data => console.info(data)
         );
@@ -347,11 +390,25 @@ export default {
     // }
   },
   beforeMount() {
-    this.$parent.$store.dispatch("getDepTree");
-    this.$parent.$store.dispatch("getUserEditData", { id: this.userId });
+    // this.$parent.$store.dispatch("getDepTree");
+    // this.$parent.$store.dispatch("getUserEditData", { id: this.userId });
   },
   mounted() {
-    // console.info("222");
+    Promise.resolve([
+      Promise.resolve(this.$parent.$store.dispatch("getDepTree")),
+      Promise.resolve(
+        this.$parent.$store.dispatch("getUserEditData", { id: this.userId })
+      )
+    ]).then(data => {
+      // debugger;
+      // this.depCn = this.getDepCn(
+      //   this.$store.getters.depTree,
+      //   this.$store.getters.userInfo.dep_indx
+      // );
+      // console.info("222", this.depCn);
+      // console.info(result, "rrr");
+      // console.info(this.$store.getters.depTree, this.$store.getters.userInfo);
+    });
   },
   watch: {
     // dep: {
@@ -410,7 +467,7 @@ export default {
 }
 .el-dialog {
   min-height: 280px;
-  max-height: 680px;
+  /* max-height: 680px; */
 }
 .el-main {
   line-height: 0;

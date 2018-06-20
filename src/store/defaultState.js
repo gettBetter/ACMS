@@ -5,6 +5,7 @@ export default {
   userList: [],
   depTree: [],
   userEditData: {},
-  userInfo: {}
+  userInfo: {},
+  depList:{},
 
 }

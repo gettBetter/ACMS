@@ -18,38 +18,10 @@ Vue.config.productionTip = false
 Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 
-
-const token = sessionStorage.userToken
-const userMenus = sessionStorage.userMenus
-
-
-if (token && userMenus) {
-  const menus = JSON.parse(userMenus)
-  store.commit("setMenus", menus);
-}
-// const accessMenu = [];
-
-// if (token) {
-//   const userMenus = JSON.parse(userMenus);
-//   userMenus.forEach(item => {
-//     accessMenu.push(item.path)
-//     if (item.chilren) {
-//       item.chilren.forEach(child => {
-//         accessMenu.push(child.path)
-//       })
-//     }
-//   })
-
-//   console.info(accessMenu)
-// }
-
-
-
 router.beforeEach((to, from, next) => {
-
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
-  // debugger
+
   if (to.path === '/login') {
     sessionStorage.clear()
     store.commit('setMenus', [])
@@ -58,14 +30,24 @@ router.beforeEach((to, from, next) => {
   if (to.path !== '/login' && token && userMenus) {
     const menus = JSON.parse(userMenus)
     store.commit("setMenus", menus);
-    // if (!accessMenu.includes(to.path)) {
-    //   next({
-    //     path: '*',
-    //     replace: true
-    //   })
-    // }
+
+    const acceptMenu = ["/", "*", "/login", "/unauthority"];
+    menus.forEach(item => {
+      acceptMenu.push(item.path)
+      if (item.chilren) {
+        item.chilren.forEach(item =>
+          acceptMenu.push(item.path))
+      }
+    })
+
+    if (!acceptMenu.includes(to.path)) {
+      next({
+        path: 'unauthority',
+        replace: true
+      })
+    }
   }
-  // debugger
+
   if (!token && to.fullPath !== '/login') {
     next({
       path: '/login',
@@ -84,12 +66,5 @@ const app = new Vue({
   components: {
     App
   },
-  template: '<App/>',
-  data: {
-
-  },
-  beforeMount() {},
-  mounted() {},
-  computed: {},
-  destroyed() {}
+  template: '<App/>'
 })

@@ -21,6 +21,12 @@ export default new Router({
         import ("@/components/notfound")
     },
     {
+      path: "/unauthority",
+      name: "unauthority",
+      component: () =>
+        import ("@/components/Unauthorized")
+    },
+    {
       path: "/",
       name: "index",
       redirect: '/admin'
