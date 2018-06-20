@@ -6,7 +6,20 @@
 
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+  methods: {},
+  computed: {
+      depList(){
+          return this.$store.getters.depList;
+      }
+  },
+  mounted() {
+    this.$store.dispatch("getDepList");
+  }
+};
 </script>
 
 <style>

@@ -139,6 +139,8 @@ export default {
         .catch(err => alert(err));
     },
     popupEdit(recored) {
+      // this.$parent.$store.commit("setDepTree", []);
+      // this.$parent.$store.commit("setUserEditData", {});
       console.info(this.$parent.$router);
       this.$parent.$router.push({
         name: "userinfo",
@@ -165,11 +167,11 @@ export default {
       this.$parent.$store.dispatch("getDepTree");
       this.depData = this.$parent.$store.getters.depTree;
       console.info("this.depData", this.depData);
-    },
-    getUserEditData(param) {
-      this.$parent.$store.dispatch("getUserEditData", param);
-      this.userEditData = this.$parent.$store.getters.userEditData;
     }
+    // getUserEditData(param) {
+    //   this.$parent.$store.dispatch("getUserEditData", param);
+    //   this.userEditData = this.$parent.$store.getters.userEditData;
+    // }
   },
   //   prev-click
   //   next-click

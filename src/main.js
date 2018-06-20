@@ -22,12 +22,16 @@ router.beforeEach((to, from, next) => {
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
 
+  // debugger
   if (to.path === '/login') {
     sessionStorage.clear()
     store.commit('setMenus', [])
   }
 
-  if (to.path !== '/login' && token && userMenus) {
+  // if (to.path == '/unauthority') {
+  //   next()
+  // }
+  if (to.path !== '/login' && to.path == '/unauthority' && token && userMenus) {
     const menus = JSON.parse(userMenus)
     store.commit("setMenus", menus);
 

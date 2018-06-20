@@ -25,8 +25,11 @@ export default {
   },
   setUserEditData(state, userEditData) {
     state.userEditData = userEditData
-    state.userInfo = userEditData.user_info[0]
+    state.userInfo = Object.keys(userEditData).length > 0 ? userEditData.user_info[0] : {}
   },
+  setDepList(state, depList) {
+    state.depList = depList
+  }
   // delUserList(state, delID) {
   //   debugger;
   //   state.userList = state.userLi.filter(item => id != item.emp_indx)

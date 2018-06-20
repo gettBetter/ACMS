@@ -309,10 +309,45 @@ export default {
       },
       depCn: "",
       formLabelWidth: "120px",
-      treeVisible: false
+      treeVisible: false,
+      userEditData: {},
+      depTreeData: [],
+      userInfo: {}
     };
   },
   methods: {
+    getUserEditData(param) {
+      return new Promise(resolve => {
+        this.$get("/user/user_edit_data", param).then(
+          data => {
+            if (data.success == true) {
+              // this.userEditData = data.data;
+              resolve(data);
+            } else {
+              alert(data.msg);
+            }
+          },
+          data => alert("System Error")
+        );
+      });
+    },
+
+    getDepTree() {
+      return new Promise(resolve => {
+        this.$get("/index/dept_tree").then(
+          data => {
+            if (data.success == true) {
+              resolve(data);
+              // this.depTreeData = data.data.deptree;
+              // console.info("deptree", data.data.deptree);
+            } else {
+              alert(data.msg);
+            }
+          },
+          data => alert("System Error")
+        );
+      });
+    },
     handleNodeClick(node) {
       // handleNodeClick(data) {
       //   userInfo.dep_index = node.dep_rank;
@@ -351,8 +386,8 @@ export default {
     submit() {
       if (JSON.stringify(this.userInfo) != JSON.stringify(this.copyData)) {
         const params = this.getDiffer(this.userInfo, this.copyData);
-        // const params = this.userInfo;
-        console.info(params);
+        debugger;
+        params.id = this.userInfo.emp_indx;
         this.$post("/user/user_edit_save", params).then(
           data => console.info(data),
           data => console.info(data)
@@ -361,91 +396,21 @@ export default {
         alert("数据未修改");
       }
     }
-    // getDepCn(depData, depNum) {}
   },
   computed: {
     userId() {
       console.info("111");
       return this.$route.params.userId;
-    },
-    userEditData() {
-      return this.$store.getters.userEditData;
-    },
-    depTreeData() {
-      return this.$store.getters.depTree;
-    },
-    userInfo() {
-      return JSON.parse(JSON.stringify(this.$store.getters.userInfo));
-    },
-    copyData() {
-      return JSON.parse(JSON.stringify(this.$store.getters.userInfo));
     }
-
-    // dep() {
-    //   return {
-    //     depData: this.$store.getters.depTree,
-    //     userData: this.$store.getters.userInfo
-    //   };
-    // return
-    // }
   },
-  beforeMount() {
-    // this.$parent.$store.dispatch("getDepTree");
-    // this.$parent.$store.dispatch("getUserEditData", { id: this.userId });
-  },
+  beforeMount() {},
   mounted() {
-    Promise.resolve([
-      Promise.resolve(this.$parent.$store.dispatch("getDepTree")),
-      Promise.resolve(
-        this.$parent.$store.dispatch("getUserEditData", { id: this.userId })
-      )
-    ]).then(data => {
-      // debugger;
-      // this.depCn = this.getDepCn(
-      //   this.$store.getters.depTree,
-      //   this.$store.getters.userInfo.dep_indx
-      // );
-      // console.info("222", this.depCn);
-      // console.info(result, "rrr");
-      // console.info(this.$store.getters.depTree, this.$store.getters.userInfo);
+    console.info(this.userId);
+    this.getUserEditData({ emp_indx: this.userId }).then(data => {
+      console.info("edit", data);
+      this.userInfo = data.user_info[0];
+      this.userEditData = data;
     });
-  },
-  watch: {
-    // dep: {
-    //   handler: function(oldVal, newVal) {
-    //     const oldValUserKey = Object.keys(oldVal.userData);
-    //     const newValUserKey = Object.keys(newVal.userData);
-    //     console.info(oldValUserKey.length, newValUserKey.length);
-    //     if (oldVal.depData.length > 0 || newVal.depData.length > 0) {
-    //       this.treeDataDone = true;
-    //       console.info("1");
-    //     }
-    //     if (oldValUserKey.lenght > 0 || newValUserKey.lenght > 0) {
-    //       console.info("2");
-    //       this.userDataDone = true;
-    //     }
-    //     // debugger;
-    //     if (this.treeDataDone && this.userDataDone) {
-    //       debugger;
-    //       const treeData = this.depTreeData;
-    //       const depIndex = this.userData.dep_indx;
-    //       // const CN = this.depCn;
-    //       let getDepCn = function(treeData, depIndex, CN) {
-    //         treeData.forEach(item => {
-    //           if (item.dep_rank == depIndex) {
-    //             CN = item.name;
-    //           } else if (item.children) {
-    //             getDepCn(item.children, depNum);
-    //           }
-    //         });
-    //       };
-    //       debugger;
-    //       getDepCn(treeData, depIndex, this.depCn);
-    //       console.info("CN", CN);
-    //     }
-    //   },
-    //   deep: true
-    // }
   }
 };
 </script>

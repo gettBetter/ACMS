@@ -22,5 +22,8 @@ export default {
   },
   userInfo(state){
     return state.userInfo
+  },
+  depList(state){
+    return state.depList
   }
 }

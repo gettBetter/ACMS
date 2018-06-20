@@ -35,5 +35,17 @@ export default {
         }
       },
       data => alert('System Error'))
+  },
+  getDepList(store, param) {
+
+    axios.get('/dept/dept_list').then(data => {
+        if (data.data.success == true) {
+          console.info('getDepList', data.data.listdept)
+          store.commit('setDepList', data.data.listdept)
+        } else {
+          alert(data.data.msg)
+        }
+      },
+      data => alert('System Error'))
   }
 }

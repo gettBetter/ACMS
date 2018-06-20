@@ -74,6 +74,12 @@ export default new Router({
           name: "userinfo",
           component: () =>
             import ("@/components/panel/userinfo")
+        },
+        {
+          path: "/admin/adduser/",
+          name: "adduser",
+          component: () =>
+            import ("@/components/panel/adduser")
         }
       ]
     }
