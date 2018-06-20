@@ -99,7 +99,6 @@ body > .el-container {
 .el-main {
   background-color: #f3f3f3;
   color: #333;
-  text-align: center;
   line-height: 160px;
   height: 100%;
   padding: 10px;
@@ -129,10 +128,10 @@ user agent stylesheet div {
   display: block;
 }
 .el-table td {
-  padding: 4px 0;
+  padding: 0;
 }
 .el-table th {
-  padding: 8px 0;
+  padding: 0;
 }
 
 /* .el-header {
