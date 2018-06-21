@@ -6,89 +6,7 @@
         <span>用户列表</span>
       </div>
 
-<<<<<<< HEAD
-      <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;"  @click="addUser">添加</el-button>
-          
-      <el-table
-          :data="pageData"
-          border>
-          <el-table-column
-            fixed="left"
-            label="操作"
-            >
-            <template slot-scope="scope">
-              <el-button 
-              @click="popupEdit(scope.row)"
-              type="text" size=""><i class="el-icon-edit"></i></el-button>
-
-              <el-button type="text" @click="delUser(scope.row)"><i class="el-icon-delete"></i></el-button>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            prop="emp_indx"
-            label="用户ID"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="emp_code"
-            label="用户编号"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="emp_name"
-            label="用户姓名"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="dep_name"
-            label="所属部门"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="role_name"
-            label="WEB角色名称"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="gbas_name"
-            label="性别"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="reg_time"
-            label="注册时间 "
-            >
-          </el-table-column>
-          <el-table-column
-            prop="pbas_name"
-            label="人员状态"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="kbas_name"
-            label="人员类别"
-            >
-          </el-table-column>
-          <el-table-column
-            prop="crt_code"
-            label="证件号码"
-            >
-          </el-table-column>
-          
-        </el-table>
-          <div class="block">
-          <!-- @size-change="handleSizeChange" -->
-          <!-- :page-sizes="pageSize" -->
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-size="10"
-            layout="total, prev, pager, next, jumper"
-            :total="total">
-          </el-pagination>
-=======
-      <el-button type="primary" style="margin-bottom:10px;" @click="addUser">添加</el-button>
+      <el-button type="primary"  icon="el-icon-plus" style="margin-bottom:10px;" @click="addUser">添加</el-button>
 
       <el-table :data="pageData" border>
         <el-table-column fixed="left" label="操作">
@@ -130,7 +48,6 @@
         <!-- :page-sizes="pageSize" -->
         <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
         </el-pagination>
->>>>>>> 4e03838a22c53d6b187b0085da25b848bff4e0f3
         <!-- </div> -->
       </div>
     </el-card>
