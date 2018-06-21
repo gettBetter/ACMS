@@ -17,9 +17,6 @@ export default {
   setMenus(state, menus) {
     state.menus = menus
   },
-  setUserList(state, userlist) {
-    state.userList = userlist
-  },
   // setDepTree(state, depTree) {
   //   state.depTree = depTree
   // },
