@@ -4,7 +4,6 @@
             <el-col :span="24">
                 <el-menu
                 :default-active="currentPath.match(/\/\w+/g).length>1 ? currentPath : children[0].path"
-                background-color="white"
                 router
                 >
                 <el-menu-item :index="child.path"  v-for="child in children" 
@@ -28,5 +27,5 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 </style>
