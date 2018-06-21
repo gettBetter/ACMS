@@ -121,7 +121,7 @@ export default {
      return this.allListData.length;
     },
     chunkList() {
-     return _.chunk(this.allListData, parseInt(this.pageCurSize))
+     return _.chunk(this.allListData, this.pageCurSize)
     },
     pageData() {
       return this.chunkList[this.currentPage-1];
