@@ -273,8 +273,9 @@ export default {
   data() {
     return {
       treeProp: {
-        label: "name",
+        label: "dep_name",
         children: "children"
+        // id: dep_indx
       },
       depCn: "",
       formLabelWidth: "120px",
@@ -317,8 +318,8 @@ export default {
     },
     handleNodeClick(node) {
       console.info(node);
-      this.userInfo.dep_name = node.name;
-      this.userInfo.dep_index = node.id;
+      this.userInfo.dep_name = node.dep_name;
+      this.userInfo.dep_index = node.dep_indx;
       console.info(this.userInfo);
       this.treeVisible = false;
     },

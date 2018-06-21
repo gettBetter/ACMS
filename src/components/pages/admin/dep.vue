@@ -37,10 +37,40 @@
 
     </el-card>
     <!-- 修改部门 -->
-    <el-dialog width="40%" min-height="200px" title="选择部门" :visible.sync="treeVisible" append-to-body>
-      <el-form :model="userInfo">
+    <el-dialog width="40%" min-height="200px" title="选择部门" :visible.sync="editDepDialog" append-to-body :before-close="dialogClose">
+      <el-form :model="editDepData">
+
+        <el-form-item :label-width="formLabelWidth" label="部门名称：">
+          <span>{{editDepData.dep_name}}</span>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="上级部门：">
+          <!-- <el-input v-model="editDepData.emp_name"></el-input> -->
+          <el-row>
+            <el-col :span="17">
+              <el-input v-model="editDepData.dep_indx" v-if="false"></el-input>
+              <span>{{editDepData.par_indx}}
+              </span>
+            </el-col>
+            <el-col :span="6" ::offset="1">
+              <el-button type="text" @click="openDepTree">选择部门</el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="部门层级：">
+          <el-input v-model="editDepData.dep_rank"></el-input>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="部门前缀：">
+          <el-input v-model="editDepData.dep_pref"></el-input>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="部门领导：">
+          <el-input v-model="editDepData.dep_prnc"></el-input>
+        </el-form-item>
 
       </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="editDepDialog = false">确 定</el-button>
+        <el-button @click="editDepDialog = false">取 消</el-button>
+      </span>
     </el-dialog>
 
   </div>
@@ -51,6 +81,7 @@
 export default {
   data() {
     return {
+      formLabelWidth: "120px",
       depList: [],
       depData: {},
       treeProp: {
@@ -63,32 +94,58 @@ export default {
       },
       currentPage: 1,
       pageCurSize: 10,
-      treeVisible: false
+      editDepDialog: false,
+      treeVisible: false,
+      editDepData: {}
     };
   },
   methods: {
     addDep() {},
     delDep(record) {},
     editDep(record) {
-      this.getEditDepData({ dep_indx: record.dep_indx }).then(date => {
+      this.getEditDepData({ dep_indx: record.dep_indx }).then(data => {
         console.info(data);
+        this.editDepData = data[0];
       });
+
+      this.editDepDialog = true;
       // .catch(err => {
       //   if (err.success !== true) {
       //     this.$parent.$router("/login");
       //   }
       // });
     },
+    handleNodeClick(node) {
+      // console.info(node);
+      this.editDepData.dep_name = node.dep_name;
+      this.editDepData.dep_index = node.dep_indx;
+      // console.info(this.userInfo);
+      this.treeVisible = false;
+    },
+    getDepTree() {
+      return new Promise(resolve => {
+        this.$get("/index/dept_tree").then(
+          data => {
+            if (data.success == true) {
+              resolve(data);
+            } else {
+              alert(data.msg);
+            }
+          },
+          data => alert("System Error")
+        );
+      });
+    },
+    openDepTree() {
+      this.getDepTree().then(data => {
+        this.depTreeData = data.deptree;
+      });
+      this.treeVisible = true;
+    },
+    dialogClose(done) {},
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
-    },
-    chunkArray(arr, count) {
-      let retArr = [];
-      for (let i = 0; i < arr.length; i = i + count) {
-        retArr.push(arr.slice(i, i + count));
-      }
-      return retArr;
     },
     getDepList() {
       return this.$get("/dept/dept_list");
@@ -102,7 +159,7 @@ export default {
       return this.depList.length;
     },
     chunkList() {
-      return this.chunkArray(this.depList, this.pageCurSize);
+      return this.$_.chunk(this.depList, this.pageCurSize);
     },
     pageData() {
       return this.chunkList[this.currentPage - 1];
