@@ -8,7 +8,7 @@
 
       <el-button type="primary"  icon="el-icon-plus" style="margin-bottom:10px;" @click="addUser">添加</el-button>
 
-      <el-table :data="pageData" border>
+      <el-table :data="pageData"  border>
         <el-table-column fixed="left" label="操作">
           <template slot-scope="scope">
             <el-button @click="popupEdit(scope.row)" type="text" size="">
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { Loading } from 'element-ui';
 export default {
   data() {
     return {
@@ -64,20 +66,33 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       userInfo: {},
-      // formLabelWidth: "120px",
       innerVisible: false,
       depData: [],
       defaultProps: {
         children: "children",
         label: "label"
       },
-      userEditData: {}
+      userEditData: {},
+      allListData:[],
     };
   },
   methods: {
-    // handleSizeChange(val) {
-    //   console.log(`每页 ${val} 条`);
-    // },
+    getUserList() {
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: 'rgba(0, 0, 0, 0.5)',
+        target:document.querySelector('.el-main')
+      });
+      axios.get('/user/user_list').then(data => {
+          if (data.data.success === true) {
+            loadingInstance.close();
+            this.allListData = data.data.listuser
+          } else {
+            alert(data.data.msg)
+          }
+        },
+        data => alert('System Error'))
+    },
     addUser() {
       this.$get("/user/user_add_data")
         .then(data => console.info(data))
@@ -119,38 +134,25 @@ export default {
       console.info(retArr);
       return retArr;
     },
-    getUserList() {
-      this.userList = this.$parent.$store.getters.userList;
-    },
     getDepTree() {
       this.$parent.$store.dispatch("getDepTree");
       this.depData = this.$parent.$store.getters.depTree;
       console.info("this.depData", this.depData);
     }
-    // getUserEditData(param) {
-    //   this.$parent.$store.dispatch("getUserEditData", param);
-    //   this.userEditData = this.$parent.$store.getters.userEditData;
-    // }
   },
-  //   prev-click
-  //   next-click
-
   computed: {
-    userList() {
-      return this.$parent.$store.getters.userList;
-    },
     total() {
-      return this.userList.length;
+     return this.allListData.length;
     },
     chunkList() {
-      return this.chunkArray(this.userList, this.pageCurSize);
+      return this.chunkArray(this.allListData, this.pageCurSize);
     },
     pageData() {
       return this.chunkList[this.currentPage - 1];
     }
   },
   mounted() {
-    this.$parent.$store.dispatch("getUserList");
+    this.getUserList()
   }
 };
 </script>

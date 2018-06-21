@@ -2,16 +2,6 @@ import axios from 'axios'
 
 export default {
 
-  getUserList(store) {
-    axios.get('/user/user_list').then(data => {
-        if (data.data.success == true) {
-          store.commit('setUserList', data.data.listuser)
-        } else {
-          alert(data.data.msg)
-        }
-      },
-      data => alert('System Error'))
-  },
   getDepTree(store) {
     axios.get('/index/dept_tree').then(data => {
         if (data.data.success == true) {

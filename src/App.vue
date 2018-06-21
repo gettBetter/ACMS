@@ -140,6 +140,9 @@ user agent stylesheet div {
 .el-card,.el-card__header{
   border: none;
 }
+.el-container{
+  height: 100%
+}
 /* .el-header {
   background-color: #545c64;
 } */
