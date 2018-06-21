@@ -6,9 +6,9 @@
         <span>用户列表</span>
       </div>
 
-      <el-button type="primary"  icon="el-icon-plus" style="margin-bottom:10px;" @click="addUser">添加</el-button>
+      <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;" @click="addUser">添加</el-button>
 
-      <el-table :data="pageData"  border>
+      <el-table :data="pageData" border>
         <el-table-column fixed="left" label="操作">
           <template slot-scope="scope">
             <el-button @click="popupEdit(scope.row)" type="text" size="">
@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { Loading } from 'element-ui';
+import axios from "axios";
+import { Loading } from "element-ui";
 export default {
   data() {
     return {
@@ -61,25 +61,27 @@ export default {
         label: "label"
       },
       userEditData: {},
-      allListData:[],
+      allListData: []
     };
   },
   methods: {
     getUserList() {
       let loadingInstance = Loading.service({
         lock: true,
-        background: 'rgba(0, 0, 0, 0.5)',
-        target:document.querySelector('.el-main')
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".el-main")
       });
-      axios.get('/user/user_list').then(data => {
+      axios.get("/user/user_list").then(
+        data => {
           if (data.data.success === true) {
             loadingInstance.close();
-            this.allListData = data.data.listuser
+            this.allListData = data.data.listuser;
           } else {
-            alert(data.data.msg)
+            alert(data.data.msg);
           }
         },
-        data => alert('System Error'))
+        data => alert("System Error")
+      );
     },
     addUser() {
       this.$get("/user/user_add_data")
@@ -89,14 +91,14 @@ export default {
     delUser(recored) {
       console.info(recored);
       let param = {
-        id: recored.emp_indx
+        emp_indx: recored.emp_indx
       };
 
       this.$post("/user/user_del", param)
         .then(
           data => {
             if (data.data.success === true) {
-              this.getUserList()
+              this.getUserList();
             }
           },
           data => console.info(data)
@@ -130,7 +132,7 @@ export default {
   },
   computed: {
     total() {
-     return this.allListData.length;
+      return this.allListData.length;
     },
     chunkList() {
       return this.chunkArray(this.allListData, this.pageCurSize);
@@ -140,7 +142,7 @@ export default {
     }
   },
   mounted() {
-    this.getUserList()
+    this.getUserList();
   }
 };
 </script>
