@@ -8,14 +8,14 @@
       <!-- 主体 -->
       <el-container style="margin-top:2px;">
         <!-- 左侧菜单栏 -->
-        <el-aside width="200px"  v-if="hasCHildren">
-          <sidebar :children="children"></sidebar> 
+        <el-aside width="200px" v-if="hasCHildren">
+          <sidebar :children="children"></sidebar>
         </el-aside>
         <!-- 主体视图区 -->
         <el-container>
           <el-main>
             <keep-alive>
-              <router-view/> 
+              <router-view/>
             </keep-alive>
           </el-main>
         </el-container>
@@ -99,7 +99,7 @@ body > .el-container {
 .el-main {
   background-color: #f3f3f3;
   color: #333;
-  line-height: 160px;
+  /* line-height: 160px; */
   height: 100%;
   padding: 10px;
 }

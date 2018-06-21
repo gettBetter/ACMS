@@ -47,7 +47,8 @@
                   <el-row>
                     <el-col :span="17">
                       <el-input v-model="userInfo.dep_indx" v-if="false"></el-input>
-                      <span>{{depCn}}</span>
+                      <span>{{userInfo.dep_name}}
+                      </span>
                     </el-col>
                     <el-col :span="6" ::offset="1">
                       <el-button type="text" @click="openDepTree">选择部门</el-button>
@@ -252,10 +253,10 @@
         </el-row>
       </el-form>
 
-      <el-row>
+      <el-row style="text-align: center; padding: 30px 0">
         <!-- <el-col :span="4" :offset="20">  -->
-        <el-button class="submit-btn" type="primary" @click="submit" width="90px">确定</el-button>
-        <el-button class="cancel-btn" width="90px" @click="cancel">取消</el-button>
+        <el-button class="submit-btn" type="primary" @click="submit">确定</el-button>
+        <el-button class="cancel-btn" @click="cancel">取消</el-button>
         <!-- </el-col>  -->
       </el-row>
 
@@ -316,6 +317,9 @@ export default {
     },
     handleNodeClick(node) {
       console.info(node);
+      this.userInfo.dep_name = node.name;
+      this.userInfo.dep_index = node.id;
+      console.info(this.userInfo);
       this.treeVisible = false;
     },
     getDiffer(newData, oldData) {
@@ -366,6 +370,16 @@ export default {
 </script>
 
 <style scoped>
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+.container {
+  height: 100%;
+}
 .el-card__header span {
   line-height: 27px;
 }
@@ -396,7 +410,7 @@ export default {
   text-align: left;
 }
 .submit-btn,
-.cancle-btn {
+.cancel-btn {
   width: 160px;
 }
 </style>
