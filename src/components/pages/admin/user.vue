@@ -46,6 +46,8 @@
 <script>
 import axios from "axios";
 import { Loading } from "element-ui";
+import _ from 'lodash'
+
 export default {
   data() {
     return {
@@ -89,7 +91,6 @@ export default {
         .catch(err => console.info(err));
     },
     delUser(recored) {
-      console.info(recored);
       let param = {
         emp_indx: recored.emp_indx
       };
@@ -115,19 +116,6 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
-    },
-    chunkArray(arr, count) {
-      let retArr = [];
-      for (let i = 0; i < arr.length; i = i + count) {
-        retArr.push(arr.slice(i, i + count));
-      }
-      console.info(retArr);
-      return retArr;
-    },
-    getDepTree() {
-      this.$parent.$store.dispatch("getDepTree");
-      this.depData = this.$parent.$store.getters.depTree;
-      console.info("this.depData", this.depData);
     }
   },
   computed: {
@@ -135,10 +123,10 @@ export default {
       return this.allListData.length;
     },
     chunkList() {
-      return this.chunkArray(this.allListData, this.pageCurSize);
+     return _.chunk(this.allListData, this.pageCurSize)
     },
     pageData() {
-      return this.chunkList[this.currentPage - 1];
+      return this.chunkList[this.currentPage-1];
     }
   },
   mounted() {
