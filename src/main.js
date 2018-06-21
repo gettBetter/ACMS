@@ -6,7 +6,7 @@ import router from './router'
 import store from '@/store/store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-
+import _ from 'lodash'
 import axios from 'axios'
 import {
   post,
@@ -17,6 +17,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.$get = get;
 Vue.prototype.$post = post;
+Vue.prototype.$_ = _
 
 router.beforeEach((to, from, next) => {
   const token = sessionStorage.userToken
