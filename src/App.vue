@@ -6,7 +6,7 @@
         <app-header :menus="menus"></app-header>
       </el-header>
       <!-- 主体 -->
-      <el-container style="margin-top:2px;">
+      <el-container>
         <!-- 左侧菜单栏 -->
         <el-aside width="200px"  v-if="hasCHildren">
           <sidebar :children="children"></sidebar> 
@@ -93,18 +93,22 @@ body > .el-container {
   color: #333;
   line-height: 200px;
   overflow: hidden;
+  background-color: #f9f9f9;
   /* border-right: 1px solid #ccc; */
 }
 
 .el-main {
-  background-color: #f3f3f3;
+  background-color: #fff;
   color: #333;
   line-height: 160px;
   height: 100%;
-  padding: 10px;
+  padding: 0px;
 }
 .el-menu {
   width: 200px;
+}
+.el-menu-item.is-active{
+  background-color: #fff;
 }
 
 .el-container:nth-child(5) .el-aside,
@@ -133,7 +137,9 @@ user agent stylesheet div {
 .el-table th {
   padding: 0;
 }
-
+.el-card,.el-card__header{
+  border: none;
+}
 /* .el-header {
   background-color: #545c64;
 } */

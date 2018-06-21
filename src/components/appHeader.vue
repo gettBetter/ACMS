@@ -61,13 +61,16 @@ export default {
 .el-menu {
   width: 100%;
   overflow: hidden;
-  background-color: #545c64;
+  background-color: #f9f9f9;
 }
-.el-menu--horizontal > .el-menu-item {
+.el-menu--horizontal > .el-menu-item{
   width: 120px;
   float: left;
   margin: auto 10px;
   color: white;
-  background-color: #545c64;
+  background-color: #f9f9f9;
+}
+.el-menu-item:hover {
+  background-color: #fff;
 }
 </style>

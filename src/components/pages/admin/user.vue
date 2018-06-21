@@ -6,7 +6,7 @@
         <span>用户列表</span>
       </div>
 
-      <el-button type="primary" style="margin-bottom:10px;"  @click="addUser">添加</el-button>
+      <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;"  @click="addUser">添加</el-button>
           
       <el-table
           :data="pageData"
