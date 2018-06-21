@@ -21,35 +21,23 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="emp_indx" label="用户ID">
-        </el-table-column>
-        <el-table-column prop="emp_code" label="用户编号">
-        </el-table-column>
-        <el-table-column prop="emp_name" label="用户姓名">
-        </el-table-column>
-        <el-table-column prop="dep_name" label="所属部门">
-        </el-table-column>
-        <el-table-column prop="role_name" label="WEB角色名称">
-        </el-table-column>
-        <el-table-column prop="gbas_name" label="性别">
-        </el-table-column>
-        <el-table-column prop="reg_time" label="注册时间 ">
-        </el-table-column>
-        <el-table-column prop="pbas_name" label="人员状态">
-        </el-table-column>
-        <el-table-column prop="kbas_name" label="人员类别">
-        </el-table-column>
-        <el-table-column prop="crt_code" label="证件号码">
-        </el-table-column>
-
+        <el-table-column prop="emp_indx" label="用户ID"></el-table-column>
+        <el-table-column prop="emp_code" label="用户编号"></el-table-column>
+        <el-table-column prop="emp_name" label="用户姓名"></el-table-column>
+        <el-table-column prop="dep_name" label="所属部门"></el-table-column>
+        <el-table-column prop="role_name" label="WEB角色名称"></el-table-column>
+        <el-table-column prop="gbas_name" label="性别"></el-table-column>
+        <el-table-column prop="reg_time" label="注册时间 "></el-table-column>
+        <el-table-column prop="pbas_name" label="人员状态"></el-table-column>
+        <el-table-column prop="kbas_name" label="人员类别"></el-table-column>
+        <el-table-column prop="crt_code" label="证件号码"></el-table-column>
       </el-table>
+
       <div class="block">
-        <!-- @size-change="handleSizeChange" -->
-        <!-- :page-sizes="pageSize" -->
         <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
         </el-pagination>
-        <!-- </div> -->
       </div>
+
     </el-card>
 
   </div>
@@ -107,8 +95,8 @@ export default {
       this.$post("/user/user_del", param)
         .then(
           data => {
-            if (data.sucess != false) {
-              this.$parent.$store.dispatch("getUserList");
+            if (data.data.success === true) {
+              this.getUserList()
             }
           },
           data => console.info(data)
@@ -174,19 +162,15 @@ export default {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
 .text {
   font-size: 14px;
 }
-
 .item {
   margin-bottom: 18px;
 }
-
 .box-card {
   width: 100%;
 }
-
 .el-card__header span {
   line-height: 27px;
 }
