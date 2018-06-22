@@ -46,7 +46,7 @@
 <script>
 import axios from "axios";
 import { Loading } from "element-ui";
-import _ from 'lodash'
+import _ from "lodash";
 
 export default {
   data() {
@@ -98,7 +98,7 @@ export default {
       this.$post("/user/user_del", param)
         .then(
           data => {
-            if (data.data.success === true) {
+            if (data.success === true) {
               this.getUserList();
             }
           },
@@ -123,10 +123,10 @@ export default {
       return this.allListData.length;
     },
     chunkList() {
-     return _.chunk(this.allListData, this.pageCurSize)
+      return _.chunk(this.allListData, this.pageCurSize);
     },
     pageData() {
-      return this.chunkList[this.currentPage-1];
+      return this.chunkList[this.currentPage - 1];
     }
   },
   mounted() {

@@ -339,9 +339,17 @@ export default {
       this.treeVisible = true;
     },
     submit() {
-      if (JSON.stringify(this.userInfo) != JSON.stringify(this.originalData)) {
+      // if (JSON.stringify(this.userInfo) != JSON.stringify(this.originalData))
+      const hasModifyDep = !this.$_.isEqual(this.userInfo, this.originalData);
+
+      if (hasModifyDep) {
         const params = this.getDiffer(this.userInfo, this.originalData);
-        params.emp_indx = this.userInfo.emp_indx;
+        // params.emp_indx = this.userInfo.emp_indx;
+        this.$_.merge(params, {
+          emp_indx: this.userInfo.emp_indx
+        });
+        _.has(params, "dep_name") && delete params.dep_name;
+        // this.$_.omit(params, ['dep_name']);
         this.$post("/user/user_edit_save", params)
           .then(data => {
             this.$router.go(-1);
