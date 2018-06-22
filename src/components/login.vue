@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 sessionStorage.clear();
 export default {
   data() {
@@ -70,7 +72,7 @@ export default {
     onSubmit() {
       const that = this;
       if (this.username && this.password) {
-        this.$post("/login/Login_chk", {
+        axios.post("/login/Login_chk", {
           username: this.username,
           password: this.password
         })
@@ -82,22 +84,18 @@ export default {
               sessionStorage.setItem(
                 "userToken",
                 JSON.stringify({
-                  username: data.username,
-                  token: data.token
+                  username: data.data.username,
+                  token: data.data.token
                 })
               );
               this.loginError = false;
-              this.$get("/index/left").then(data => {
-                that.$parent.$store.commit("setMenus", data.menu);
-                sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
+              axios.get("/index/left").then(data => {
+                that.$parent.$store.commit("setMenus", data.data.menu);
+                sessionStorage.setItem("userMenus", JSON.stringify(data.data.menu));
                 setTimeout(() => {
                   that.$router.push({ path: "/" });
                 }, 1000);
               });
-            },
-            data => {
-              this.loginError = true;
-              alert(data.msg);
             }
           )
           .catch(err => console.info(err));
