@@ -82,6 +82,7 @@
 
 
 <script>
+import { Loading } from "element-ui";
 export default {
   data() {
     return {
@@ -134,13 +135,13 @@ export default {
         this.editDepData,
         this.orignalEditData
       );
- 
+
       if (hasModifyDep) {
         const modifyData = this.getDiffer(
           this.editDepData,
           this.orignalEditData
         );
-       
+
         this.$_.merge(modifyData, {
           dep_indx: this.editDepData.dep_indx
         });
@@ -203,7 +204,13 @@ export default {
     }
   },
   created() {
+    let loadingInstance = Loading.service({
+      lock: true,
+      background: "rgba(0, 0, 0, 0.5)",
+      target: document.querySelector(".el-main")
+    });
     this.getDepList().then(data => {
+      loadingInstance.close();
       console.info(data);
       this.depList = data.listdept;
     });
