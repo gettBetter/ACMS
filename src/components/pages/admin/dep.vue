@@ -173,29 +173,16 @@ export default {
         alert("数据未更改");
       }
     },
-    getDepTree() {
-      return new Promise(resolve => {
-        axios.get("/index/dept_tree").then(
-          data => {
-            if (data.data.success == true) {
-              resolve(data.data);
-            } else {
-              alert(data.data.msg);
-            }
-          },
-          data => alert("System Error")
-        );
-      });
-    },
     openDepTree() {
-      this.getDepTree().then(data => {
+      axios.get("/index/dept_tree").then(data=>{
         this.depData = data.data.deptree;
-      });
+      }).catch(data=>{
+        alert(data.data.msg);
+      })
       this.treeVisible = true;
     },
     dialogClose(done) {},
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
     getDepList() {
@@ -208,9 +195,6 @@ export default {
         loadingInstance.close();
         this.depList = data.data.listdept;
       });
-    },
-    getEditDepData(param) {
-      return axios.get("/dept/dept_edit_data", param);
     }
   },
   computed: {
