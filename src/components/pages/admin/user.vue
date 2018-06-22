@@ -46,7 +46,7 @@
 <script>
 import axios from "axios";
 import { Loading } from "element-ui";
-import _ from "lodash";
+import _ from 'lodash'
 
 export default {
   data() {
@@ -71,7 +71,7 @@ export default {
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
-        target: document.querySelector(".el-main")
+        target: document.querySelector(".adminpage")
       });
       axios.get("/user/user_list").then(
         data => {
@@ -86,7 +86,7 @@ export default {
       );
     },
     addUser() {
-      this.$get("/user/user_add_data")
+      axios.get("/user/user_add_data")
         .then(data => console.info(data))
         .catch(err => console.info(err));
     },
@@ -95,16 +95,23 @@ export default {
         emp_indx: recored.emp_indx
       };
 
-      this.$post("/user/user_del", param)
-        .then(
-          data => {
-            if (data.success === true) {
-              this.getUserList();
+      this.$confirm('请确认是否删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+      }).then(() => {
+          axios.post("/user/user_del", param).then(
+            data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+                this.getUserList();
+              }
             }
-          },
-          data => console.info(data)
-        )
-        .catch(err => alert(err));
+          ).catch(err => alert(err));
+      })
     },
     popupEdit(recored) {
       this.$parent.$router.push({
@@ -123,10 +130,10 @@ export default {
       return this.allListData.length;
     },
     chunkList() {
-      return _.chunk(this.allListData, this.pageCurSize);
+     return _.chunk(this.allListData, this.pageCurSize)
     },
     pageData() {
-      return this.chunkList[this.currentPage - 1];
+      return this.chunkList[this.currentPage-1];
     }
   },
   mounted() {

@@ -13,5 +13,8 @@
 <script>
 export default {};
 </script>
+<style>
+    .adminpage{ height: 100%;}
+</style>
 
 
