@@ -146,7 +146,7 @@ export default {
     },
     handleNodeClick(node) {
       this.editDepData.dep_name = node.dep_name;
-      this.editDepData.dep_index = node.dep_indx;
+      this.editDepData.dep_indx = node.dep_indx;
       this.treeVisible = false;
     },
     depEditSave() {
