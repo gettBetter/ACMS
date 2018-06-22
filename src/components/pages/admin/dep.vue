@@ -37,9 +37,8 @@
 
     </el-card>
     <!-- 修改部门 -->
-    <el-dialog width="40%" min-height="200px" title="选择部门" :visible.sync="editDepDialog" append-to-body :before-close="dialogClose">
+    <el-dialog width="60%" min-height="200px" title="修改部门" :visible.sync="editDepDialog" append-to-body>
       <el-form :model="editDepData">
-
         <el-form-item :label-width="formLabelWidth" label="部门名称：">
           <span>{{editDepData.dep_name}}</span>
         </el-form-item>
@@ -47,8 +46,8 @@
           <!-- <el-input v-model="editDepData.emp_name"></el-input> -->
           <el-row>
             <el-col :span="17">
-              <el-input v-model="editDepData.dep_indx" v-if="false"></el-input>
-              <span>{{editDepData.par_indx}}
+              <el-input v-model="editDepData.par_indx" v-if="false"></el-input>
+              <span>{{editDepData.par_name}}
               </span>
             </el-col>
             <el-col :span="6" ::offset="1">
@@ -68,9 +67,14 @@
 
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="editDepDialog = false">确 定</el-button>
+        <el-button type="primary" @click="depEditSave">确 定</el-button>
         <el-button @click="editDepDialog = false">取 消</el-button>
       </span>
+    </el-dialog>
+
+    <el-dialog width="40%" min-height="200px" title="选择部门" :visible.sync="treeVisible" append-to-body>
+      <el-tree :data="depData" :props="treeProp" accordion @node-click="handleNodeClick">
+      </el-tree>
     </el-dialog>
 
   </div>
@@ -83,10 +87,10 @@ export default {
     return {
       formLabelWidth: "120px",
       depList: [],
-      depData: {},
+      depData: [],
       treeProp: {
-        label: "name",
-        id: "indx",
+        label: "dep_name",
+        // id: "dep_indx",
         children: "children"
         // total: 0, //list length
         // chunkList: [], //数据分组  总数/每页数量
@@ -96,31 +100,64 @@ export default {
       pageCurSize: 10,
       editDepDialog: false,
       treeVisible: false,
-      editDepData: {}
+      editDepData: {},
+      orignalEditData: {}
     };
   },
   methods: {
+    getDiffer(newData, oldData) {
+      const differ = {};
+      for (let p in newData) {
+        if (newData[p] != oldData[p]) {
+          differ[p] = newData[p];
+        }
+      }
+      return differ;
+    },
     addDep() {},
     delDep(record) {},
     editDep(record) {
       this.getEditDepData({ dep_indx: record.dep_indx }).then(data => {
-        console.info(data);
-        this.editDepData = data[0];
+        this.editDepData = data.data[0];
+        this.orignalEditData = this.$_.cloneDeep(data.data[0]);
+        console.info(this.editDepData);
+        this.editDepDialog = true;
       });
-
-      this.editDepDialog = true;
-      // .catch(err => {
-      //   if (err.success !== true) {
-      //     this.$parent.$router("/login");
-      //   }
-      // });
     },
     handleNodeClick(node) {
-      // console.info(node);
       this.editDepData.dep_name = node.dep_name;
       this.editDepData.dep_index = node.dep_indx;
-      // console.info(this.userInfo);
       this.treeVisible = false;
+    },
+    depEditSave() {
+      const hasModifyDep = !this.$_.isEqual(
+        this.editDepData,
+        this.orignalEditData
+      );
+ 
+      if (hasModifyDep) {
+        const modifyData = this.getDiffer(
+          this.editDepData,
+          this.orignalEditData
+        );
+       
+        this.$_.merge(modifyData, {
+          dep_indx: this.editDepData.dep_indx
+        });
+        // modifyData. = this.editDepData.dep_index;
+        console.info(modifyData);
+        this.$post("/dept/dept_edit_save", modifyData)
+          .then(data => {
+            // getDepList
+            // this.editDepDialog = false;
+            return this.getDepList();
+          })
+          .then(data => {
+            this.editDepDialog = false;
+          });
+      } else {
+        alert("数据未更改");
+      }
     },
     getDepTree() {
       return new Promise(resolve => {
@@ -138,7 +175,7 @@ export default {
     },
     openDepTree() {
       this.getDepTree().then(data => {
-        this.depTreeData = data.deptree;
+        this.depData = data.deptree;
       });
       this.treeVisible = true;
     },
