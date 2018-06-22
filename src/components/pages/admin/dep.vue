@@ -4,7 +4,9 @@
       <div slot="header" class="clearfix">
         <span>部门列表</span>
       </div>
-      <el-button type="primary" style="margin-bottom:10px;" @click="addDep">添加</el-button>
+
+      <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;" @click="addDep">添加</el-button>
+
       <el-table :data="pageData" border>
         <el-table-column fixed="left" label="操作">
           <template slot-scope="scope">
@@ -17,25 +19,22 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="dep_indx" label="序号">
-        </el-table-column>
-        <el-table-column prop="dep_name" label="部门名称">
-        </el-table-column>
-        <el-table-column prop="p_dep_name" label="上级部门">
-        </el-table-column>
-        <el-table-column prop="dep_prnc" label="部门领导">
-        </el-table-column>
-        <el-table-column prop="dep_rank" label="部门层级">
-        </el-table-column>
-        <el-table-column prop="end_date" label="生效日期">
-        </el-table-column>
+
+        <el-table-column prop="dep_indx" label="序号"></el-table-column>
+        <el-table-column prop="dep_name" label="部门名称"></el-table-column>
+        <el-table-column prop="p_dep_name" label="上级部门"></el-table-column>
+        <el-table-column prop="dep_prnc" label="部门领导"></el-table-column>
+        <el-table-column prop="dep_rank" label="部门层级"></el-table-column>
+        <el-table-column prop="end_date" label="生效日期"></el-table-column>
       </el-table>
+
       <div class="block">
         <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next" :total="total">
         </el-pagination>
       </div>
 
     </el-card>
+
     <!-- 修改部门 -->
     <el-dialog width="60%" min-height="200px" title="修改部门" :visible.sync="editDepDialog" append-to-body>
       <el-form :model="editDepData">
@@ -47,7 +46,7 @@
           <el-row>
             <el-col :span="17">
               <el-input v-model="editDepData.par_indx" v-if="false"></el-input>
-              <span>{{editDepData.par_name}}
+              <span>{{editDepData.p_dep_name}}
               </span>
             </el-col>
             <el-col :span="6" ::offset="1">
@@ -82,7 +81,10 @@
 
 
 <script>
+import axios from "axios";
 import { Loading } from "element-ui";
+import _ from "lodash";
+
 export default {
   data() {
     return {
@@ -93,9 +95,6 @@ export default {
         label: "dep_name",
         // id: "dep_indx",
         children: "children"
-        // total: 0, //list length
-        // chunkList: [], //数据分组  总数/每页数量
-        // pageData
       },
       currentPage: 1,
       pageCurSize: 10,
@@ -117,28 +116,33 @@ export default {
     },
     addDep() {},
     delDep(record) {
-
-      console.info(record);
       let param = {
         dep_indx: record.dep_indx
       };
-
-      this.$post("/dept/dept_del", param)
-        .then(
-          data => {
-            if (data.success === true) {
+      this.$confirm("请确认是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        axios
+          .post("/dept/dept_del", param)
+          .then(data => {
+            if (data.data.success === true) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
               this.getDepList();
             }
-          },
-          data => console.info(data)
-        )
-        .catch(err => alert(err));
+          })
+          .catch(err => alert(err));
+      });
     },
     editDep(record) {
+      debugger;
       this.getEditDepData({ dep_indx: record.dep_indx }).then(data => {
         this.editDepData = data.data[0];
-        this.orignalEditData = this.$_.cloneDeep(data.data[0]);
-        console.info(this.editDepData);
+        this.orignalEditData = _.cloneDeep(data.data[0]);
         this.editDepDialog = true;
       });
     },
@@ -148,10 +152,7 @@ export default {
       this.treeVisible = false;
     },
     depEditSave() {
-      const hasModifyDep = !this.$_.isEqual(
-        this.editDepData,
-        this.orignalEditData
-      );
+      const hasModifyDep = !_.isEqual(this.editDepData, this.orignalEditData);
 
       if (hasModifyDep) {
         const modifyData = this.getDiffer(
@@ -159,11 +160,11 @@ export default {
           this.orignalEditData
         );
 
-        this.$_.merge(modifyData, {
+        _.merge(modifyData, {
           dep_indx: this.editDepData.dep_indx
         });
 
-        this.$post("/dept/dept_edit_save", modifyData).then(data => {
+        axios.post("/dept/dept_edit_save", modifyData).then(data => {
           this.editDepDialog = false;
           this.getDepList();
         });
@@ -173,12 +174,12 @@ export default {
     },
     getDepTree() {
       return new Promise(resolve => {
-        this.$get("/index/dept_tree").then(
+        axios.get("/index/dept_tree").then(
           data => {
-            if (data.success == true) {
-              resolve(data);
+            if (data.data.success == true) {
+              resolve(data.data);
             } else {
-              alert(data.msg);
+              alert(data.data.msg);
             }
           },
           data => alert("System Error")
@@ -187,7 +188,7 @@ export default {
     },
     openDepTree() {
       this.getDepTree().then(data => {
-        this.depData = data.deptree;
+        this.depData = data.data.deptree;
       });
       this.treeVisible = true;
     },
@@ -200,12 +201,11 @@ export default {
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
-        target: document.querySelector(".el-main")
+        target: document.querySelector(".adminpage")
       });
-      this.$get("/dept/dept_list").then(data => {
+      axios.get("/dept/dept_list").then(data => {
         loadingInstance.close();
-        console.info(data);
-        this.depList = data.listdept;
+        this.depList = data.data.listdept;
       });
     },
     getEditDepData(param) {
@@ -217,7 +217,7 @@ export default {
       return this.depList.length;
     },
     chunkList() {
-      return this.$_.chunk(this.depList, this.pageCurSize);
+      return _.chunk(this.depList, this.pageCurSize);
     },
     pageData() {
       return this.chunkList[this.currentPage - 1];
@@ -225,27 +225,15 @@ export default {
   },
   created() {
     this.getDepList();
-  },
-  mounted() {
-    // this.$store.dispatch("getDepList");
   }
 };
 </script>
 
 <style>
-html,
-body {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-.container {
-  height: 100%;
-}
-body > .el-container {
-  margin-bottom: 40px;
-  height: 100%;
+.block {
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
 

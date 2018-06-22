@@ -143,41 +143,11 @@ export default {
 </script>
 
 <style >
-.el-card__header {
-  text-align: left;
-}
-.el-main {
-  line-height: 0;
-}
-.el-table th,
-.el-table td {
-  text-align: center;
-  line-height: 40px;
-}
 .block {
   text-align: right;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.text {
-  font-size: 14px;
-}
-.item {
-  margin-bottom: 18px;
-}
-.box-card {
-  width: 100%;
-}
-.el-card__header span {
-  line-height: 27px;
-}
-.el-form-item__content {
-  text-align: left;
-}
-/* .el-dialog {
-  min-height: 280px;
-  max-height: 680px;
-} */
 </style>
 
 
