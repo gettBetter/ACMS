@@ -1,6 +1,6 @@
 export default {
-  firstLogin(sate) {
-    return state.firstLogin;
+  isLogin(state) {
+    return state.isLogin;
   },
   menus(state) {
     return state.menus;
@@ -20,10 +20,10 @@ export default {
   userEditData(state) {
     return state.userEditData
   },
-  userInfo(state){
+  userInfo(state) {
     return state.userInfo
   },
-  depList(state){
+  depList(state) {
     return state.depList
   }
 }

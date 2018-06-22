@@ -17,22 +17,21 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.$get = get;
 Vue.prototype.$post = post;
-Vue.prototype.$_ = _
+Vue.prototype.$_ = _;
 
 router.beforeEach((to, from, next) => {
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
-
-  // debugger
+  const isLogin = store.getters.isLogin
+  debugger
   if (to.path === '/login') {
     sessionStorage.clear()
     store.commit('setMenus', [])
+    store.commit("isLogin", false);
   }
 
-  // if (to.path == '/unauthority') {
-  //   next()
-  // }
-  if (to.path !== '/login' && to.path !== '/unauthority' && token && userMenus) {
+  if (to.path !== '/login' && to.path !== '/unauthority' && isLogin) {
+
     const menus = JSON.parse(userMenus)
     store.commit("setMenus", menus);
     // debugger

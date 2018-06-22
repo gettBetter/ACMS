@@ -36,13 +36,14 @@ axios.interceptors.request.use(
 console.info(router)
 axios.interceptors.response.use(
   response => {
-    if (response.data.success != true) {
-      // debugger
+    if (!response.data.success) {
+      debugger
+      console.info(router.currentRoute)
       router.push({
         path: "/login",
-        // querry: {
-        //   redirect: router.currentRoute.fullPath
-        // } //从哪个页面跳转
+        query: {
+          redirect: router.currentRoute.fullPath
+        } //从哪个页面跳转
       })
     }
     return response;

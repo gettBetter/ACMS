@@ -1,6 +1,6 @@
 export default {
-  firstLogin(sate, bool) {
-    state.firstLogin = bool;
+  isLogin(state, bool) {
+    state.isLogin = bool;
   },
   getChildren(state, path) {
     // debugger

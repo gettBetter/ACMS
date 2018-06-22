@@ -1,5 +1,5 @@
 export default {
-  firstLogin: false,
+  isLogin: false,
   children: [],
   menus: [],
   userList: [],

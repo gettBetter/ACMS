@@ -1,42 +1,35 @@
 <template>
-    <div class="login">
-        <el-container>
-          <el-main width="200px">
-              <!-- <el-row>
+  <div class="login">
+    <el-container>
+      <el-main width="200px">
+        <!-- <el-row>
                   <el-col :span="6" :offset="9"> -->
-                    <el-form  label-width="80px" :span="6" offset="9" >
-                        <el-form-item label="用户名">
-                            <el-input 
-                            v-model="username"
-                            placeholder="请输入用户名" 
-                            ></el-input>
-                        </el-form-item>
-                        <el-form-item label="密码">
-                            <el-input v-model="password"
-                            placeholder="请输入密码"
-                            type="password"></el-input>
-                        </el-form-item>
-                        <!-- <span v-hide="loginError" class="error-class">{{loginErrorMsg}}</span> -->
-                        <!-- v-hide="loginError" -->
-                        <el-alert
-                            v-if="loginError"
-                            :title="loginErrorMsg"
-                            type="error">
-                        </el-alert>
-                        <el-form-item>
-                        <el-button type="primary" @click="onSubmit">登录</el-button>
-                        <!-- <el-button>取消</el-button> -->
-                        </el-form-item>
-                    </el-form>    
-                <!-- </el-col> -->
-          </el-main>
-            <!-- </el-row> -->
-        </el-container>
-    </div>
+        <el-form label-width="80px" :span="6" offset="9">
+          <el-form-item label="用户名">
+            <el-input v-model="username" placeholder="请输入用户名"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input v-model="password" placeholder="请输入密码" type="password"></el-input>
+          </el-form-item>
+          <!-- <span v-hide="loginError" class="error-class">{{loginErrorMsg}}</span> -->
+          <!-- v-hide="loginError" -->
+          <el-alert v-if="loginError" :title="loginErrorMsg" type="error">
+          </el-alert>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">登录</el-button>
+            <!-- <el-button>取消</el-button> -->
+          </el-form-item>
+        </el-form>
+        <!-- </el-col> -->
+      </el-main>
+      <!-- </el-row> -->
+    </el-container>
+  </div>
 </template>
 
 <script>
-sessionStorage.clear();
+// sessionStorage.clear();
+// this.$parent.$store.commit("isLogin", false);
 export default {
   data() {
     return {
@@ -47,26 +40,6 @@ export default {
     };
   },
   methods: {
-    // confMenus(data) {
-    //   return data.map(item => {
-    //     let menu = Object.assign({}, item);
-    //     return {
-    //       name: menu.name,
-    //       path: menu.path,
-    //       // component: () => import(item.component),
-    //       component: lazyLoading(menu.path, true),
-    //       children: menu.chilren.map(val => {
-    //         return {
-    //           name: val.name,
-    //           path: val.path,
-    //           // component: () => import(val.component)
-    //           // component: resolve => require([val.component], resolve)
-    //           component: lazyLoading(val.path)
-    //         };
-    //       })
-    //     };
-    //   });
-    // },
     onSubmit() {
       const that = this;
       if (this.username && this.password) {
@@ -76,9 +49,11 @@ export default {
         })
           .then(
             data => {
-              // if (!data.success) {
-              //   // alert("用户登录认证失败，请重新登录");
-              // }
+              if (!data.success) {
+                alert("用户登录认证失败，请重新登录");
+                this.loginError = true;
+                return;
+              }
               sessionStorage.setItem(
                 "userToken",
                 JSON.stringify({
@@ -89,7 +64,9 @@ export default {
               this.loginError = false;
               this.$get("/index/left").then(data => {
                 that.$parent.$store.commit("setMenus", data.menu);
+                that.$parent.$store.commit("isLogin", true);
                 sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
+
                 setTimeout(() => {
                   that.$router.push({ path: "/" });
                 }, 1000);
@@ -121,9 +98,7 @@ export default {
       });
     }
   },
-  mounted() {
-
-  }
+  mounted() {}
 };
 </script>
 
