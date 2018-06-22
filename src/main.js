@@ -22,15 +22,15 @@ Vue.prototype.$_ = _;
 router.beforeEach((to, from, next) => {
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
-  const isLogin = store.getters.isLogin
-  
+  // const isLogin = store.getters.isLogin
+  // debugger
   if (to.path === '/login') {
     sessionStorage.clear()
     store.commit('setMenus', [])
-    store.commit("isLogin", false);
+    // store.commit("isLogin", false);
   }
 
-  if (to.path !== '/login' && to.path !== '/unauthority' && isLogin) {
+  if (to.path !== '/login' && to.path !== '/unauthority' && token) {
 
     const menus = JSON.parse(userMenus)
     store.commit("setMenus", menus);
@@ -71,7 +71,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  if (!isLogin && to.fullPath !== '/login') {
+  if (!token && to.fullPath !== '/login') {
     next({
       path: '/login',
       replace: true

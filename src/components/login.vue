@@ -64,7 +64,7 @@ export default {
               this.loginError = false;
               this.$get("/index/left").then(data => {
                 that.$parent.$store.commit("setMenus", data.menu);
-                that.$parent.$store.commit("isLogin", true);
+                // that.$parent.$store.commit("isLogin", true);
                 sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
 
                 setTimeout(() => {
