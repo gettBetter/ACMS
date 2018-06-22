@@ -116,7 +116,24 @@ export default {
       return differ;
     },
     addDep() {},
-    delDep(record) {},
+    delDep(record) {
+      debugger;
+      console.info(record);
+      let param = {
+        dep_indx: record.dep_indx
+      };
+
+      this.$post("/dept/dept_del", param)
+        .then(
+          data => {
+            if (data.success === true) {
+              this.getDepList();
+            }
+          },
+          data => console.info(data)
+        )
+        .catch(err => alert(err));
+    },
     editDep(record) {
       this.getEditDepData({ dep_indx: record.dep_indx }).then(data => {
         this.editDepData = data.data[0];
@@ -145,17 +162,11 @@ export default {
         this.$_.merge(modifyData, {
           dep_indx: this.editDepData.dep_indx
         });
-        // modifyData. = this.editDepData.dep_index;
-        console.info(modifyData);
-        this.$post("/dept/dept_edit_save", modifyData)
-          .then(data => {
-            // getDepList
-            // this.editDepDialog = false;
-            return this.getDepList();
-          })
-          .then(data => {
-            this.editDepDialog = false;
-          });
+
+        this.$post("/dept/dept_edit_save", modifyData).then(data => {
+          this.editDepDialog = false;
+          this.getDepList();
+        });
       } else {
         alert("数据未更改");
       }
@@ -186,7 +197,16 @@ export default {
       this.currentPage = val;
     },
     getDepList() {
-      return this.$get("/dept/dept_list");
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".el-main")
+      });
+      this.$get("/dept/dept_list").then(data => {
+        loadingInstance.close();
+        console.info(data);
+        this.depList = data.listdept;
+      });
     },
     getEditDepData(param) {
       return this.$get("/dept/dept_edit_data", param);
@@ -204,16 +224,7 @@ export default {
     }
   },
   created() {
-    let loadingInstance = Loading.service({
-      lock: true,
-      background: "rgba(0, 0, 0, 0.5)",
-      target: document.querySelector(".el-main")
-    });
-    this.getDepList().then(data => {
-      loadingInstance.close();
-      console.info(data);
-      this.depList = data.listdept;
-    });
+    this.getDepList();
   },
   mounted() {
     // this.$store.dispatch("getDepList");
