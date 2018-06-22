@@ -11,9 +11,6 @@ export default {
   // getMenus(state) {
   //   return state.menus
   // },
-  userList(state) {
-    return state.userList
-  },
   depTree(state) {
     return state.depTree
   },
