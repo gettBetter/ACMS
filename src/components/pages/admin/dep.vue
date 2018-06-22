@@ -138,9 +138,9 @@ export default {
       })
     },
     editDep(record) {
-      this.getEditDepData({ dep_indx: record.dep_indx }).then(data => {
-        this.editDepData = data.data[0];
-        this.orignalEditData = _.cloneDeep(data.data[0]);
+      axios.get("/dept/dept_edit_data",{params:{ 'dep_indx': record.dep_indx }}).then(data => {
+        this.editDepData = data.data.data[0];
+        this.orignalEditData = _.cloneDeep(data.data.data[0]);
         this.editDepDialog = true;
       });
     },
