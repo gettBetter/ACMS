@@ -139,16 +139,17 @@ export default {
       });
     },
     editDep(record) {
-      debugger;
-      this.getEditDepData({ dep_indx: record.dep_indx }).then(data => {
-        this.editDepData = data.data[0];
-        this.orignalEditData = _.cloneDeep(data.data[0]);
-        this.editDepDialog = true;
-      });
+      axios
+        .get("/dept/dept_edit_data", { params: { dep_indx: record.dep_indx } })
+        .then(data => {
+          this.editDepData = data.data.data[0];
+          this.orignalEditData = _.cloneDeep(data.data.data[0]);
+          this.editDepDialog = true;
+        });
     },
     handleNodeClick(node) {
       this.editDepData.dep_name = node.dep_name;
-      this.editDepData.dep_index = node.dep_indx;
+      this.editDepData.dep_indx = node.dep_indx;
       this.treeVisible = false;
     },
     depEditSave() {
@@ -172,29 +173,19 @@ export default {
         alert("数据未更改");
       }
     },
-    getDepTree() {
-      return new Promise(resolve => {
-        axios.get("/index/dept_tree").then(
-          data => {
-            if (data.data.success == true) {
-              resolve(data.data);
-            } else {
-              alert(data.data.msg);
-            }
-          },
-          data => alert("System Error")
-        );
-      });
-    },
     openDepTree() {
-      this.getDepTree().then(data => {
-        this.depData = data.data.deptree;
-      });
+      axios
+        .get("/index/dept_tree")
+        .then(data => {
+          this.depData = data.data.deptree;
+        })
+        .catch(data => {
+          alert(data.data.msg);
+        });
       this.treeVisible = true;
     },
     dialogClose(done) {},
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
     getDepList() {
@@ -207,9 +198,6 @@ export default {
         loadingInstance.close();
         this.depList = data.data.listdept;
       });
-    },
-    getEditDepData(param) {
-      return this.$get("/dept/dept_edit_data", param);
     }
   },
   computed: {

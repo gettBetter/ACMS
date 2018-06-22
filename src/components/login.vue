@@ -28,8 +28,9 @@
 </template>
 
 <script>
-// sessionStorage.clear();
-// this.$parent.$store.commit("isLogin", false);
+import axios from "axios";
+
+sessionStorage.clear();
 export default {
   data() {
     return {
@@ -43,45 +44,41 @@ export default {
     onSubmit() {
       const that = this;
       if (this.username && this.password) {
-        this.$post("/login/Login_chk", {
-          username: this.username,
-          password: this.password
-        })
-          .then(
-            data => {
-              if (!data.success) {
-                alert("用户登录认证失败，请重新登录");
-                this.loginError = true;
-                return;
-              }
-              sessionStorage.setItem(
-                "userToken",
-                JSON.stringify({
-                  username: data.username,
-                  token: data.token
-                })
-              );
-              this.loginError = false;
-              this.$get("/index/left").then(data => {
-                that.$parent.$store.commit("setMenus", data.menu);
-                // that.$parent.$store.commit("isLogin", true);
-                sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
-
-                setTimeout(() => {
-                  const query = that.$router.query;
-                  if (query) {
-                    that.$router.push({ path: query });
-                  } else {
-                    that.$router.push({ path: "/" });
-                  }
-                }, 1000);
-              });
-            },
-            data => {
+        axios
+          .post("/login/Login_chk", {
+            username: this.username,
+            password: this.password
+          })
+          .then(data => {
+            if (!data.success) {
+              alert("用户登录认证失败，请重新登录");
               this.loginError = true;
-              alert(data.msg);
+              return;
             }
-          )
+            sessionStorage.setItem(
+              "userToken",
+              JSON.stringify({
+                username: data.data.username,
+                token: data.data.token
+              })
+            );
+            this.loginError = false;
+            axios.get("/index/left").then(data => {
+              that.$parent.$store.commit("setMenus", data.data.menu);
+              sessionStorage.setItem(
+                "userMenus",
+                JSON.stringify(data.data.menu)
+              );
+              setTimeout(() => {
+                const query = that.$router.query;
+                if (query) {
+                  that.$router.push({ path: query });
+                } else {
+                  that.$router.push({ path: "/" });
+                }
+              }, 1000);
+            });
+          })
           .catch(err => console.info(err));
       } else {
         alert("error");
