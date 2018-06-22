@@ -68,7 +68,12 @@ export default {
                 sessionStorage.setItem("userMenus", JSON.stringify(data.menu));
 
                 setTimeout(() => {
-                  that.$router.push({ path: "/" });
+                  const query = that.$router.query;
+                  if (query) {
+                    that.$router.push({ path: query });
+                  } else {
+                    that.$router.push({ path: "/" });
+                  }
                 }, 1000);
               });
             },

@@ -117,7 +117,7 @@ export default {
     },
     addDep() {},
     delDep(record) {
-      debugger;
+
       console.info(record);
       let param = {
         dep_indx: record.dep_indx

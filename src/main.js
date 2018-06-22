@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
   const isLogin = store.getters.isLogin
-  debugger
+  
   if (to.path === '/login') {
     sessionStorage.clear()
     store.commit('setMenus', [])
@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
 
     const menus = JSON.parse(userMenus)
     store.commit("setMenus", menus);
-    // debugger
+
     let acceptMenus = ["/", "*", "/login", "/unauthority"];
 
     if (sessionStorage.acceptMenus) {
@@ -71,7 +71,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  if (!token && to.fullPath !== '/login') {
+  if (!isLogin && to.fullPath !== '/login') {
     next({
       path: '/login',
       replace: true

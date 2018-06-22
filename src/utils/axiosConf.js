@@ -37,7 +37,6 @@ console.info(router)
 axios.interceptors.response.use(
   response => {
     if (!response.data.success) {
-      debugger
       console.info(router.currentRoute)
       router.push({
         path: "/login",
