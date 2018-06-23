@@ -111,7 +111,7 @@ export default {
               }
             }
           ).catch(err => alert(err));
-      })
+      }).catch(() => {});
     },
     popupEdit(recored) {
       this.$parent.$router.push({
