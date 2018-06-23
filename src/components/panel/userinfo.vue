@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>用户信息</span>
+        <span>编辑用户</span>
       </div>
       <el-form :model="userInfo">
         <el-row>
@@ -96,7 +96,7 @@
             <el-row>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="出生日期：">
-                  <el-date-picker v-model="userInfo.brt_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.brt_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
@@ -175,13 +175,13 @@
             <el-row>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="合同开始时间：">
-                  <el-date-picker v-model="userInfo.beg_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.beg_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="合同结束时间：">
-                  <el-date-picker v-model="userInfo.end_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.end_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
@@ -190,7 +190,7 @@
             <el-row>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="试用到期：">
-                  <el-date-picker v-model="userInfo.try_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.try_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
