@@ -8,7 +8,7 @@
       <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;" @click="addDep">添加</el-button>
 
       <el-table :data="pageData" border>
-        <el-table-column fixed="left" label="操作">
+        <el-table-column fixed="left" label="操作" width="100%">
           <template slot-scope="scope">
             <el-button @click="editDep(scope.row)" type="text">
               <i class="el-icon-edit"></i>
@@ -20,11 +20,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="dep_indx" label="序号"></el-table-column>
+        <el-table-column prop="dep_indx" label="序号"  width="100%"></el-table-column>
         <el-table-column prop="dep_name" label="部门名称"></el-table-column>
         <el-table-column prop="p_dep_name" label="上级部门"></el-table-column>
         <el-table-column prop="dep_prnc" label="部门领导"></el-table-column>
-        <el-table-column prop="dep_rank" label="部门层级"></el-table-column>
+        <el-table-column prop="dep_rank" label="部门层级"  width="100%"></el-table-column>
         <el-table-column prop="end_date" label="生效日期"></el-table-column>
       </el-table>
 
@@ -36,13 +36,12 @@
     </el-card>
 
     <!-- 修改部门 -->
-    <el-dialog width="60%" min-height="200px" title="修改部门" :visible.sync="editDepDialog" append-to-body>
+    <el-dialog width="60%" min-height="200px" title="修改部门" :visible.sync="editDepDialog" append-to-body center>
       <el-form :model="editDepData">
         <el-form-item :label-width="formLabelWidth" label="部门名称：">
-          <span>{{editDepData.dep_name}}</span>
+            <el-input v-model="editDepData.dep_name"></el-input>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="上级部门：">
-          <!-- <el-input v-model="editDepData.emp_name"></el-input> -->
           <el-row>
             <el-col :span="17">
               <el-input v-model="editDepData.par_indx" v-if="false"></el-input>
@@ -54,9 +53,9 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="部门层级：">
+        <!-- <el-form-item :label-width="formLabelWidth" label="部门层级：">
           <el-input v-model="editDepData.dep_rank"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label-width="formLabelWidth" label="部门前缀：">
           <el-input v-model="editDepData.dep_pref"></el-input>
         </el-form-item>
@@ -64,7 +63,12 @@
           <el-input v-model="editDepData.dep_prnc"></el-input>
         </el-form-item>
 
+        <el-form-item :label-width="formLabelWidth" label="生效日期：">
+            <el-date-picker value-format="yyyy-MM-dd" v-model="editDepData.end_date" type="date" placeholder="选择日期"></el-date-picker>
+        </el-form-item>
+
       </el-form>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="depEditSave">确 定</el-button>
         <el-button @click="editDepDialog = false">取 消</el-button>
@@ -105,16 +109,9 @@ export default {
     };
   },
   methods: {
-    getDiffer(newData, oldData) {
-      const differ = {};
-      for (let p in newData) {
-        if (newData[p] != oldData[p]) {
-          differ[p] = newData[p];
-        }
-      }
-      return differ;
+    addDep() {
+      ///admin/dept/dept_add
     },
-    addDep() {},
     delDep(record) {
       let param = {
         dep_indx: record.dep_indx
@@ -124,8 +121,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        axios
-          .post("/dept/dept_del", param)
+        axios.post("/dept/dept_del", param)
           .then(data => {
             if (data.data.success === true) {
               this.$message({
@@ -143,35 +139,23 @@ export default {
         .get("/dept/dept_edit_data", { params: { dep_indx: record.dep_indx } })
         .then(data => {
           this.editDepData = data.data.data[0];
-          this.orignalEditData = _.cloneDeep(data.data.data[0]);
           this.editDepDialog = true;
         });
     },
     handleNodeClick(node) {
-      this.editDepData.dep_name = node.dep_name;
-      this.editDepData.dep_indx = node.dep_indx;
+      this.editDepData.p_dep_name = node.dep_name;
+      this.editDepData.par_indx = node.dep_indx;
       this.treeVisible = false;
     },
     depEditSave() {
-      const hasModifyDep = !_.isEqual(this.editDepData, this.orignalEditData);
+      let modifyData =this.editDepData
+      delete modifyData.p_dep_name
+      delete modifyData.ROW_NUMBER
 
-      if (hasModifyDep) {
-        const modifyData = this.getDiffer(
-          this.editDepData,
-          this.orignalEditData
-        );
-
-        _.merge(modifyData, {
-          dep_indx: this.editDepData.dep_indx
-        });
-
-        axios.post("/dept/dept_edit_save", modifyData).then(data => {
-          this.editDepDialog = false;
-          this.getDepList();
-        });
-      } else {
-        alert("数据未更改");
-      }
+      axios.post("/dept/dept_edit_save", modifyData).then(data => {
+        this.editDepDialog = false;
+        this.getDepList();
+      });
     },
     openDepTree() {
       axios
@@ -222,6 +206,9 @@ export default {
   text-align: right;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+.el-date-editor.el-input{
+  width:100%;
 }
 </style>
 
