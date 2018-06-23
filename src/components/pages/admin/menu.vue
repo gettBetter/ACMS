@@ -56,7 +56,11 @@
         </el-dialog>
 
         <!-- adds菜单 -->
+<<<<<<< HEAD
         <el-dialog width="40%" title="添加菜单"  :visible.sync="addDialog" append-to-body>
+=======
+        <el-dialog width="40%" title="编辑菜单" :visible.sync="addDialog" append-to-body>
+>>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
             <el-form :model="addMenuData" :rules="rules" ref="addMenuData">
                 <el-form-item :label-width="formLabelWidth" label="菜单名称：" prop="name">
                     <el-input v-model="addMenuData.name"></el-input>
@@ -70,8 +74,13 @@
                 <el-form-item :label-width="formLabelWidth" label="菜单组件：" prop="component">
                     <el-input v-model="addMenuData.component"></el-input>
                 </el-form-item>
+<<<<<<< HEAD
                 <el-form-item :label-width="formLabelWidth" label="所属大类：" prop="parent_id">
                     <el-select v-model="addMenuData.parent_id">
+=======
+                <el-form-item :label-width="formLabelWidth" label="所属大类：">
+                    <el-select v-model="addMenuData.parent_id" default-first-option>
+>>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
                         <el-option v-for="opt in firstMenu" :label="opt.name" :value="opt.a_id" :key="opt.a_id">
                         </el-option>
                     </el-select>
@@ -104,9 +113,10 @@ export default {
       },
       editMenuData: {},
       editDialog: false,
-      addDialog:false,
-      addMenuData:{},
+      addDialog: false,
+      addMenuData: {},
       rules: {
+<<<<<<< HEAD
         name: [
           { required: true, message: '请输入菜单名称', trigger: 'blur' },
         ],
@@ -130,12 +140,28 @@ export default {
       let newMenu=this.menuTree.concat([]);
       newMenu.unshift({name:"无",a_id:0})
       return newMenu
+=======
+        name: [{ required: true, message: "请输入菜单名称", trigger: "blur" }]
+      }
+    };
+  },
+  computed: {
+    firstMenu() {
+      return this.menuTree;
+>>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
     }
   },
   methods: {
     addMenu() {
       this.addDialog = true;
+<<<<<<< HEAD
       this.addMenuData.sort = 100;
+=======
+      console.log(this.firstMenu);
+      this.addMenuData.parent_id = this.addMenuData.parent_id
+        ? this.addMenuData.parent_id
+        : data.a_id;
+>>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
     },
     editMenu(node, data) {
       const param = {
@@ -144,6 +170,10 @@ export default {
       axios.get("/sysmenu/sysmenu_edit_data", { params: param }).then(data => {
         if (data.data.success) {
           this.editMenuData = data.data.sysmenu_data[0];
+<<<<<<< HEAD
+=======
+          // this.firstMenu = data.data.sysmenu_first;
+>>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
           this.editDialog = true;
         }
       });
@@ -161,15 +191,24 @@ export default {
           }
         }).catch(err => alert(err));
     },
-    menuAddSave(formName){
-      this.$refs[formName].validate((valid) => {
+    menuAddSave(formName) {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           let params = this.addMenuData;
+<<<<<<< HEAD
           axios.post('/sysmenu/sysmenu_add',params).then(res=>{
             this.addDialog = false;
             this.getMenuTree();
             this.$refs[formName].resetFields();
           }).catch(res=>{})
+=======
+          axios
+            .post("/admin/sysmenu/sysmenu_add", params)
+            .then(res => {
+              console.log(res.data);
+            })
+            .catch(res => {});
+>>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
         } else {
           return false;
         }
@@ -183,19 +222,22 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        axios.post("/sysmenu/sysmenu_del", param)
-          .then(data => {
-            if (data.data.success === true) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              this.getMenuTree();
-            }
-          })
-          .catch(err => alert(err));
-      }).catch(() => {});
+      })
+        .then(() => {
+          axios
+            .post("/sysmenu/sysmenu_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getMenuTree();
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
       console.info(node, data);
     },
     handleNodeClick(node) {
@@ -221,7 +263,7 @@ export default {
 </script>
 
 <style scoped>
-.menubox{
+.menubox {
   margin-left: 20%;
   width: 50%;
 }
