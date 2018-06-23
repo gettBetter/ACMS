@@ -28,8 +28,8 @@
         <el-table-column prop="role_name" label="WEB角色名称"></el-table-column>
         <el-table-column prop="gdr_indx" label="性别"  width="80%"></el-table-column>
         <el-table-column prop="reg_time" label="注册时间 "></el-table-column>
-        <el-table-column prop="pbas_name" label="人员状态"  width="80%"></el-table-column>
-        <el-table-column prop="kbas_name" label="人员类别"></el-table-column>
+        <el-table-column prop="est_indx" label="人员状态"  width="80%"></el-table-column>
+        <el-table-column prop="rnk_indx" label="人员类别"></el-table-column>
         <el-table-column prop="crt_code" label="证件号码"></el-table-column>
       </el-table>
 

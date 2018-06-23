@@ -60,6 +60,12 @@ export default new Router({
             import ("@/components/pages/admin/dep")
         },
         {
+          path: "/admin/dep/addDep",
+          name:"addDep",
+          component: () =>
+            import ("@/components/pages/admin/addDep")
+        },
+        {
           path: "/admin/role",
           component: () =>
             import ("@/components/pages/admin/role")
