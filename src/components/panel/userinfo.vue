@@ -352,7 +352,11 @@ export default {
         // this.$_.omit(params, ['dep_name']);
         this.$post("/user/user_edit_save", params)
           .then(data => {
-            this.$router.go(-1);
+            // this.$router.go(-1);
+            this.$router.push({
+              path: "/admin/user",
+              query: { saveBack: true }
+            });
           })
           .catch(err => alert(err));
       } else {
