@@ -350,6 +350,10 @@ export default {
         this.$post("/user/user_edit_save", params)
           .then(data => {
             // this.$router.go(-1);
+            this.$message({
+              type: "success",
+              message: "编辑成功!"
+            });
             this.$router.push({
               path: "/admin/user",
               query: { saveBack: true }

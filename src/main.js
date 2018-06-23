@@ -19,11 +19,31 @@ Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 Vue.prototype.$_ = _;
 
+// router.afterEach((to, from) => {
+//   if (to.query.saveBack) {
+//     // next(to.path);
+//     // vm => vm.getUserList()
+//     debugger
+//     router.replace(to.path)
+//     // location.reload()
+//   }
+// })
+// router.beforeResolve((to, from, next) => {
+//   if (to.query.saveBack) {
+//     // next(to.path);
+//     // vm => vm.getUserList()
+//     debugger
+//     router.replace(to.path)
+//     // location.reload()
+//   }
+//   next()
+// })
+
 router.beforeEach((to, from, next) => {
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
   // const isLogin = store.getters.isLogin
-  // debugger
+
   if (to.path === '/login') {
     sessionStorage.clear()
     store.commit('setMenus', [])

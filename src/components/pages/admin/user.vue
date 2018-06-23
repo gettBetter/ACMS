@@ -120,13 +120,9 @@ export default {
         params: { userId: recored.emp_indx }
       });
     },
-
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
-    },
-    refreshPage() {
-      this.$parent.$router.replace("/admin/user");
     }
   },
   computed: {
@@ -145,7 +141,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     if (to.query.saveBack) {
-      next(vm => vm.refreshPage());
+      next(vm => vm.getUserList());
     }
     next();
   }

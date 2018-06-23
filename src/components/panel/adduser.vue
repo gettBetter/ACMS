@@ -230,7 +230,7 @@
       </el-form>
 
       <el-row style="text-align: center; padding: 30px 0">
-        <el-button class="submit-btn" type="primary" @click="submit">确定</el-button>
+        <el-button class="submit-btn" type="primary" @click="submit('userInfo')">确定</el-button>
         <el-button class="cancel-btn" @click="cancel">取消</el-button>
       </el-row>
 
@@ -310,9 +310,8 @@ export default {
       this.userInfo.dep_name = node.dep_name;
       this.treeVisible = false;
     },
-    submit() {
-      this.$refs.userInfo.validate(valid => {
-        debugger;
+    submit(formName) {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           const params = this.userInfo;
           delete params.dep_name;
@@ -320,6 +319,10 @@ export default {
             .post("/user/user_add", params)
             .then(data => {
               if (data.data.success) {
+                this.$message({
+                  type: "success",
+                  message: "添加成功!"
+                });
                 this.$router.push({
                   path: "/admin/user",
                   query: { saveBack: true }
@@ -337,7 +340,10 @@ export default {
     }
   },
   computed: {},
-  activated() {
+  created() {
+    this.userData = {};
+    this.userInfo = {};
+    this.$refs.userInfo.resetFields();
     this.getUserData();
   }
 };
