@@ -86,7 +86,7 @@
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="最高学历：">
                   <el-select v-model="userInfo.dgr_indx">
-                    <el-option v-for="opt in userEditData.最高学历" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
+                    <el-option v-for="opt in userEditData.degree_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -96,7 +96,7 @@
             <el-row>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="出生日期：">
-                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.brt_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd" v-model="userInfo.brt_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
@@ -165,7 +165,7 @@
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="职位等级：">
                   <el-select v-model="userInfo.dty_indx">
-                    <el-option v-for="opt in userEditData.degree_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
+                    <el-option v-for="opt in userEditData.duty_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -175,13 +175,13 @@
             <el-row>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="合同开始时间：">
-                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.beg_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd" v-model="userInfo.beg_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="合同结束时间：">
-                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.end_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd" v-model="userInfo.end_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
@@ -190,7 +190,7 @@
             <el-row>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="试用到期：">
-                  <el-date-picker value-format="yyyy-MM-dd"  v-model="userInfo.try_date" type="date">
+                  <el-date-picker value-format="yyyy-MM-dd" v-model="userInfo.try_date" type="date">
                   </el-date-picker>
                 </el-form-item>
               </el-col>
@@ -216,18 +216,15 @@
                     :value="opt.bas_indx"
                     :key="opt.bas_indx" -->
               <el-col :span="11" :offset="1">
-                <el-form-item :label-width="formLabelWidth" label="是否管理员：">
-                  <el-select v-model="userInfo.usr_isok ">
-                    <!-- <el-option v-for="opt in userEditData.role_list"
-                    :label="opt.bas_name"  
-                    :value="opt.bas_indx"
-                    :key="opt.bas_indx">
-                  </el-option> -->
+                <el-form-item :label-width="formLabelWidth" label="用户角色：">
+                  <el-select v-model="userInfo.role_name">
+                    <el-option v-for="opt in userEditData.role_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
+                    </el-option>
                     <!-- <el-select> -->
-                    <el-option value="1" label="是">
+                    <!-- <el-option value="1" label="是">
                     </el-option>
                     <el-option value="0" label="否">
-                    </el-option>
+                    </el-option> -->
                   </el-select>
                 </el-form-item>
               </el-col>

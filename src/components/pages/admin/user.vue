@@ -87,10 +87,6 @@ export default {
     },
     addUser() {
       this.$parent.$router.push("/admin/user/adduser");
-      // axios
-      //   .get("/user/user_add_data")
-      //   .then(data => console.info(data))
-      //   .catch(err => console.info(err));
     },
     delUser(recored) {
       let param = {
