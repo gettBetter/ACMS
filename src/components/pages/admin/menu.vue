@@ -23,6 +23,31 @@
                 </el-tree>
             </div>
         </el-card>
+
+        <!-- 修改菜单 -->
+        <el-dialog width="40%" title="编辑菜单" :visible.sync="editDialog" append-to-body>
+            <el-form :model="editMenuData">
+                <el-form-item :label-width="formLabelWidth" label="菜单名称：">
+                    <el-input v-model="editMenuData.name"></el-input>
+                </el-form-item>
+                <el-form-item :label-width="formLabelWidth" label="菜单代码：">
+                    <el-input v-model="editMenuData.action_code"></el-input>
+                </el-form-item>
+                <el-form-item :label-width="formLabelWidth" label="所属大类：">
+                    <el-select v-model="editMenuData.parent_id">
+                        <el-option v-for="opt in firstMenu" :label="opt.name" :value="opt.a_id" :key="opt.a_id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item :label-width="formLabelWidth" label="排序号：">
+                    <el-input type="number" v-model="editMenuData.sort"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="menuEditSave">确 定</el-button>
+                <el-button @click="editDialog = false">取 消</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -34,17 +59,45 @@ import _ from "lodash";
 export default {
   data() {
     return {
+      formLabelWidth: "100px",
       menuTree: [],
       treeProp: {
         label: "name",
         children: "children"
         // isLeaf: true
-      }
+      },
+      editMenuData: {},
+      firstMenu: [],
+      editDialog: false
     };
   },
   methods: {
     addMenu(node, data) {},
-    editMenu(node, data) {},
+    editMenu(node, data) {
+      const param = {
+        a_id: data.a_id
+      };
+      axios.get("/sysmenu/sysmenu_edit_data", { params: param }).then(data => {
+        if (data.data.success) {
+          console.info(data.data);
+          this.editMenuData = data.data.sysmenu_data[0];
+          this.firstMenu = data.data.sysmenu_first;
+          this.editDialog = true;
+        }
+      });
+    },
+    menuEditSave() {
+      const param = this.editMenuData;
+      axios
+        .post("/sysmenu/sysmenu_edit_save", param)
+        .then(data => {
+          if (data.data.success) {
+            this.editDialog = false;
+            this.getMenuTree();
+          }
+        })
+        .catch(err => alert(err));
+    },
     delMenu(node, data) {
       const param = {
         a_id: data.a_id
