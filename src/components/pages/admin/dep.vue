@@ -134,7 +134,7 @@ export default {
             }
           })
           .catch(err => alert(err));
-      });
+      }).catch(() => {});
     },
     editDep(record) {
       axios

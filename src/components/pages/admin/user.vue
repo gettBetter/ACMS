@@ -28,7 +28,7 @@
         <el-table-column prop="role_name" label="WEB角色名称"></el-table-column>
         <el-table-column prop="gdr_indx" label="性别" width="80%"></el-table-column>
         <el-table-column prop="reg_time" label="注册时间 "></el-table-column>
-        <el-table-column prop="est_indx" label="人员状态"  width="80%"></el-table-column>
+        <el-table-column prop="est_indx" label="人员状态" width="80%"></el-table-column>
         <el-table-column prop="rnk_indx" label="人员类别"></el-table-column>
         <el-table-column prop="crt_code" label="证件号码"></el-table-column>
       </el-table>
@@ -100,20 +100,22 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        axios
-          .post("/user/user_del", param)
-          .then(data => {
-            if (data.data.success === true) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              this.getUserList();
-            }
-          })
-          .catch(err => alert(err));
-      });
+      })
+        .then(() => {
+          axios
+            .post("/user/user_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getUserList();
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
     },
     popupEdit(recored) {
       this.$parent.$router.push({

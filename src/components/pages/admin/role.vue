@@ -23,7 +23,7 @@
                 <el-table-column prop="r_id" label="角色ID" width="80%"></el-table-column>
                 <el-table-column prop="role_name" label="角色名称" width="80%"></el-table-column>
                 <el-table-column prop="description" label="描述" width="100%"></el-table-column>
-                <el-table-column prop="action_list" label="角色代码"></el-table-column>
+                <el-table-column prop="action_list" label="菜单权限"></el-table-column>
             </el-table>
         </el-card>
 
@@ -39,10 +39,9 @@
                 <el-form-item :label-width="formLabelWidth" label="描述：">
                     <el-input v-model="editData.description"></el-input>
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="角色代码：">
-                    <el-input v-model="editData.action_list"></el-input>
+                <el-form-item :label-width="formLabelWidth" label="菜单权限：">
+                    <el-tree refs="menuTree" show-checkbox :data="menuTree" :props="treeProp" :default-checked-Nodes="defaultCheckedData" @node-click="handleNodeClick"></el-tree>
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth"></el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="editSave">确 定</el-button>
@@ -64,7 +63,14 @@ export default {
       formLabelWidth: "100px",
       roleList: [],
       editData: {},
-      editDialog: false
+      editDialog: false,
+      menuTree: [],
+      treeProp: {
+        id: "path",
+        label: "name",
+        children: "children"
+      },
+      defaultCheckedData: []
     };
   },
   methods: {
@@ -80,21 +86,49 @@ export default {
           if (data.data.success) {
             console.info(data.data);
             this.editData = data.data.role_data[0];
+            this.menuTree = data.data.sysmenu_data;
+            this.defaultCheckedData = this.editData.action_list.split(",");
+
             this.editDialog = true;
+            // setTimeout(() => this.setChecked(this.defaultCheckedData), 1000);
           } else {
             //   ...
           }
         })
         .catch(err => alert(err));
     },
-    delRole(data) {},
+    delRole(data) {
+      this.$confirm("请确认是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        const param = {
+          params: {
+            r_id: data.r_id
+          }
+        };
+        axios("/role/role_del", param)
+          .then(data => {
+            if (data.data.success) {
+              this.getRoleList();
+            }
+          })
+          .catch(err => alert(arr));
+      });
+    },
     editSave() {
       const param = this.editData;
       delete param.ROW_NUMBER;
       axios.post("/role/role_edit_save", param).then(data => {
-        this.getRoleList();
-        this.editDialog = false;
+        if (data.data.success) {
+          this.getRoleList();
+          this.editDialog = false;
+        }
       });
+    },
+    handleNodeClick(node, data) {
+      console.info(node, data);
     },
     getRoleList() {
       let loadingInstance = Loading.service({
@@ -113,8 +147,17 @@ export default {
         })
         .catch(err => alert(err));
     }
+    // setChecked(arr) {
+    //   debugger;
+    //   this.$refs.menuTree.setCheckedKeys(arr);
+    // }
   },
-  computed: {},
+  computed: {
+    // defaultCheckedData() {
+    //   return this.editData.action_list.split(",");
+    // }
+  },
+  mounted() {},
   created() {
     this.getRoleList();
   }
@@ -122,6 +165,9 @@ export default {
 </script>
 
 <style >
+.el-tree {
+  margin-top: 8px;
+}
 /* .block {
   text-align: right;
   margin-top: 20px;
