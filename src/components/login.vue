@@ -50,7 +50,7 @@ export default {
             password: this.password
           })
           .then(data => {
-            if (!data.success) {
+            if (!data.data.success) {
               alert("用户登录认证失败，请重新登录");
               this.loginError = true;
               return;
