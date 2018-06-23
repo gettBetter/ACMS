@@ -33,6 +33,12 @@
                 <el-form-item :label-width="formLabelWidth" label="菜单代码：">
                     <el-input v-model="editMenuData.action_code"></el-input>
                 </el-form-item>
+                <el-form-item :label-width="formLabelWidth" label="菜单路径：">
+                    <el-input v-model="editMenuData.path"></el-input>
+                </el-form-item>
+                <el-form-item :label-width="formLabelWidth" label="菜单组件：">
+                    <el-input v-model="editMenuData.component"></el-input>
+                </el-form-item>
                 <el-form-item :label-width="formLabelWidth" label="所属大类：">
                     <el-select v-model="editMenuData.parent_id">
                         <el-option v-for="opt in firstMenu" :label="opt.name" :value="opt.a_id" :key="opt.a_id">
