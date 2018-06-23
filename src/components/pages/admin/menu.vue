@@ -121,7 +121,8 @@ export default {
   methods: {
     addMenu(node, data) {
       this.addDialog = true;
-      // this.addMenuData.parent_id = data.a_id;
+      console.log(this.firstMenu)
+      this.addMenuData.parent_id = data.a_id;
     },
     editMenu(node, data) {
       const param = {
