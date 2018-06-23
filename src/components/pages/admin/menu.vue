@@ -145,6 +145,9 @@ export default {
         if (data.data.success) {
           this.editMenuData = data.data.sysmenu_data[0];
           this.editDialog = true;
+          if(this.editMenuData.parent_id==='0'){
+            this.editMenuData.parent_id=0;
+          }
         }
       });
     },
