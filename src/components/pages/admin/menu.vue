@@ -56,7 +56,7 @@
         </el-dialog>
 
         <!-- adds菜单 -->
-        <el-dialog width="40%" title="编辑菜单"  :visible.sync="addDialog" append-to-body>
+        <el-dialog width="40%" title="编辑菜单" :visible.sync="addDialog" append-to-body>
             <el-form :model="addMenuData" :rules="rules" ref="addMenuData">
                 <el-form-item :label-width="formLabelWidth" label="菜单名称：" prop="name">
                     <el-input v-model="addMenuData.name"></el-input>
@@ -71,7 +71,7 @@
                     <el-input v-model="addMenuData.component"></el-input>
                 </el-form-item>
                 <el-form-item :label-width="formLabelWidth" label="所属大类：">
-                    <el-select v-model="addMenuData.parent_id">
+                    <el-select v-model="addMenuData.parent_id" default-first-option>
                         <el-option v-for="opt in firstMenu" :label="opt.name" :value="opt.a_id" :key="opt.a_id">
                         </el-option>
                     </el-select>
@@ -104,25 +104,25 @@ export default {
       },
       editMenuData: {},
       editDialog: false,
-      addDialog:false,
-      addMenuData:{},
+      addDialog: false,
+      addMenuData: {},
       rules: {
-        name: [
-          { required: true, message: '请输入菜单名称', trigger: 'blur' },
-        ]
+        name: [{ required: true, message: "请输入菜单名称", trigger: "blur" }]
       }
     };
   },
-  computed:{
-    firstMenu(){
-      return this.menuTree
+  computed: {
+    firstMenu() {
+      return this.menuTree;
     }
   },
   methods: {
     addMenu(node, data) {
       this.addDialog = true;
-      console.log(this.firstMenu)
-      this.addMenuData.parent_id = data.a_id;
+      console.log(this.firstMenu);
+      this.addMenuData.parent_id = this.addMenuData.parent_id
+        ? this.addMenuData.parent_id
+        : data.a_id;
     },
     editMenu(node, data) {
       const param = {
@@ -132,7 +132,7 @@ export default {
         if (data.data.success) {
           console.info(data.data);
           this.editMenuData = data.data.sysmenu_data[0];
-         // this.firstMenu = data.data.sysmenu_first;
+          // this.firstMenu = data.data.sysmenu_first;
           this.editDialog = true;
         }
       });
@@ -150,15 +150,16 @@ export default {
         })
         .catch(err => alert(err));
     },
-    menuAddSave(formName){
-      this.$refs[formName].validate((valid) => {
+    menuAddSave(formName) {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           let params = this.addMenuData;
-          axios.post('/admin/sysmenu/sysmenu_add',params).then(res=>{
-            console.log(res.data)
-          }).catch(res=>{
-
-          })
+          axios
+            .post("/admin/sysmenu/sysmenu_add", params)
+            .then(res => {
+              console.log(res.data);
+            })
+            .catch(res => {});
         } else {
           return false;
         }
@@ -172,19 +173,22 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        axios.post("/sysmenu/sysmenu_del", param)
-          .then(data => {
-            if (data.data.success === true) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              this.getMenuTree();
-            }
-          })
-          .catch(err => alert(err));
-      }).catch(() => {});
+      })
+        .then(() => {
+          axios
+            .post("/sysmenu/sysmenu_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getMenuTree();
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
       console.info(node, data);
     },
     handleNodeClick(node) {
@@ -210,7 +214,7 @@ export default {
 </script>
 
 <style scoped>
-.menubox{
+.menubox {
   margin-left: 20%;
   width: 50%;
 }
