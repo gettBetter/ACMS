@@ -104,22 +104,20 @@ export default {
           delete params.p_dep_name
 
           axios.post('/dept/dept_add',params).then(res=>{
-            console.log(res.data)
-            this.$router.go(-1);
+            this.$refs[formName].resetFields();
+            this.$router.push({
+              name:"dep",
+              query: { saveBack: true }
+            });
           }).catch(res=>{})
-
-          axios.post("/admin/dept/dept_add", params)
-            .then(res => {
-              console.log(res.data);
-              this.$router.go(-1);
-            }).catch(res => {});
+          
         } else {
           return false;
         }
       });
     },
     addCancel() {
-      this.$router.go(-1);
+      this.$router.push({name:"dep"});
     }
   }
 };

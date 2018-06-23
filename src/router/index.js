@@ -56,6 +56,7 @@ export default new Router({
         },
         {
           path: "/admin/dep",
+          name:"dep",
           component: () =>
             import ("@/components/pages/admin/dep")
         },
