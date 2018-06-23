@@ -319,7 +319,7 @@ export default {
     handleNodeClick(node) {
       console.info(node);
       this.userInfo.dep_name = node.dep_name;
-      this.userInfo.dep_index = node.dep_indx;
+      this.userInfo.dep_indx = node.dep_indx;
       console.info(this.userInfo);
       this.treeVisible = false;
     },
