@@ -76,7 +76,6 @@ export default {
       rules: {
         dep_name: [
           { required: true, message: '请输入部门名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ]
       }
       
@@ -105,7 +104,7 @@ export default {
           let params = this.addDepData;
           delete params.p_dep_name
 
-          axios.post('/admin/dept/dept_add',params).then(res=>{
+          axios.post('/dept/dept_add',params).then(res=>{
             console.log(res.data)
             this.$router.go(-1);
           }).catch(res=>{

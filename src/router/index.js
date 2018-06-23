@@ -71,6 +71,12 @@ export default new Router({
             import ("@/components/pages/admin/role")
         },
         {
+          path: "/admin/role/editRole/:r_id",
+          name:"editRole",
+          component: () =>
+            import ("@/components/pages/admin/editRole")
+        },
+        {
           path: "/admin/menu",
           component: () =>
             import ("@/components/pages/admin/menu")

@@ -110,9 +110,7 @@ export default {
   },
   methods: {
     addDep() {
-      console.log(this.$router)
       this.$router.push({name: "addDep"})
-      ///admin/dept/dept_add
     },
     delDep(record) {
       let param = {
