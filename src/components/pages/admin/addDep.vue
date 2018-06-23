@@ -75,12 +75,7 @@ export default {
       },
       rules: {
         dep_name: [
-<<<<<<< HEAD
           { required: true, message: '请输入部门名称', trigger: 'blur' },
-=======
-          { required: true, message: "请输入部门名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
->>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
         ]
       }
     };
@@ -106,26 +101,18 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let params = this.addDepData;
-<<<<<<< HEAD
           delete params.p_dep_name
 
           axios.post('/dept/dept_add',params).then(res=>{
             console.log(res.data)
             this.$router.go(-1);
-          }).catch(res=>{
+          }).catch(res=>{})
 
-          })
-=======
-          delete params.p_dep_name;
->>>>>>> f61615dfd49a6b7d6e2106f626c51f23137b6f0a
-
-          axios
-            .post("/admin/dept/dept_add", params)
+          axios.post("/admin/dept/dept_add", params)
             .then(res => {
               console.log(res.data);
               this.$router.go(-1);
-            })
-            .catch(res => {});
+            }).catch(res => {});
         } else {
           return false;
         }
