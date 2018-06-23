@@ -21,8 +21,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="r_id" label="角色ID" width="80%"></el-table-column>
-                <el-table-column prop="role_name" label="角色名称" width="80%"></el-table-column>
-                <el-table-column prop="description" label="描述" width="100%"></el-table-column>
+                <el-table-column prop="role_name" label="角色名称" width="100%"></el-table-column>
+                <el-table-column prop="description" label="描述" width="150%"></el-table-column>
                 <el-table-column prop="action_list" label="菜单权限"></el-table-column>
             </el-table>
         </el-card>
