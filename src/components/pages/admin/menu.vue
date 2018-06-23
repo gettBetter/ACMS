@@ -152,7 +152,6 @@ export default {
       const param = this.editMenuData;
       delete param.ROW_NUMBER;
       delete param.menu;
-      delete param.name;
       axios.post("/sysmenu/sysmenu_edit_save", param)
         .then(data => {
           if (data.data.success) {
