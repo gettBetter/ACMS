@@ -18,7 +18,7 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="菜单权限：">
 
-          <div v-for="menu in menuTree" :key="menu.a_id">
+          <div v-for="menu in menuTree" :key="menu.r_id">
             <div class="itemclass">
               <el-checkbox :indeterminate="isIndeterminate" @change="checed=>handleCheckAllChange(checed,menu)"> {{menu.name}}</el-checkbox>
             </div>
@@ -125,7 +125,7 @@ export default {
     editSave() {
       const param = this.editData;
       delete param.ROW_NUMBER;
-      
+
       axios.post("/role/role_edit_save", param).then(data => {
         if (data.data.success) {
           this.$message({
