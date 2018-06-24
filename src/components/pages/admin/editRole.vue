@@ -42,7 +42,6 @@
 
 <script>
 import axios from "axios";
-import { Loading } from "element-ui";
 
 export default {
   data() {
