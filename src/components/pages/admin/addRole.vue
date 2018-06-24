@@ -23,7 +23,7 @@
             </div>
             <div style="margin: 15px 0;"></div>
             <el-checkbox-group v-model="menuCheckData" @change="CheckedChange">
-              <el-checkbox v-for="item in menu.children" :label="item.path" :key="item.a_id">{{item.name}}:{{item.path}}</el-checkbox>
+              <el-checkbox v-for="item in menu.children" :label="item.path" :key="item.a_id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
 
