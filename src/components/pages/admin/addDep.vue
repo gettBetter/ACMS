@@ -75,7 +75,7 @@ export default {
       },
       rules: {
         dep_name: [
-          { required: true, message: '请输入部门名称', trigger: 'blur' },
+          { required: true, message: "请输入部门名称", trigger: "blur" }
         ]
       }
     };
@@ -101,23 +101,26 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let params = this.addDepData;
-          delete params.p_dep_name
+          delete params.p_dep_name;
 
-          axios.post('/dept/dept_add',params).then(res=>{
-            this.$refs[formName].resetFields();
-            this.$router.push({
-              name:"dep",
-              query: { saveBack: true }
-            });
-          }).catch(res=>{})
-          
+          axios
+            .post("/dept/dept_add", params)
+            .then(res => {
+              this.$refs[formName].resetFields();
+              // this.$router.push({
+              //   name:"dep",
+              //   query: { saveBack: true }
+              // });
+              this.$router.go(-1);
+            })
+            .catch(res => {});
         } else {
           return false;
         }
       });
     },
     addCancel() {
-      this.$router.push({name:"dep"});
+      this.$router.push({ name: "dep" });
     }
   }
 };

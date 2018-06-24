@@ -90,7 +90,7 @@ export default {
         .catch(err => alert(err));
     }
   },
-  created() {
+  activated() {
     this.getRoleList();
   }
 };

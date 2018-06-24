@@ -1,42 +1,42 @@
 <template>
-    <div>
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>添加角色</span>
-            </div>
-            <!-- 添加角色     -->
-            <el-form :model="addData" ref="addRole" :rules="rules">
-                <!-- <el-form-item :label-width="formLabelWidth" label="角色ID：">
+  <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>添加角色</span>
+      </div>
+      <!-- 添加角色     -->
+      <el-form :model="addData" ref="addRole" :rules="rules">
+        <!-- <el-form-item :label-width="formLabelWidth" label="角色ID：">
                     <el-input v-model="addData.r_id"></el-input>
                 </el-form-item> -->
-                <el-form-item :label-width="formLabelWidth" label="角色名称：" prop="role_name">
-                    <el-input v-model="addData.role_name"></el-input>
-                </el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="描述：">
-                    <el-input type="textarea" :rows="2" v-model="addData.description"></el-input>
-                </el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="菜单权限：">
+        <el-form-item :label-width="formLabelWidth" label="角色名称：" prop="role_name">
+          <el-input v-model="addData.role_name"></el-input>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="描述：">
+          <el-input type="textarea" :rows="2" v-model="addData.description"></el-input>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="菜单权限：">
 
-                    <div v-for="menu in menuTree" :key="menu.a_id">
-                        <div class="itemclass">
-                            <el-checkbox :indeterminate="isIndeterminate">{{menu.name}}</el-checkbox>
-                        </div>
-                        <div style="margin: 15px 0;"></div>
-                        <el-checkbox-group v-model="menuCheckData" @change="CheckedChange">
-                            <el-checkbox v-for="item in menu.children" :label="item.path" :key="item.a_id">{{item.name}}:{{item.path}}</el-checkbox>
-                        </el-checkbox-group>
-                    </div>
+          <div v-for="menu in menuTree" :key="menu.a_id">
+            <div class="itemclass">
+              <el-checkbox :indeterminate="isIndeterminate">{{menu.name}}</el-checkbox>
+            </div>
+            <div style="margin: 15px 0;"></div>
+            <el-checkbox-group v-model="menuCheckData" @change="CheckedChange">
+              <el-checkbox v-for="item in menu.children" :label="item.path" :key="item.a_id">{{item.name}}:{{item.path}}</el-checkbox>
+            </el-checkbox-group>
+          </div>
 
-                </el-form-item>
-            </el-form>
+        </el-form-item>
+      </el-form>
 
-            <el-row style=" padding: 20px 0 40px 0;margin-left: 20%;">
-                <el-button class="submit-btn" type="primary" @click="addSave">确定</el-button>
-                <el-button class="cancel-btn" @click="addCancel">取消</el-button>
-            </el-row>
+      <el-row style=" padding: 20px 0 40px 0;margin-left: 20%;">
+        <el-button class="submit-btn" type="primary" @click="addSave">确定</el-button>
+        <el-button class="cancel-btn" @click="addCancel">取消</el-button>
+      </el-row>
 
-        </el-card>
-    </div>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -112,7 +112,7 @@ export default {
       this.addData.action_list = this.menuCheckData.join(",");
     }
   },
-  created() {
+  activated() {
     // debugger;
     this.addData = {};
     this.menuTree = [];

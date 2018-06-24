@@ -136,15 +136,15 @@ export default {
       return this.chunkList[this.currentPage - 1];
     }
   },
-  mounted() {
+  activated() {
     this.getUserList();
-  },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.saveBack) {
-      next(vm => vm.getUserList());
-    }
-    next();
   }
+  // beforeRouteEnter(to, from, next) {
+  //   if (to.query.saveBack) {
+  //     next(vm => vm.getUserList());
+  //   }
+  //   next();
+  // }
 };
 </script>
 

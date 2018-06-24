@@ -323,10 +323,11 @@ export default {
                   type: "success",
                   message: "添加成功!"
                 });
-                this.$router.push({
-                  path: "/admin/user",
-                  query: { saveBack: true }
-                });
+                this.$router.go(-1);
+                // this.$router.push({
+                //   path: "/admin/user",
+                //   query: { saveBack: true }
+                // });
               }
             })
             .catch(err => alert(err));
@@ -340,7 +341,7 @@ export default {
     }
   },
   computed: {},
-  created() {
+  activated() {
     this.userData = {};
     this.userInfo = {};
     this.$refs.userInfo.resetFields();

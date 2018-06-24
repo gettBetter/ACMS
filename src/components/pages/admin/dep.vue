@@ -198,15 +198,15 @@ export default {
       return this.chunkList[this.currentPage - 1];
     }
   },
-  created() {
+  activated() {
     this.getDepList();
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.saveBack) {
-      next(vm => vm.getDepList());
-    }
-    next();
-  }
+  // beforeRouteEnter(to, from, next) {
+  //   if (to.query.saveBack) {
+  //     next(vm => vm.getDepList());
+  //   }
+  //   next();
+  // }
 };
 </script>
 

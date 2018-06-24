@@ -111,12 +111,12 @@ export default {
             this.menuTree = data.data.sysmenu_data;
             this.defaultCheckedData = this.editData.action_list.split(",");
 
-            console.info(
-              "TREE",
-              this.menuTree,
-              this.editData,
-              this.defaultCheckedData
-            );
+            // console.info(
+            //   "TREE",
+            //   this.menuTree,
+            //   this.editData,
+            //   this.defaultCheckedData
+            // );
           } else {
           }
         })
@@ -140,7 +140,7 @@ export default {
       this.$router.go(-1);
     }
   },
-  created() {
+  activated() {
     this.editData = {};
     this.menuTree = [];
     this.defaultCheckedData = [];
