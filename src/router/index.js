@@ -56,6 +56,7 @@ export default new Router({
         },
         {
           path: "/admin/dep",
+          name:"dep",
           component: () =>
             import ("@/components/pages/admin/dep")
         },
@@ -69,6 +70,12 @@ export default new Router({
           path: "/admin/role",
           component: () =>
             import ("@/components/pages/admin/role")
+        },
+        {
+          path: "/admin/role/editRole/:r_id",
+          name:"editRole",
+          component: () =>
+            import ("@/components/pages/admin/editRole")
         },
         {
           path: "/admin/menu",

@@ -5,19 +5,19 @@
                 <span>菜单管理</span>
             </div>
             <div class="block menubox">
+                <div style="text-align: right;">
+                    <el-button type="primary" icon="el-icon-plus" style="margin-bottom:20px;" @click="addMenu">添加菜单</el-button>
+                </div>
                 <el-tree :data="menuTree" node-key="id" default-expand-all @node-click="handleNodeClick" :props="treeProp" :expand-on-click-node="false">
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span>{{ node.label }}</span>
                         <span>
-                            <el-button v-if="data.children" @click="addMenu(node,data)" type="text">
-                                <i class="el-icon-plus"></i>
-                            </el-button>
-                            <el-button @click="editMenu(node,data)" type="text">
-                                <i class="el-icon-edit"></i>
-                            </el-button>
-                            <el-button @click="delMenu(node,data)" type="text">
-                                <i class="el-icon-delete"></i>
-                            </el-button>
+                          <el-button @click="editMenu(node,data)" type="text">
+                              <i class="el-icon-edit"></i>
+                          </el-button>
+                          <el-button @click="delMenu(node,data)" type="text">
+                              <i class="el-icon-delete"></i>
+                          </el-button>
                         </span>
                     </span>
                 </el-tree>
@@ -56,22 +56,22 @@
         </el-dialog>
 
         <!-- adds菜单 -->
-        <el-dialog width="40%" title="编辑菜单" :visible.sync="addDialog" append-to-body>
+        <el-dialog width="40%" title="添加菜单"  :visible.sync="addDialog" append-to-body>
             <el-form :model="addMenuData" :rules="rules" ref="addMenuData">
                 <el-form-item :label-width="formLabelWidth" label="菜单名称：" prop="name">
                     <el-input v-model="addMenuData.name"></el-input>
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="菜单代码：">
+                <el-form-item :label-width="formLabelWidth" label="菜单代码：" prop="action_code">
                     <el-input v-model="addMenuData.action_code"></el-input>
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="菜单路径：">
+                <el-form-item :label-width="formLabelWidth" label="菜单路径：" prop="path">
                     <el-input v-model="addMenuData.path"></el-input>
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="菜单组件：">
+                <el-form-item :label-width="formLabelWidth" label="菜单组件：" prop="component">
                     <el-input v-model="addMenuData.component"></el-input>
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="所属大类：">
-                    <el-select v-model="addMenuData.parent_id" default-first-option>
+                <el-form-item :label-width="formLabelWidth" label="所属大类：" prop="parent_id">
+                    <el-select v-model="addMenuData.parent_id">
                         <el-option v-for="opt in firstMenu" :label="opt.name" :value="opt.a_id" :key="opt.a_id">
                         </el-option>
                     </el-select>
@@ -107,22 +107,35 @@ export default {
       addDialog: false,
       addMenuData: {},
       rules: {
-        name: [{ required: true, message: "请输入菜单名称", trigger: "blur" }]
+        name: [
+          { required: true, message: '请输入菜单名称', trigger: 'blur' },
+        ],
+        action_code: [
+          { required: true, message: '请输入菜单代码', trigger: 'blur' },
+        ],
+        path: [
+          { required: true, message: '请输入菜单路径', trigger: 'blur' },
+        ],
+        component: [
+          { required: true, message: '请输入菜单组件', trigger: 'blur' },
+        ],
+        parent_id: [
+          { required: true, message: '请输入所属大类', trigger: 'change' },
+        ]
       }
     };
   },
-  computed: {
-    firstMenu() {
-      return this.menuTree;
+  computed:{
+    firstMenu(){
+      let newMenu=this.menuTree.concat([]);
+      newMenu.unshift({name:"无",a_id:0})
+      return newMenu
     }
   },
   methods: {
-    addMenu(node, data) {
+    addMenu() {
       this.addDialog = true;
-      console.log(this.firstMenu);
-      this.addMenuData.parent_id = this.addMenuData.parent_id
-        ? this.addMenuData.parent_id
-        : data.a_id;
+      this.addMenuData.sort = 100;
     },
     editMenu(node, data) {
       const param = {
@@ -130,36 +143,35 @@ export default {
       };
       axios.get("/sysmenu/sysmenu_edit_data", { params: param }).then(data => {
         if (data.data.success) {
-          console.info(data.data);
           this.editMenuData = data.data.sysmenu_data[0];
-          // this.firstMenu = data.data.sysmenu_first;
           this.editDialog = true;
+          if(this.editMenuData.parent_id==='0'){
+            this.editMenuData.parent_id=0;
+          }
         }
       });
     },
     menuEditSave() {
       const param = this.editMenuData;
       delete param.ROW_NUMBER;
-      axios
-        .post("/sysmenu/sysmenu_edit_save", param)
+      delete param.menu;
+      axios.post("/sysmenu/sysmenu_edit_save", param)
         .then(data => {
           if (data.data.success) {
             this.editDialog = false;
             this.getMenuTree();
           }
-        })
-        .catch(err => alert(err));
+        }).catch(err => alert(err));
     },
     menuAddSave(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let params = this.addMenuData;
-          axios
-            .post("/admin/sysmenu/sysmenu_add", params)
-            .then(res => {
-              console.log(res.data);
-            })
-            .catch(res => {});
+          axios.post('/sysmenu/sysmenu_add',params).then(res=>{
+            this.addDialog = false;
+            this.getMenuTree();
+            this.$refs[formName].resetFields();
+          }).catch(res=>{})
         } else {
           return false;
         }
