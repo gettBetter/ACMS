@@ -56,13 +56,13 @@ export default new Router({
         },
         {
           path: "/admin/dep",
-          name:"dep",
+          name: "dep",
           component: () =>
             import ("@/components/pages/admin/dep")
         },
         {
           path: "/admin/dep/addDep",
-          name:"addDep",
+          name: "addDep",
           component: () =>
             import ("@/components/pages/admin/addDep")
         },
@@ -73,9 +73,15 @@ export default new Router({
         },
         {
           path: "/admin/role/editRole/:r_id",
-          name:"editRole",
+          name: "editRole",
           component: () =>
             import ("@/components/pages/admin/editRole")
+        },
+        {
+          path: "/admin/role/addRole",
+          name: "addRole",
+          component: () =>
+            import ("@/components/pages/admin/addRole")
         },
         {
           path: "/admin/menu",

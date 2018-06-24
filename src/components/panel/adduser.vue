@@ -246,7 +246,7 @@
 <script>
 import axios from "axios";
 import { Loading } from "element-ui";
-import _ from "lodash";
+// import _ from "lodash";
 
 export default {
   data() {
