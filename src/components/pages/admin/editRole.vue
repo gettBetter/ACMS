@@ -20,7 +20,7 @@
 
           <div v-for="menu in menuTree" :key="menu.a_id">
             <div class="itemclass">
-              <el-checkbox :indeterminate="isIndeterminate">{{menu.name}}</el-checkbox>
+              <el-checkbox :indeterminate="isIndeterminate" @change="checed=>handleCheckAllChange(checed,menu)"> {{menu.name}}</el-checkbox>
             </div>
             <div style="margin: 15px 0;"></div>
             <el-checkbox-group v-model="defaultCheckedData" @change="CheckedChange">
@@ -48,14 +48,57 @@ import _ from "lodash";
 export default {
   data() {
     return {
+      // checkAll: false,
       formLabelWidth: "20%",
       editData: {},
       menuTree: [],
       defaultCheckedData: [],
-      isIndeterminate: true
+      isIndeterminate: true,
+      cities: []
     };
   },
   methods: {
+    CheckedChange(node, data) {
+      console.info(
+        node,
+        data
+        // this.defaultCheckedData,
+        // this.editData.action_list
+      );
+      this.editData.action_list = node.join(",");
+    },
+
+    handleCheckAllChange(val, menu) {
+      console.info("val", val, menu);
+      if (val) {
+        // const path = menu.path;
+        menu.children.forEach(chlid => {
+          if (chlid.path) {
+            if (!this.defaultCheckedData.includes(chlid.path)) {
+              this.defaultCheckedData.push(chlid.path);
+            }
+          }
+        });
+      } else {
+        menu.children.forEach(chlid => {
+          if (chlid.path) {
+            let idx = this.defaultCheckedData.indexOf(chlid.path);
+            if (idx != -1) {
+              // this.defaultCheckedData.push(chlid.path);
+              this.defaultCheckedData.splice(idx, 1);
+            }
+          }
+        });
+      }
+
+      // if (val) {
+      //   this.checkAll = true;
+      // }
+      // this.nodeClick();
+      // console.info(no
+      // this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
     editRole() {
       const param = {
         r_id: this.$route.params.r_id
@@ -96,10 +139,6 @@ export default {
     },
     editCancel() {
       this.$router.go(-1);
-    },
-    CheckedChange(node) {
-      console.info(node, this.defaultCheckedData, this.editData.action_list);
-      this.editData.action_list = node.join(",");
     }
   },
   created() {
