@@ -42,8 +42,6 @@
 
 <script>
 import axios from "axios";
-import { Loading } from "element-ui";
-import _ from "lodash";
 
 export default {
   data() {
@@ -127,12 +125,13 @@ export default {
     editSave() {
       const param = this.editData;
       delete param.ROW_NUMBER;
-      this.$message({
-        type: "success",
-        message: "编辑成功!"
-      });
+      
       axios.post("/role/role_edit_save", param).then(data => {
         if (data.data.success) {
+          this.$message({
+            type: "success",
+            message: "编辑成功!"
+          });
           this.$router.go(-1);
         }
       });
