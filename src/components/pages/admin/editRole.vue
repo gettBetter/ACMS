@@ -18,7 +18,7 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="菜单权限：">
 
-          <div v-for="menu in menuTree" :key="menu.r_id">
+          <div v-for="menu in menuTree" :key="menu.a_id">
             <div class="itemclass">
               <el-checkbox :indeterminate="isIndeterminate" @change="checed=>handleCheckAllChange(checed,menu)"> {{menu.name}}</el-checkbox>
             </div>
@@ -51,25 +51,17 @@ export default {
       editData: {},
       menuTree: [],
       defaultCheckedData: [],
-      isIndeterminate: true,
-      cities: []
+      isIndeterminate: true
     };
   },
   methods: {
     CheckedChange(node, data) {
-      console.info(
-        node,
-        data
-        // this.defaultCheckedData,
-        // this.editData.action_list
-      );
       this.editData.action_list = node.join(",");
     },
 
     handleCheckAllChange(val, menu) {
       console.info("val", val, menu);
       if (val) {
-        // const path = menu.path;
         menu.children.forEach(chlid => {
           if (chlid.path) {
             if (!this.defaultCheckedData.includes(chlid.path)) {
@@ -82,19 +74,11 @@ export default {
           if (chlid.path) {
             let idx = this.defaultCheckedData.indexOf(chlid.path);
             if (idx != -1) {
-              // this.defaultCheckedData.push(chlid.path);
               this.defaultCheckedData.splice(idx, 1);
             }
           }
         });
       }
-
-      // if (val) {
-      //   this.checkAll = true;
-      // }
-      // this.nodeClick();
-      // console.info(no
-      // this.checkedCities = val ? cityOptions : [];
       this.isIndeterminate = false;
     },
     editRole() {
@@ -110,13 +94,6 @@ export default {
             this.editData = data.data.role_data[0];
             this.menuTree = data.data.sysmenu_data;
             this.defaultCheckedData = this.editData.action_list.split(",");
-
-            // console.info(
-            //   "TREE",
-            //   this.menuTree,
-            //   this.editData,
-            //   this.defaultCheckedData
-            // );
           } else {
           }
         })

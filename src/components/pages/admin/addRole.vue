@@ -19,7 +19,7 @@
 
           <div v-for="menu in menuTree" :key="menu.a_id">
             <div class="itemclass">
-              <el-checkbox :indeterminate="isIndeterminate">{{menu.name}}</el-checkbox>
+              <el-checkbox :indeterminate="isIndeterminate" @change="checed=>handleCheckAllChange(checed,menu)"> {{menu.name}}</el-checkbox>
             </div>
             <div style="margin: 15px 0;"></div>
             <el-checkbox-group v-model="menuCheckData" @change="CheckedChange">
@@ -51,7 +51,6 @@ export default {
       addData: {},
       menuTree: [],
       menuCheckData: [],
-      //   menuCheckData: [],
       isIndeterminate: true,
       rules: {
         role_name: [
@@ -65,22 +64,38 @@ export default {
     };
   },
   methods: {
+    CheckedChange(node) {
+      this.menuCheckData = node;
+      this.addData.action_list = this.menuCheckData.join(",");
+    },
+    handleCheckAllChange(val, menu) {
+      console.info("val", val, menu);
+      if (val) {
+        menu.children.forEach(chlid => {
+          if (chlid.path) {
+            if (!this.menuCheckData.includes(chlid.path)) {
+              this.menuCheckData.push(chlid.path);
+            }
+          }
+        });
+      } else {
+        menu.children.forEach(chlid => {
+          if (chlid.path) {
+            let idx = this.menuCheckData.indexOf(chlid.path);
+            if (idx != -1) {
+              this.menuCheckData.splice(idx, 1);
+            }
+          }
+        });
+      }
+      this.isIndeterminate = false;
+    },
     addRole() {
       axios
         .get("/role/role_add_data")
         .then(data => {
           if (data.data.success) {
-            console.info("ad", data.data);
-            // this.addData = data.data;
             this.menuTree = data.data.data;
-            // this.menuCheckData = this.addData.action_list.split(",");
-
-            console.info(
-              "TREE",
-              this.menuTree
-              //   this.addData
-              //   this.menuCheckData
-            );
           } else {
           }
         })
@@ -97,6 +112,7 @@ export default {
           });
           axios.post("/role/role_add", param).then(data => {
             if (data.data.success) {
+              this.$refs.addRole.resetFields();
               this.$router.go(-1);
             }
           });
@@ -105,18 +121,12 @@ export default {
     },
     addCancel() {
       this.$router.go(-1);
-    },
-    CheckedChange(node) {
-      console.info(node, this.menuCheckData);
-      this.menuCheckData = node;
-      this.addData.action_list = this.menuCheckData.join(",");
     }
   },
   activated() {
-    // debugger;
-    this.addData = {};
-    this.menuTree = [];
-    this.menuCheckData = [];
+    // this.addData = {};
+    // this.menuTree = [];
+    // this.menuCheckData = [];
     this.addRole();
   }
 };
