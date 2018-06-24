@@ -20,11 +20,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="dep_indx" label="序号"  width="100%"></el-table-column>
+        <el-table-column prop="dep_indx" label="序号" width="100%"></el-table-column>
         <el-table-column prop="dep_name" label="部门名称"></el-table-column>
         <el-table-column prop="p_dep_name" label="上级部门"></el-table-column>
         <el-table-column prop="dep_prnc" label="部门领导"></el-table-column>
-        <el-table-column prop="dep_rank" label="部门层级"  width="100%"></el-table-column>
+        <el-table-column prop="dep_rank" label="部门层级" width="100%"></el-table-column>
         <el-table-column prop="end_date" label="生效日期"></el-table-column>
       </el-table>
 
@@ -39,7 +39,7 @@
     <el-dialog width="60%" min-height="200px" title="修改部门" :visible.sync="editDepDialog" append-to-body center>
       <el-form :model="editDepData">
         <el-form-item :label-width="formLabelWidth" label="部门名称：">
-            <el-input v-model="editDepData.dep_name"></el-input>
+          <el-input v-model="editDepData.dep_name"></el-input>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="上级部门：">
           <el-row>
@@ -64,7 +64,7 @@
         </el-form-item>
 
         <el-form-item :label-width="formLabelWidth" label="生效日期：">
-            <el-date-picker value-format="yyyy-MM-dd" v-model="editDepData.end_date" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker value-format="yyyy-MM-dd" v-model="editDepData.end_date" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
 
       </el-form>
@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     addDep() {
-      this.$router.push({name: "addDep"})
+      this.$router.push({ name: "addDep" });
     },
     delDep(record) {
       let param = {
@@ -120,19 +120,22 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        axios.post("/dept/dept_del", param)
-          .then(data => {
-            if (data.data.success === true) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              this.getDepList();
-            }
-          })
-          .catch(err => alert(err));
-      }).catch(() => {});
+      })
+        .then(() => {
+          axios
+            .post("/dept/dept_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getDepList();
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
     },
     editDep(record) {
       axios
@@ -148,9 +151,9 @@ export default {
       this.treeVisible = false;
     },
     depEditSave() {
-      let modifyData =this.editDepData
-      delete modifyData.p_dep_name
-      delete modifyData.ROW_NUMBER
+      let modifyData = this.editDepData;
+      delete modifyData.p_dep_name;
+      delete modifyData.ROW_NUMBER;
 
       axios.post("/dept/dept_edit_save", modifyData).then(data => {
         this.editDepDialog = false;
@@ -197,6 +200,12 @@ export default {
   },
   created() {
     this.getDepList();
+  },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.saveBack) {
+      next(vm => vm.getDepList());
+    }
+    next();
   }
 };
 </script>
@@ -207,8 +216,8 @@ export default {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.el-date-editor.el-input{
-  width:100%;
+.el-date-editor.el-input {
+  width: 100%;
 }
 </style>
 
