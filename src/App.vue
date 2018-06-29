@@ -107,7 +107,7 @@ body > .el-container {
 .el-menu {
   width: 200px;
 }
-.el-menu-item.is-active{
+.el-menu-item.is-active {
   background-color: #fff;
 }
 
@@ -142,13 +142,14 @@ user agent stylesheet div {
   text-align: center;
   line-height: 40px;
 }
-.el-card,.el-card__header{
+.el-card,
+.el-card__header {
   border: none;
 }
-.el-container{
-  height: 100%
+.el-container {
+  height: 100%;
 }
-/* .el-header {
-  background-color: #545c64;
-} */
+.el-menu--horizontal > .el-menu-item {
+  color: white;
+}
 </style>
