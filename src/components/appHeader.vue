@@ -2,7 +2,8 @@
   <div>
     <el-row>
       <el-col :span="2" style="text-align: center ">
-        <img :src="logoUrl" width="30px" style="margin-top:16px" />
+        <!-- <img :src="logoUrl" width="30px" style="margin-top:16px" /> -->
+        <p></p>
       </el-col>
       <el-col :span="18" :offset="1">
         <el-menu :default-active="currentPath.match(/\/\w+/g) ? currentPath.match(/\/\w+/g)[0] : ''" mode="horizontal" @select="handleSelect" background-color="#409EFF" router>
