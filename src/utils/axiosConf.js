@@ -33,7 +33,7 @@ axios.interceptors.request.use(
 
 
 // http response 拦截器
-console.info(router)
+// console.info(router)
 axios.interceptors.response.use(
   response => {
     if (!response.data.success) {

@@ -74,6 +74,7 @@ body {
 .container {
   height: 100%;
 }
+
 body > .el-container {
   margin-bottom: 40px;
   height: 100%;
@@ -83,8 +84,8 @@ body > .el-container {
 }
 .el-header,
 .el-footer {
-  background-color: #409eff;
-  color: #333;
+  background-color: #324056;
+  color: white;
   text-align: center;
   line-height: 60px;
 }
@@ -93,7 +94,7 @@ body > .el-container {
   color: #333;
   line-height: 200px;
   overflow: hidden;
-  background-color: #f9f9f9;
+  background-color: #324056;
   /* border-right: 1px solid #ccc; */
 }
 
@@ -149,7 +150,13 @@ user agent stylesheet div {
 .el-container {
   height: 100%;
 }
+
 .el-menu--horizontal > .el-menu-item {
   color: white;
+  font-size: 15px;
+}
+.el-menu--horizontal > .el-menu-item.is-active {
+  color: white !important;
+  border-bottom: 2px solid white;
 }
 </style>

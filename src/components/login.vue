@@ -1,29 +1,28 @@
 <template>
   <div class="login">
-    <el-container>
-      <el-main width="200px">
-        <!-- <el-row>
-                  <el-col :span="6" :offset="9"> -->
-        <el-form label-width="80px" :span="6" offset="9">
-          <el-form-item label="用户名">
-            <el-input v-model="username" placeholder="请输入用户名"></el-input>
-          </el-form-item>
-          <el-form-item label="密码">
-            <el-input v-model="password" placeholder="请输入密码" type="password"></el-input>
-          </el-form-item>
-          <!-- <span v-hide="loginError" class="error-class">{{loginErrorMsg}}</span> -->
-          <!-- v-hide="loginError" -->
-          <el-alert v-if="loginError" :title="loginErrorMsg" type="error">
-          </el-alert>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">登录</el-button>
-            <!-- <el-button>取消</el-button> -->
-          </el-form-item>
-        </el-form>
-        <!-- </el-col> -->
-      </el-main>
-      <!-- </el-row> -->
-    </el-container>
+    <!-- <el-row> -->
+    <!-- <el-col :span="6" :offset="9"> -->
+    <el-card ref="loginBox" id="login-box" style="padding-right:20px;padding-top:20px;padding-bottom:20px;height:300px">
+      <div slot="header" class="clearfix" style="text-align:center">
+        <span>登录</span>
+      </div>
+      <el-form label-width="60px">
+        <el-form-item label="用户名">
+          <el-input v-model="username" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="password" placeholder="请输入密码" type="password"></el-input>
+        </el-form-item>
+        <el-alert v-if="loginError" :title="loginErrorMsg" type="error">
+        </el-alert>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">登录</el-button>
+          <!-- <el-button>取消</el-button> -->
+        </el-form-item>
+      </el-form>
+    </el-card>
+    <!-- </el-col>
+    </el-row> -->
   </div>
 </template>
 
@@ -100,18 +99,41 @@ export default {
       });
     }
   },
-  mounted() {}
+  mounted() {
+    console.info(this.$refs);
+  }
 };
 </script>
 
 <style scoped>
-.el-form {
+.login {
+  height: 100%;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+#login-box {
   width: 400px;
+  height: 400px;
+  margin: auto;
+  position: absolute; /*设定水平和垂直偏移父元素的50%，再根据实际长度将子元素上左挪回一半大小*/
+  left: 50%;
+  top: 50%;
+  margin-left: -200px;
+  margin-top: -240px;
+  /* background-color: red; */
+  /* position: absolute;
+  left: */
+  /* margin-top: 50%; */
+}
+.el-form {
+  /* width: 400px;
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 200px; */
 }
 .el-button {
-  width: 320px;
+  /* width: 320px; */
+  width: 100%;
   margin-top: 8px;
 }
 .el-alert--error {
