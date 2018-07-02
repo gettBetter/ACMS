@@ -63,6 +63,25 @@ export default {
             );
             this.loginError = false;
             axios.get("/index/left").then(data => {
+              data.data.menu[0] = {
+                path: "/devicmanage",
+                component: "@/components/devicmanage",
+                name: "设置管理",
+                chilren: [
+                  {
+                    component: "@/components/pages/devicmanage/devicearea",
+                    name: "区域设置",
+                    path: "/devicmanage/devicearea"
+                  },
+                  {
+                    component: "@/components/pages/devicmanage/deviceinfo",
+                    name: "设备管理",
+                    path: "/devicmanage/deviceinfo"
+                  }
+                ]
+              };
+
+              console.info(data.data.menu);
               that.$parent.$store.commit("setMenus", data.data.menu);
               sessionStorage.setItem(
                 "userMenus",
@@ -83,7 +102,6 @@ export default {
         alert("error");
       }
     }
-    // ...mapActions(["addMenu", "loadRoutes"])
   },
   computed: {
     menus() {

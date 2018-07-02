@@ -101,6 +101,40 @@ export default new Router({
             import ("@/components/panel/adduser")
         }
       ]
+    },
+    {
+      // /devicmanage
+      path: "/devicmanage",
+      name: "devicmanage",
+      redirect: '/devicmanage/devicearea',
+      component: () =>
+        import ("@/components/devicmanage"),
+      children: [{
+          path: "/devicmanage/devicearea",
+          name: "devicearea",
+          component: () =>
+            import ("@/components/pages/devicmanage/devicearea")
+        },
+        {
+          path: "/devicmanage/devicearea/editarea/:id",
+          name: "editarea",
+          component: () =>
+            import ("@/components/pages/devicmanage/editarea")
+        },
+        {
+          path: "/devicmanage/devicearea/addarea/",
+          name: "addarea",
+          component: () =>
+            import ("@/components/pages/devicmanage/addarea")
+        },
+        {
+          path: "/devicmanage/deviceinfo",
+          name: "deviceinfo",
+          component: () =>
+            import ("@/components/pages/devicmanage/deviceinfo")
+        },
+
+      ]
     }
   ]
 });

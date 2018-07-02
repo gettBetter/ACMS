@@ -24,7 +24,7 @@
             </div>
             <div style="margin: 15px 0;"></div>
             <el-checkbox-group v-model="defaultCheckedData" @change="CheckedChange">
-              <el-checkbox v-for="item in menu.children" :label="item.path" :key="item.a_id">{{item.name}}</el-checkbox>
+              <el-checkbox v-for="item in menu.children" :label="item.action_code" :key="item.a_id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
 
@@ -63,16 +63,16 @@ export default {
       console.info("val", val, menu);
       if (val) {
         menu.children.forEach(chlid => {
-          if (chlid.path) {
-            if (!this.defaultCheckedData.includes(chlid.path)) {
-              this.defaultCheckedData.push(chlid.path);
+          if (chlid.action_code) {
+            if (!this.defaultCheckedData.includes(chlid.action_code)) {
+              this.defaultCheckedData.push(chlid.action_code);
             }
           }
         });
       } else {
         menu.children.forEach(chlid => {
-          if (chlid.path) {
-            let idx = this.defaultCheckedData.indexOf(chlid.path);
+          if (chlid.action_code) {
+            let idx = this.defaultCheckedData.indexOf(chlid.action_code);
             if (idx != -1) {
               this.defaultCheckedData.splice(idx, 1);
             }
