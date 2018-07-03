@@ -1,9 +1,8 @@
 <template>
     <div>
-
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>设备列表</span>
+                <span>门禁时段列表</span>
             </div>
 
             <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
@@ -20,13 +19,21 @@
                         </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column prop="dev_indx" label="设备ID" sortable></el-table-column>
-                <el-table-column prop="dev_name" label="设备名称"></el-table-column>
-                <el-table-column prop="com_addr" label="设备地址"></el-table-column>
-                <el-table-column prop="typ_indx" label="设备类型"></el-table-column>
-                <el-table-column prop="com_indx" label="通讯类型"></el-table-column>
-                <el-table-column prop="are_indx" label="所属区域"></el-table-column>
-                <el-table-column prop="use_isok" label="是否启用"></el-table-column>
+                <el-table-column prop="tmr_indx" label="序号" sortable></el-table-column>
+                <el-table-column prop="tmr_name" label="时段名称"></el-table-column>
+                <el-table-column prop="tmr_week" label="星期设置"></el-table-column>
+                <el-table-column prop="mr_next" label="下一时段"></el-table-column>
+                <el-table-column prop="bgn_date" label="开始日期"></el-table-column>
+                <el-table-column prop="end_date" label="结束日期"></el-table-column>
+
+                <el-table-column prop="bgn_tmr1" label="开始时段一"></el-table-column>
+                <el-table-column prop="end_tmr1" label="结束时段一"></el-table-column>
+
+                <el-table-column prop="bgn_tmr2" label="开始时段二"></el-table-column>
+                <el-table-column prop="end_tmr2" label="结束时段二"></el-table-column>
+
+                <el-table-column prop="bgn_tmr3" label="开始时段三"></el-table-column>
+                <el-table-column prop="end_tmr3" label="结束时段三"></el-table-column>
 
             </el-table>
 
@@ -60,7 +67,7 @@ export default {
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
-      axios.get("/deviceinfo/deviceinfo_list").then(
+      axios.get("/timerparam/timerparam_list").then(
         data => {
           if (data.data.success === true) {
             loadingInstance.close();
@@ -96,7 +103,7 @@ export default {
     },
     del(recored) {
       let param = {
-        dev_indx: recored.dev_indx
+        tmr_indx: recored.tmr_indx
       };
 
       this.$confirm("请确认是否删除?", "提示", {
@@ -106,7 +113,7 @@ export default {
       })
         .then(() => {
           axios
-            .post("/deviceinfo/deviceinfo_del", param)
+            .post("/timerparam/timerparam_del", param)
             .then(data => {
               if (data.data.success === true) {
                 this.$message({

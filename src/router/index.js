@@ -133,7 +133,27 @@ export default new Router({
           component: () =>
             import ("@/components/pages/devicmanage/deviceinfo")
         },
-
+        {
+          path: "/devicmanage/devicearea/editdevice/:id",
+          name: "editdevice",
+          component: () =>
+            import ("@/components/pages/devicmanage/editdevice")
+        },
+        {
+          path: "/devicmanage/devicearea/adddevice/",
+          name: "adddevice",
+          component: () =>
+            import ("@/components/pages/devicmanage/adddevice")
+        },
+        {
+          path: "/devicmanage/timerparam",
+          name: "timerparam",
+          component: () =>
+            import ("@/components/pages/devicmanage/timerparam")
+          // component: "@/components/pages/devicmanage/timerparam",
+          // name: "设备管理",
+          // path: "/devicmanage/timerparam"
+        }
       ]
     }
   ]

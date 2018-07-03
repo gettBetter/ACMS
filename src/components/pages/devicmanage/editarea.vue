@@ -1,45 +1,45 @@
 <template>
-    <div>
+  <div>
 
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>编辑区域</span>
-            </div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>编辑区域</span>
+      </div>
 
-            <el-form :model="editData">
-                <el-form-item :label-width="formLabelWidth" label="序号：">
+      <el-form :model="editData">
+        <!-- <el-form-item :label-width="formLabelWidth" label="序号：">
                     <span>{{editData.are_indx}}</span>
-                </el-form-item>
+                </el-form-item> -->
 
-                <el-form-item :label-width="formLabelWidth" label="区域名称：">
-                    <el-input v-model="editData.are_name"></el-input>
-                </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="区域名称：">
+          <el-input v-model="editData.are_name"></el-input>
+        </el-form-item>
 
-                <el-form-item :label-width="formLabelWidth" label="上级区域：">
-                    <el-row>
-                        <el-col :span="17">
-                            <el-input v-model="editData.par_indx" v-if="false"></el-input>
-                            <span>{{editData.p_are_name}}
-                            </span>
-                        </el-col>
-                        <el-col :span="6" ::offset="1">
-                            <el-button type="text" @click="openTree">选择区域</el-button>
-                        </el-col>
-                    </el-row>
-                </el-form-item>
-            </el-form>
+        <el-form-item :label-width="formLabelWidth" label="上级区域：">
+          <el-row>
+            <el-col :span="17">
+              <el-input v-model="editData.par_indx" v-if="false"></el-input>
+              <span>{{editData.p_are_name}}
+              </span>
+            </el-col>
+            <el-col :span="6" ::offset="1">
+              <el-button type="text" @click="openTree">选择区域</el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
+      </el-form>
 
-            <el-row style="text-align:center;margin-top:40px;margin-bottom:20px">
-                <el-button class="submit-btn" type="primary" @click="save">确定</el-button>
-                <el-button class="cancel-btn" @click="cancel">取消</el-button>
-            </el-row>
-        </el-card>
+      <el-row style="text-align:center;margin-top:40px;margin-bottom:20px">
+        <el-button class="submit-btn" type="primary" @click="save">确定</el-button>
+        <el-button class="cancel-btn" @click="cancel">取消</el-button>
+      </el-row>
+    </el-card>
 
-        <el-dialog width="40%" min-height="200px" title="选择区域" :visible.sync="treeVisible" append-to-body>
-            <el-tree :data="areaTree" :props="treeProp" accordion @node-click="handleNodeClick">
-            </el-tree>
-        </el-dialog>
-    </div>
+    <el-dialog width="40%" min-height="200px" title="选择区域" :visible.sync="treeVisible" append-to-body>
+      <el-tree :data="areaTree" :props="treeProp" accordion @node-click="handleNodeClick">
+      </el-tree>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -90,6 +90,7 @@ export default {
     save() {
       const param = this.editData;
       delete param.ROW_NUMBER;
+      delete param.p_are_name;
 
       console.info(param);
       axios.post("/devicearea/devicearea_edit_save", param).then(data => {

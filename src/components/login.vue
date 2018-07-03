@@ -66,7 +66,7 @@ export default {
               data.data.menu[0] = {
                 path: "/devicmanage",
                 component: "@/components/devicmanage",
-                name: "设置管理",
+                name: "门禁通道管理",
                 chilren: [
                   {
                     component: "@/components/pages/devicmanage/devicearea",
@@ -77,6 +77,11 @@ export default {
                     component: "@/components/pages/devicmanage/deviceinfo",
                     name: "设备管理",
                     path: "/devicmanage/deviceinfo"
+                  },
+                  {
+                    component: "@/components/pages/devicmanage/timerparam",
+                    name: "门禁时段",
+                    path: "/devicmanage/timerparam"
                   }
                 ]
               };

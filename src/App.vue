@@ -84,7 +84,7 @@ body > .el-container {
 }
 .el-header,
 .el-footer {
-  background-color: #324056;
+  background-color: #262626;
   color: white;
   text-align: center;
   line-height: 60px;
@@ -94,7 +94,7 @@ body > .el-container {
   color: #333;
   line-height: 200px;
   overflow: hidden;
-  background-color: #324056;
+  background-color: #ebeff2;
   /* border-right: 1px solid #ccc; */
 }
 
@@ -158,5 +158,9 @@ user agent stylesheet div {
 .el-menu--horizontal > .el-menu-item.is-active {
   color: white !important;
   border-bottom: 2px solid white;
+}
+
+.el-menu--horizontal > .el-menu-item:not(.is-disabled):hover {
+  color: white;
 }
 </style>

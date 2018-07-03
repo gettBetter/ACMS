@@ -6,7 +6,7 @@
         <p></p>
       </el-col>
       <el-col :span="18" :offset="1">
-        <el-menu :default-active="currentPath.match(/\/\w+/g) ? currentPath.match(/\/\w+/g)[0] : ''" mode="horizontal" @select="handleSelect" background-color="#324056" router>
+        <el-menu :default-active="currentPath.match(/\/\w+/g) ? currentPath.match(/\/\w+/g)[0] : ''" mode="horizontal" @select="handleSelect" background-color="#262626" router>
           <el-menu-item v-for="menu in menus" :key="menu.path" :index="menu.path">
             <!-- <i class="el-icon-document" ></i> -->
             {{menu.name}}
@@ -66,8 +66,8 @@ export default {
 .el-menu {
   width: 100%;
   overflow: hidden;
-  background-color: #324056;
-  color: white;
+  background-color: #ebeff2;
+  color: #333;
 }
 .el-menu--horizontal > .el-menu-item {
   width: 120px;
@@ -77,7 +77,7 @@ export default {
   /* background-color: #f9f9f9; */
 }
 .el-menu-item {
-  color: white;
+  color: #333;
 }
 .el-menu-item:hover {
   background-color: #fff;
