@@ -16,6 +16,8 @@
         <el-form-item :label-width="formLabelWidth" label="描述：">
           <el-input type="textarea" :rows="2" v-model="editData.description"></el-input>
         </el-form-item>
+
+        
         <el-form-item :label-width="formLabelWidth" label="菜单权限：">
 
           <div v-for="menu in menuTree" :key="menu.a_id">

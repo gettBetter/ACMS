@@ -150,9 +150,18 @@ export default new Router({
           name: "timerparam",
           component: () =>
             import ("@/components/pages/devicmanage/timerparam")
-          // component: "@/components/pages/devicmanage/timerparam",
-          // name: "设备管理",
-          // path: "/devicmanage/timerparam"
+        },
+        {
+          path: "/devicmanage/timerparam/edittimerparam/:id",
+          name: "edittimerparam",
+          component: () =>
+            import ("@/components/pages/devicmanage/edittimerparam")
+        },
+        {
+          path: "/devicmanage/timerparam/addtimerparam",
+          name: "addtimerparam",
+          component: () =>
+            import ("@/components/pages/devicmanage/addtimerparam")
         }
       ]
     }

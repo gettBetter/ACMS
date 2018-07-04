@@ -1,50 +1,50 @@
 <template>
-    <div>
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>门禁时段列表</span>
-            </div>
+  <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>门禁时段列表</span>
+      </div>
 
-            <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
+      <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
 
-            <el-table :data="list" border>
-                <el-table-column fixed="left" label="操作" width="80%">
-                    <template slot-scope="scope">
-                        <el-button @click="edit(scope.row)" type="text" size="">
-                            <i class="el-icon-edit"></i>
-                        </el-button>
+      <el-table :data="list" border>
+        <el-table-column fixed="left" label="操作" width="80%">
+          <template slot-scope="scope">
+            <el-button @click="edit(scope.row)" type="text" size="">
+              <i class="el-icon-edit"></i>
+            </el-button>
 
-                        <el-button type="text" @click="del(scope.row)">
-                            <i class="el-icon-delete"></i>
-                        </el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="tmr_indx" label="序号" sortable></el-table-column>
-                <el-table-column prop="tmr_name" label="时段名称"></el-table-column>
-                <el-table-column prop="tmr_week" label="星期设置"></el-table-column>
-                <el-table-column prop="mr_next" label="下一时段"></el-table-column>
-                <el-table-column prop="bgn_date" label="开始日期"></el-table-column>
-                <el-table-column prop="end_date" label="结束日期"></el-table-column>
+            <el-button type="text" @click="del(scope.row)">
+              <i class="el-icon-delete"></i>
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="tmr_indx" label="序号" sortable></el-table-column>
+        <el-table-column prop="tmr_name" label="时段名称"></el-table-column>
+        <el-table-column prop="tmr_week" label="星期设置"></el-table-column>
+        <el-table-column prop="mr_next" label="下一时段"></el-table-column>
+        <el-table-column prop="bgn_date" label="开始日期"></el-table-column>
+        <el-table-column prop="end_date" label="结束日期"></el-table-column>
 
-                <el-table-column prop="bgn_tmr1" label="开始时段一"></el-table-column>
-                <el-table-column prop="end_tmr1" label="结束时段一"></el-table-column>
+        <el-table-column prop="bgn_tmr1" label="开始时段一"></el-table-column>
+        <el-table-column prop="end_tmr1" label="结束时段一"></el-table-column>
 
-                <el-table-column prop="bgn_tmr2" label="开始时段二"></el-table-column>
-                <el-table-column prop="end_tmr2" label="结束时段二"></el-table-column>
+        <el-table-column prop="bgn_tmr2" label="开始时段二"></el-table-column>
+        <el-table-column prop="end_tmr2" label="结束时段二"></el-table-column>
 
-                <el-table-column prop="bgn_tmr3" label="开始时段三"></el-table-column>
-                <el-table-column prop="end_tmr3" label="结束时段三"></el-table-column>
+        <el-table-column prop="bgn_tmr3" label="开始时段三"></el-table-column>
+        <el-table-column prop="end_tmr3" label="结束时段三"></el-table-column>
 
-            </el-table>
+      </el-table>
 
-            <div class="block ">
-                <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
-                </el-pagination>
-            </div>
+      <div class="block ">
+        <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
+        </el-pagination>
+      </div>
 
-        </el-card>
+    </el-card>
 
-    </div>
+  </div>
 </template>
 
 <script>
@@ -92,13 +92,13 @@ export default {
     edit(record) {
       // debugger
       this.$parent.$router.push({
-        name: "editdevice",
-        params: { id: record.dev_indx }
+        name: "edittimerparam",
+        params: { id: record.tmr_indx }
       });
     },
     add() {
       this.$parent.$router.push({
-        name: "adddevice"
+        name: "addtimerparam"
       });
     },
     del(recored) {

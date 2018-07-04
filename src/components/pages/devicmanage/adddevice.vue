@@ -113,11 +113,6 @@
                             <el-input v-model="editData.ism_asrc"></el-input>
                         </el-form-item>
                     </el-col>
-                    <!-- <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="目的地址:">
-                            <el-input v-model="editData.ism_adst"></el-input>
-                        </el-form-item>
-                    </el-col> -->
                 </el-row>
 
             </el-form>
@@ -160,7 +155,8 @@ export default {
             console.info(data.data);
             // this.editData = data.data.data;
             this.optionData = data.data;
-            this.treeData = data.data.devicearea_tree;
+            this.treeData = data.data.devarea_tree;
+            console.info(this.optionData, this.treeData);
           } else {
             alert(data.data.msg);
           }
@@ -180,10 +176,10 @@ export default {
     save() {
       const param = this.editData;
       delete param.ROW_NUMBER;
-    //   delete param.p_are_name;
-    //   delete param.typ_name;
-    //   delete param.com_name;
-    //   delete param.are_name;
+      //   delete param.p_are_name;
+      //   delete param.typ_name;
+      //   delete param.com_name;
+      //   delete param.are_name;
 
       console.info(param);
       axios.post("/deviceinfo/deviceinfo_add", param).then(data => {

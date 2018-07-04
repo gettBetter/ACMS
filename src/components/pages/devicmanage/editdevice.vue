@@ -113,11 +113,6 @@
                             <el-input v-model="editData.ism_asrc"></el-input>
                         </el-form-item>
                     </el-col>
-                    <!-- <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="目的地址:">
-                            <el-input v-model="editData.ism_adst"></el-input>
-                        </el-form-item>
-                    </el-col> -->
                 </el-row>
 
             </el-form>
