@@ -178,6 +178,11 @@ export default {
             let weeks = [...data.data.data[0].tmr_week];
 
             this.weekCtr = weeks.includes("1");
+            if (weeks.length === 8) {
+              if (weeks.pop() == 1) {
+                this.weekCtr = false;
+              }
+            }
             this.checkedWeek = weeks.map((item, key) => {
               if (item == 1) {
                 return key + 1;

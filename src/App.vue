@@ -137,7 +137,7 @@ user agent stylesheet div {
 .el-table td {
   text-align: center;
   line-height: 40px;
-  padding: 0;
+  padding: 0 !important;
 }
 .el-card,
 .el-card__header {
