@@ -3,7 +3,7 @@
 
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>编辑设备信息</span>
+                <span>添加设备信息</span>
             </div>
 
             <el-form :model="editData">
@@ -176,10 +176,7 @@ export default {
     save() {
       const param = this.editData;
       delete param.ROW_NUMBER;
-      //   delete param.p_are_name;
-      //   delete param.typ_name;
-      //   delete param.com_name;
-      //   delete param.are_name;
+      delete param.are_name;
 
       console.info(param);
       axios.post("/deviceinfo/deviceinfo_add", param).then(data => {
