@@ -132,16 +132,12 @@ body > .el-container {
 user agent stylesheet div {
   display: block;
 }
-.el-table td {
-  padding: 0;
-}
-.el-table th {
-  padding: 0;
-}
+
 .el-table th,
 .el-table td {
   text-align: center;
   line-height: 40px;
+  padding: 0;
 }
 .el-card,
 .el-card__header {
