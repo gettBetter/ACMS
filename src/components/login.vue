@@ -63,28 +63,34 @@ export default {
             );
             this.loginError = false;
             axios.get("/index/left").then(data => {
-              data.data.menu[0] = {
-                path: "/devicmanage",
-                component: "@/components/devicmanage",
-                name: "门禁通道管理",
-                chilren: [
-                  {
-                    component: "@/components/pages/devicmanage/devicearea",
-                    name: "区域设置",
-                    path: "/devicmanage/devicearea"
-                  },
-                  {
-                    component: "@/components/pages/devicmanage/deviceinfo",
-                    name: "设备管理",
-                    path: "/devicmanage/deviceinfo"
-                  },
-                  {
-                    component: "@/components/pages/devicmanage/timerparam",
-                    name: "门禁时段",
-                    path: "/devicmanage/timerparam"
-                  }
-                ]
-              };
+              data.data.menu[0].chilren.push({
+                component: "/devicmanage/devchannel",
+                name: "门禁通道",
+                path: "/devicmanage/devchannel"
+              });
+              // /admin/devicmanage
+              // data.data.menu[0] = {
+              //   path: "/devicmanage",
+              //   component: "@/components/devicmanage",
+              //   name: "门禁通道管理",
+              //   chilren: [
+              //     {
+              //       component: "@/components/pages/devicmanage/devicearea",
+              //       name: "区域设置",
+              //       path: "/devicmanage/devicearea"
+              //     },
+              //     {
+              //       component: "@/components/pages/devicmanage/deviceinfo",
+              //       name: "设备管理",
+              //       path: "/devicmanage/deviceinfo"
+              //     },
+              //     {
+              //       component: "@/components/pages/devicmanage/timerparam",
+              //       name: "门禁时段",
+              //       path: "/devicmanage/timerparam"
+              //     }
+              //   ]
+              // };
 
               console.info(data.data.menu);
               that.$parent.$store.commit("setMenus", data.data.menu);

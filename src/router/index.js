@@ -162,7 +162,28 @@ export default new Router({
           name: "addtimerparam",
           component: () =>
             import ("@/components/pages/devicmanage/addtimerparam")
+        },
+        //门禁通道
+        {
+          path: "/devicmanage/devchannel",
+          name: "devchannel",
+          component: () =>
+            import ("@/components/pages/devicmanage/devchannel")
+        },
+        {
+          path: "/devicmanage/timerparam/editdevchannel/:id",
+          name: "editdevchannel",
+          component: () =>
+            import ("@/components/pages/devicmanage/editdevchannel")
+        },
+        {
+          path: "/devicmanage/timerparam/adddevchannel",
+          name: "adddevchannel",
+          component: () =>
+            import ("@/components/pages/devicmanage/adddevchannel")
         }
+       
+        // 
       ]
     }
   ]

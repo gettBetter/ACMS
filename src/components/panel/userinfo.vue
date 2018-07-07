@@ -102,10 +102,7 @@
               </el-col>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="政治面貌：">
-                  <el-select v-model="userInfo.prt_indx">
-                    <el-option v-for="opt in userEditData.party_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
-                    </el-option>
-                  </el-select>
+                  
                 </el-form-item>
               </el-col>
             </el-row>
