@@ -68,6 +68,11 @@ export default {
                 name: "门禁通道",
                 path: "/devicmanage/devchannel"
               });
+              data.data.menu[0].chilren.push({
+                component: "/devicmanage/devtermina",
+                name: "门禁终端参数设置",
+                path: "/devicmanage/devtermina"
+              });
               // /admin/devicmanage
               // data.data.menu[0] = {
               //   path: "/devicmanage",
