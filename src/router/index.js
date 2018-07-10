@@ -171,13 +171,13 @@ export default new Router({
             import ("@/components/pages/devicmanage/devchannel")
         },
         {
-          path: "/devicmanage/timerparam/editdevchannel/:id",
+          path: "/devicmanage/timerparam/editdevchannel/:dev/:chn",
           name: "editdevchannel",
           component: () =>
             import ("@/components/pages/devicmanage/editdevchannel")
         },
         {
-          path: "/devicmanage/timerparam/adddevchannel",
+          path: "/devicmanage/timerparam/adddevchannel/:id",
           name: "adddevchannel",
           component: () =>
             import ("@/components/pages/devicmanage/adddevchannel")
@@ -190,18 +190,18 @@ export default new Router({
             import ("@/components/pages/devicmanage/devtermina")
         },
         {
-          path: "/devicmanage/devtermina/editdevtermina/:id",
+          path: "/devicmanage/devtermina/editdevtermina/:dev/:trm",
           name: "editdevtermina",
           component: () =>
             import ("@/components/pages/devicmanage/editdevtermina")
         },
         {
-          path: "/devicmanage/devtermina/adddevtermina",
+          path: "/devicmanage/devtermina/adddevtermina/:id",
           name: "adddevtermina",
           component: () =>
             import ("@/components/pages/devicmanage/adddevtermina")
         },
-        
+
         // 
       ]
     }

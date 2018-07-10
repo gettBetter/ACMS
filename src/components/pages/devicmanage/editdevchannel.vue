@@ -29,7 +29,7 @@
                     <el-col :span="11" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="控制方式：">
                             <el-select v-model="editData.ctl_indx">
-                                <el-option v-for="opt in editData.ctl_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
+                                <el-option v-for="opt in ctl_list" :label="opt.ctl_name" :value="opt.ctl_indx" :key="opt.ctl_indx">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -61,13 +61,15 @@ export default {
   data() {
     return {
       formLabelWidth: "20%",
-      editData: {}
+      editData: {},
+      ctl_list: []
     };
   },
   methods: {
     getEditData() {
       const param = {
-        chn_indx: this.$route.params.id
+        dev_indx: this.$route.params.dev,
+        chn_indx: this.$route.params.chn
       };
 
       axios.get("/devchannel/devchannel_edit_data", { params: param }).then(
@@ -75,6 +77,7 @@ export default {
           if (data.data.success === true) {
             console.info(data.data);
             this.editData = data.data.data[0];
+            this.ctl_list = data.data.ctl_list;
             // this.areaTree = data.data.devicearea_tree;
           } else {
             alert(data.data.msg);
@@ -87,7 +90,6 @@ export default {
       const param = this.editData;
       delete param.ROW_NUMBER;
       delete param.ctl_name;
-
       console.info(param);
       axios.post("/devchannel/devchannel_edit_save", param).then(data => {
         if (data.data.success) {

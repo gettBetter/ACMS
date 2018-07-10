@@ -7,17 +7,20 @@
 
             <el-form :model="addData">
                 <el-row>
+                    <!-- trm_list -->
                     <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="设备序号：">
-                            <el-input v-model="addData.dev_indx" placeholder="请先选择设备编号"></el-input>
+                        <el-form-item :label-width="formLabelWidth" label="终端编号：" prop="trm_indx">
+                            <!-- <span>{{chn_indx}}</span> -->
+                            <el-select v-model="addData.chn_indx" :disabled="!hasDev">
+                                <el-option v-for="item in trm_list" :label="item" :value="item" :key="item">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
+
                     </el-col>
                     <el-col :span="11" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="关联通道：">
-                            <el-select v-model="addData.chn_indx" :disabled="!hasDev">
-                                <el-option v-for="opt in addData.pkb_isok_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
-                                </el-option>
-                            </el-select>
+                            <el-input v-model="addData.chn_indx"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -122,20 +125,22 @@ export default {
   data() {
     return {
       formLabelWidth: "20%",
-      addData: {}
+      addData: {},
+      trm_list: [],
+      dev_indx: this.$route.params.id
     };
   },
   methods: {
     getEditData() {
       const param = {
-        trmindx: this.$route.params.id
+        dev_indx: this.dev_indx
       };
 
       axios.get("/devtermina/devtermina_add_data", { params: param }).then(
         data => {
           if (data.data.success === true) {
             console.info(data.data);
-            this.addData = data.data.data[0];
+            this.trm_list = data.data.data;
             // this.areaTree = data.data.devicearea_tree;
           } else {
             alert(data.data.msg);
@@ -166,7 +171,7 @@ export default {
   },
   computed: {
     hasDev() {
-      return !!this.addData.dev_indx;
+      return !!this.dev_indx;
     }
   },
   activated() {

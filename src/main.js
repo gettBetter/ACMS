@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'babel-polyfill';
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -76,7 +77,6 @@ router.beforeEach((to, from, next) => {
     } else {
       let pathChunk = to.path.match(/\/\w+/g);
       let parentPath = `${pathChunk[0]}${pathChunk[1]}`
-
       console.info('parentPath', parentPath)
       if (acceptMenus.some(menu => parentPath == menu)) {
         accept = true
