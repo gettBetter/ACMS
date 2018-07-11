@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="adddevtermina">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>添加门禁终端参数</span>
@@ -7,102 +7,98 @@
 
             <el-form :model="addData">
                 <el-row>
-                    <!-- trm_list -->
-                    <el-col :span="11" :offset="1">
+                    <el-col :span="10" :offset="1">
+                        <el-form-item :label-width="formLabelWidth" label="设备编号：">
+                            <span>{{dev_indx}}</span>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="终端编号：" prop="trm_indx">
-                            <!-- <span>{{chn_indx}}</span> -->
-                            <el-select v-model="addData.chn_indx" :disabled="!hasDev">
+                            <el-select v-model="addData.trm_indx">
                                 <el-option v-for="item in trm_list" :label="item" :value="item" :key="item">
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
                     </el-col>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="关联通道：">
-                            <el-input v-model="addData.chn_indx"></el-input>
-                        </el-form-item>
-                    </el-col>
+
                 </el-row>
 
                 <el-row>
-                    <el-col :span="11" :offset="1">
+                    <el-col :span="10" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="终端名称：">
-                            <el-input v-model="addData.trm_name" :disabled="!hasDev"></el-input>
+                            <el-input v-model="addData.trm_name"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="启用密码开门：">
-                            <el-select v-model="addData.pkb_isok" :disabled="!hasDev">
-                                <el-option v-for="opt in addData.pkb_isok_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
+                    <el-col :span="10" :offset="1">
+                        <el-form-item :label-width="formLabelWidth" label="关联通道：">
+                            <!-- <el-input v-model="addData.chn_indx"></el-input> -->
+                            <el-select v-model="addData.chn_indx">
+                                <el-option v-for="item in [1,2,3,4]" :label="item" :value="item" :key="item">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
+
                 </el-row>
 
-                <el-row>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="密码组一：">
-                            <el-input v-model="addData.pkb_key1" :disabled="!hasDev"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="密码组二：">
-                            <el-input v-model="addData.pkb_key2" :disabled="!hasDev"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="密码组三：">
-                            <el-input v-model="addData.pkb_key3" :disabled="!hasDev"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="密码组四：">
-                            <el-input v-model="addData.pkb_key4" :disabled="!hasDev"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <div class="container">
+                    <el-row>
+                        <el-col :span="10" :offset="1">
+                            <el-form-item :label-width="formLabelWidth" label="启用密码开门：">
+                                <el-checkbox v-model="addData.pkb_isok"></el-checkbox>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="10" :offset="1">
+                            <el-form-item :label-width="formLabelWidth" label="密码组一：">
+                                <el-input v-model="addData.pkb_key1" :disabled="!addData.pkb_isok"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10" :offset="1">
+                            <el-form-item :label-width="formLabelWidth" label="密码组二：">
+                                <el-input v-model="addData.pkb_key2" :disabled="!addData.pkb_isok"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10" :offset="1">
+                            <el-form-item :label-width="formLabelWidth" label="密码组三：">
+                                <el-input v-model="addData.pkb_key3" :disabled="!addData.pkb_isok"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10" :offset="1">
+                            <el-form-item :label-width="formLabelWidth" label="密码组四：">
+                                <el-input v-model="addData.pkb_key4" :disabled="!addData.pkb_isok"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </div>
 
-                <el-row>
-                    <el-col :span="11" :offset="1">
+                <el-row style="margin-top:20px">
+                    <el-col :span="10" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="考勤扩展：">
-                            <el-select v-model="addData.att_isok" :disabled="!hasDev">
-                                <el-option v-for="opt in addData.pkb_isok_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
-                                </el-option>
-                            </el-select>
+                            <el-checkbox v-model="addData.att_isok"></el-checkbox>
                         </el-form-item>
                     </el-col>
 
-                    <el-col :span="11" :offset="1">
+                    <el-col :span="10" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="次计就餐：">
-                            <el-select v-model="addData.con_isok" :disabled="!hasDev">
-                                <el-option v-for="opt in addData.pkb_isok_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
-                                </el-option>
-                            </el-select>
+                            <el-checkbox v-model="addData.con_isok"></el-checkbox>
                         </el-form-item>
                     </el-col>
 
                 </el-row>
 
                 <el-row>
-                    <el-col :span="11" :offset="1">
+                    <el-col :span="10" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="在线巡逻：">
-                            <el-select v-model="addData.oep_isok" :disabled="!hasDev">
-                                <el-option v-for="opt in addData.pkb_isok_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
-                                </el-option>
-                            </el-select>
+                            <el-checkbox v-model="addData.oep_isok"></el-checkbox>
                         </el-form-item>
                     </el-col>
 
-                    <el-col :span="11" :offset="1">
+                    <el-col :span="10" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="会议签到：">
-                            <el-select v-model="addData.met_isok" :disabled="!hasDev">
-                                <el-option v-for="opt in addData.pkb_isok_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
-                                </el-option>
-                            </el-select>
+                            <el-checkbox v-model="addData.met_isok"></el-checkbox>
                         </el-form-item>
                     </el-col>
 
@@ -124,10 +120,11 @@ import axios from "axios";
 export default {
   data() {
     return {
-      formLabelWidth: "20%",
+      formLabelWidth: "25%",
       addData: {},
       trm_list: [],
-      dev_indx: this.$route.params.id
+      dev_indx: this.$route.params.id,
+      revertFields: ["pkb_isok", "att_isok", "con_isok", "oep_isok", "met_isok"]
     };
   },
   methods: {
@@ -152,10 +149,16 @@ export default {
     save() {
       const param = this.addData;
       delete param.ROW_NUMBER;
-      //   delete param.ctl_name;
-
+      this.revertFields.forEach(item => {
+        if (param[item]) {
+          param[item] = "1";
+        } else {
+          param[item] = "0";
+        }
+      });
+      param.dev_indx = this.dev_indx;
       console.info(param);
-      axios.post("/devchannel/devchannel_add", param).then(data => {
+      axios.post("/devtermina/devtermina_add", param).then(data => {
         if (data.data.success) {
           this.$message({
             type: "success",
@@ -169,11 +172,7 @@ export default {
       this.$router.go(-1);
     }
   },
-  computed: {
-    hasDev() {
-      return !!this.dev_indx;
-    }
-  },
+  computed: {},
   activated() {
     this.addData = {};
     // this.areaTree = [];
@@ -197,6 +196,13 @@ export default {
 .el-date-editor.el-input,
 .el-date-editor.el-input__inne {
   width: 100%;
+}
+
+.adddevtermina .container {
+  /* background-color: #ebebeb; */
+  /* padding: 20px; */
+  /* box-sizing: content-box; */
+  border: 1px solid #ebebeb;
 }
 </style>
 

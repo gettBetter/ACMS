@@ -111,6 +111,7 @@ export default {
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
+      this.list = [];
       axios.get("/devchannel/devchannel_list", { params: param }).then(
         data => {
           if (data.data.success === true) {

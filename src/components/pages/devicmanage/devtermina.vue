@@ -79,7 +79,8 @@ export default {
         label: "label",
         children: "children"
         // id: "tag"
-      }
+      },
+      revertFields: ["pkb_isok", "att_isok", "con_isok", "oep_isok", "met_isok"]
     };
   },
   methods: {
@@ -109,6 +110,7 @@ export default {
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
+      this.list = [];
       axios
         .get("/devtermina/devtermina_list", { params: param })
         .then(
@@ -116,7 +118,17 @@ export default {
             if (data.data.success === true) {
               loadingInstance.close();
               console.info(data.data);
-              this.list = data.data.data;
+
+              let temp = data.data.data || [];
+
+              temp.forEach(item => {
+                for (let p in item) {
+                  if (this.revertFields.includes(p)) {
+                    item[p] = this.revertData(item[p]);
+                  }
+                }
+                this.list.push(item);
+              });
             } else {
               alert(data.data.msg);
             }
@@ -183,6 +195,15 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
+    },
+    revertData(input) {
+      if (input === "0") {
+        return "否";
+      } else if (input === "1") {
+        return "是";
+      } else {
+        return input;
+      }
     }
   },
   computed: {
