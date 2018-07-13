@@ -9,6 +9,11 @@ export default new Router({
     y: 0
   }),
   routes: [{
+      path: "/apitest",
+      name: "apitest",
+      component: () =>
+        import ("@/components/apitest")
+    }, {
       path: "/login",
       name: "login",
       component: () =>
@@ -109,7 +114,9 @@ export default new Router({
       redirect: '/devicmanage/devicearea',
       component: () =>
         import ("@/components/devicmanage"),
-      children: [{
+      children: [
+        // 区域管理
+        {
           path: "/devicmanage/devicearea",
           name: "devicearea",
           component: () =>
@@ -201,8 +208,29 @@ export default new Router({
           component: () =>
             import ("@/components/pages/devicmanage/adddevtermina")
         },
+        // 门禁权限
+        {
+          path: "/devicmanage/authorlist",
+          name: "authorlist",
+          props: true,
+          component: () =>
+            import ("@/components/pages/devicmanage/authorlist")
+        },
+        {
+          path: "/devicmanage/authorlist/addauthorlist/",
+          name: "addauthorlist",
+          props: true,
+          component: () =>
+            import ("@/components/pages/devicmanage/addauthorlist")
+        },
+        {
+          path: "/devicmanage/authorlist/editauthorlist/:emp/:dev",
+          name: "editauthorlist",
+          props: true,
+          component: () =>
+            import ("@/components/pages/devicmanage/editauthorlist")
+        },
 
-        // 
       ]
     }
   ]
