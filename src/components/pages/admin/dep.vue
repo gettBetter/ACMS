@@ -184,7 +184,7 @@ export default {
       axios.get("/dept/dept_list").then(data => {
         loadingInstance.close();
         this.depList = data.data.listdept;
-      });
+      },data=>loadingInstance.close()).catch(err=>loadingInstance.close());
     }
   },
   computed: {

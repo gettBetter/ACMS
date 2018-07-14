@@ -217,7 +217,7 @@ export default new Router({
             import ("@/components/pages/devicmanage/authorlist")
         },
         {
-          path: "/devicmanage/authorlist/addauthorlist/",
+          path: "/devicmanage/authorlist/addauthorlist",
           name: "addauthorlist",
           props: true,
           component: () =>
@@ -229,6 +229,22 @@ export default new Router({
           props: true,
           component: () =>
             import ("@/components/pages/devicmanage/editauthorlist")
+        },
+        // jobauthorlist
+        {
+          path: "/devicmanage/authorlist/jobauthorlist",
+          name: "jobauthorlist",
+          props: true,
+          component: () =>
+            import ("@/components/pages/devicmanage/jobauthorlist")
+        },
+        // copyauthorlist
+        {
+          path: "/devicmanage/authorlist/copyauthorlist",
+          name: "copyauthorlist",
+          props: true,
+          component: () =>
+            import ("@/components/pages/devicmanage/copyauthorlist")
         },
 
       ]

@@ -213,11 +213,17 @@ export default {
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
-      axios.get("/sysmenu/sysmenu_tree").then(data => {
-        loadingInstance.close();
-        console.info(data);
-        this.menuTree = data.data.sysmenu_tree;
-      });
+      axios
+        .get("/sysmenu/sysmenu_tree")
+        .then(
+          data => {
+            loadingInstance.close();
+            console.info(data);
+            this.menuTree = data.data.sysmenu_tree;
+          },
+          data => loadingInstance.close()
+        )
+        .catch(err => loadingInstance.close());
     }
   },
   activated() {

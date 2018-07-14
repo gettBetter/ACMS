@@ -86,8 +86,8 @@ export default {
             console.info(data);
             this.roleList = data.data.data;
           }
-        })
-        .catch(err => alert(err));
+        },data=>loadingInstance.close())
+        .catch(err=>loadingInstance.close())
     }
   },
   activated() {

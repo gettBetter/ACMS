@@ -112,18 +112,24 @@ export default {
         target: document.querySelector(".adminpage")
       });
       this.list = [];
-      axios.get("/devchannel/devchannel_list", { params: param }).then(
-        data => {
-          if (data.data.success === true) {
+      axios
+        .get("/devchannel/devchannel_list", { params: param })
+        .then(
+          data => {
+            if (data.data.success === true) {
+              loadingInstance.close();
+              console.info(data.data);
+              this.list = data.data.data;
+            } else {
+              alert(data.data.msg);
+            }
+          },
+          data => {
+            alert("System Error");
             loadingInstance.close();
-            console.info(data.data);
-            this.list = data.data.data;
-          } else {
-            alert(data.data.msg);
           }
-        },
-        data => alert("System Error")
-      );
+        )
+        .catch(err => loadingInstance.close());
     },
     handleNodeClick(node, data) {
       console.info(node, data);

@@ -92,20 +92,15 @@
 
         <el-row>
           <el-col :span="24" :offset="1">
-            <!-- <el-form-item :label-width="formLabelWidth" label="菜单权限："> -->
             <div>
               <div class="itemclass">
-
                 <el-checkbox @change="checkWeek" v-model="weekCtr">星期控制</el-checkbox>
               </div>
-
               <div style="margin: 15px 0;"></div>
-
               <el-checkbox-group v-model="checkedWeek" @change="checkWeek2">
                 <el-checkbox v-for="item in week" :label="item.id" :key="item.name" :disabled="!weekCtr">{{item.name}} </el-checkbox>
               </el-checkbox-group>
             </div>
-            <!-- </el-form-item> -->
           </el-col>
         </el-row>
       </el-form>

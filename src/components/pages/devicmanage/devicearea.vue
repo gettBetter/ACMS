@@ -1,41 +1,41 @@
 <template>
-    <div>
+  <div>
 
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>区域列表</span>
-            </div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>区域列表</span>
+      </div>
 
-            <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
+      <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
 
-            <el-table :data="list" border>
-                <el-table-column fixed="left" label="操作" width="80%">
-                    <template slot-scope="scope">
-                        <el-button @click="edit(scope.row)" type="text" size="">
-                            <i class="el-icon-edit"></i>
-                        </el-button>
+      <el-table :data="list" border>
+        <el-table-column fixed="left" label="操作" width="80%">
+          <template slot-scope="scope">
+            <el-button @click="edit(scope.row)" type="text" size="">
+              <i class="el-icon-edit"></i>
+            </el-button>
 
-                        <el-button type="text" @click="del(scope.row)">
-                            <i class="el-icon-delete"></i>
-                        </el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="are_indx" label="序号" sortable></el-table-column>
-                <el-table-column prop="are_name" label="区域名称"></el-table-column>
-                <el-table-column prop="p_are_name" label="上级区域"></el-table-column>
-                <el-table-column prop="are_rank" label="区域层级"></el-table-column>
-                <el-table-column prop="are_type" label="区域类型"></el-table-column>
+            <el-button type="text" @click="del(scope.row)">
+              <i class="el-icon-delete"></i>
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="are_indx" label="序号" sortable></el-table-column>
+        <el-table-column prop="are_name" label="区域名称"></el-table-column>
+        <el-table-column prop="p_are_name" label="上级区域"></el-table-column>
+        <el-table-column prop="are_rank" label="区域层级"></el-table-column>
+        <el-table-column prop="are_type" label="区域类型"></el-table-column>
 
-            </el-table>
+      </el-table>
 
-            <!-- <div class="block">
+      <!-- <div class="block">
                 <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
                 </el-pagination>
             </div> -->
 
-        </el-card>
+    </el-card>
 
-    </div>
+  </div>
 </template>
 
 <script>
@@ -68,17 +68,20 @@ export default {
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
-      axios.get("/devicearea/devicearea_list").then(
-        data => {
-          if (data.data.success === true) {
+      axios
+        .get("/devicearea/devicearea_list")
+        .then(
+          data => {
             loadingInstance.close();
-            this.list = data.data.data;
-          } else {
-            alert(data.data.msg);
-          }
-        },
-        data => alert("System Error")
-      );
+            if (data.data.success === true) {
+              this.list = data.data.data;
+            } else {
+              alert(data.data.msg);
+            }
+          },
+          data=>loadingInstance.close()
+        )
+        .catch(err => loadingInstance.close());
     },
     edit(record) {
       // debugger

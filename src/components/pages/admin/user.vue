@@ -73,17 +73,20 @@ export default {
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
-      axios.get("/user/user_list").then(
-        data => {
-          if (data.data.success === true) {
-            loadingInstance.close();
-            this.allListData = data.data.listuser;
-          } else {
-            alert(data.data.msg);
-          }
-        },
-        data => alert("System Error")
-      );
+      axios
+        .get("/user/user_list")
+        .then(
+          data => {
+            if (data.data.success === true) {
+              loadingInstance.close();
+              this.allListData = data.data.listuser;
+            } else {
+              alert(data.data.msg);
+            }
+          },
+          data => loadingInstance.close()
+        )
+        .catch(err => loadingInstance.close());
     },
     addUser() {
       this.$parent.$router.push("/admin/user/adduser");

@@ -79,7 +79,7 @@ export default {
             alert(data.data.msg);
           }
         },
-        data => alert("System Error")
+        data=>loadingInstance.close()
       );
     },
     edit(record) {
