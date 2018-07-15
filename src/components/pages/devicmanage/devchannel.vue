@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-card class="box-card">
-
       <el-row :gutter="20">
         <el-col :span="6">
           <div style="margin-bottom:20px">门禁通道</div>
@@ -26,8 +25,6 @@
         </el-col>
         <el-col :span="18">
           <div style="margin-bottom:20px">列表</div>
-          <!-- <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button> -->
-
           <el-table :data="list" border>
             <el-table-column fixed="left" label="操作" width="80%">
               <template slot-scope="scope">
@@ -40,24 +37,19 @@
                 </el-button>
               </template>
             </el-table-column>
-
             <el-table-column prop="chn_indx" label="序号"></el-table-column>
             <el-table-column prop="chn_name" label="名称"></el-table-column>
             <el-table-column prop="dev_indx" label="设备序号"></el-table-column>
             <el-table-column prop="ctl_name" label="控制方式"></el-table-column>
             <el-table-column prop="dly_time" label="开门延时(s)"></el-table-column>
-
           </el-table>
-
           <div class="block ">
             <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
             </el-pagination>
           </div>
         </el-col>
       </el-row>
-
     </el-card>
-
   </div>
 </template>
 
@@ -76,7 +68,6 @@ export default {
       treeProp: {
         label: "label",
         children: "children"
-        // id: "tag"
       }
     };
   },
@@ -85,7 +76,6 @@ export default {
       axios.get("/devchannel/devchannel_tree").then(data => {
         if (data.data.success) {
           console.info("tree", data.data.data);
-          // this.treeData = data.data.data;
           let temp = data.data.data;
           function getChildren(arr) {
             arr.forEach(item => {
@@ -98,9 +88,7 @@ export default {
               }
             });
           }
-          console.info("1", temp);
           getChildren(temp);
-          console.info("2", temp);
           this.treeData = temp;
         }
       });
@@ -145,8 +133,6 @@ export default {
       this.getList(param);
     },
     edit(record) {
-      // debugger
-      console.info(record);
       this.$parent.$router.push({
         name: "editdevchannel",
         params: { dev: record.dev_indx, chn: record.chn_indx }
@@ -224,5 +210,3 @@ export default {
   padding-right: 8px;
 }
 </style>
-
-

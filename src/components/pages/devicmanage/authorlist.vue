@@ -114,7 +114,6 @@ export default {
       axios.get("/authorlist/dept_users_auth_tree").then(data => {
         if (data.data.success) {
           console.info("tree", data.data.data);
-          // this.treeData = data.data.data;
           let temp = data.data.data;
           function getChildren(arr) {
             arr.forEach(item => {
@@ -133,7 +132,6 @@ export default {
               }
             });
           }
-          //   console.info("1", temp);
           getChildren(temp);
           console.info("2", temp);
           this.treeData = temp;
@@ -212,9 +210,9 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    ...mapMutations({
-      setUserList: "authorlist/setUserList"
-    })
+    // ...mapMutations({
+    //   setUserList: "authorlist/setUserList"
+    // })
   },
   computed: {
     total() {
@@ -239,19 +237,7 @@ export default {
 </script>
 
 <style scoped>
-.block {
-  text-align: right;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.custom-tree-node {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  padding-right: 8px;
-}
+
 </style>
 
 

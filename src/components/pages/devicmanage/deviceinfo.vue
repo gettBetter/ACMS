@@ -1,43 +1,52 @@
 <template>
-    <div>
+  <div>
 
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
+    <el-card class="box-card">
+      <!-- <div slot="header" class="clearfix">
                 <span>设备列表</span>
-            </div>
+            </div> -->
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div style="margin-bottom:20px">区域</div>
+          <el-tree :data="treeData" :props="treeProp" accordion @node-click="handleNodeClick" style="max-height:600px;overflow:scroll">
+          </el-tree>
+        </el-col>
+        <el-col :span="18">
+          <div style="margin-bottom:20px">设备列表</div>
+          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
 
-            <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
+          <el-table :data="list" border>
+            <el-table-column fixed="left" label="操作" width="80%">
+              <template slot-scope="scope">
+                <el-button @click="edit(scope.row)" type="text" size="">
+                  <i class="el-icon-edit"></i>
+                </el-button>
 
-            <el-table :data="list" border>
-                <el-table-column fixed="left" label="操作" width="80%">
-                    <template slot-scope="scope">
-                        <el-button @click="edit(scope.row)" type="text" size="">
-                            <i class="el-icon-edit"></i>
-                        </el-button>
+                <el-button type="text" @click="del(scope.row)">
+                  <i class="el-icon-delete"></i>
+                </el-button>
+              </template>
+            </el-table-column>
+            <el-table-column prop="dev_indx" label="设备ID" sortable></el-table-column>
+            <el-table-column prop="dev_name" label="设备名称"></el-table-column>
+            <el-table-column prop="com_addr" label="设备地址"></el-table-column>
+            <el-table-column prop="typ_indx" label="设备类型"></el-table-column>
+            <el-table-column prop="com_indx" label="通讯类型"></el-table-column>
+            <el-table-column prop="are_indx" label="所属区域"></el-table-column>
+            <el-table-column prop="use_isok" label="是否启用"></el-table-column>
 
-                        <el-button type="text" @click="del(scope.row)">
-                            <i class="el-icon-delete"></i>
-                        </el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="dev_indx" label="设备ID" sortable></el-table-column>
-                <el-table-column prop="dev_name" label="设备名称"></el-table-column>
-                <el-table-column prop="com_addr" label="设备地址"></el-table-column>
-                <el-table-column prop="typ_indx" label="设备类型"></el-table-column>
-                <el-table-column prop="com_indx" label="通讯类型"></el-table-column>
-                <el-table-column prop="are_indx" label="所属区域"></el-table-column>
-                <el-table-column prop="use_isok" label="是否启用"></el-table-column>
+          </el-table>
 
-            </el-table>
+          <div class="block ">
+            <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
+            </el-pagination>
+          </div>
+        </el-col>
+      </el-row>
 
-            <div class="block ">
-                <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
-                </el-pagination>
-            </div>
+    </el-card>
 
-        </el-card>
-
-    </div>
+  </div>
 </template>
 
 <script>
@@ -50,17 +59,38 @@ export default {
     return {
       currentPage: 1,
       pageCurSize: 10,
-      list: []
+      list: [],
+      treeData: [],
+      treeProp: {
+        label: "are_name",
+        children: "children"
+      }
     };
   },
   methods: {
-    getList() {
+    handleNodeClick(node, data) {
+      const param = { are_indx: node.are_indx };
+      this.list = [];
+      this.getList(param);
+    },
+    getTree() {
+      axios
+        .get("/devicearea/devicearea_tree")
+        .then(({ data }) => {
+          console.info("terr", data);
+          this.treeData = data.data;
+        })
+        .catch(data => {
+          alert(data.data.msg);
+        });
+    },
+    getList(param) {
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
-      axios.get("/deviceinfo/deviceinfo_list").then(
+      axios.get("/deviceinfo/deviceinfo_list", { params: param }).then(
         data => {
           if (data.data.success === true) {
             loadingInstance.close();
@@ -79,7 +109,7 @@ export default {
             alert(data.data.msg);
           }
         },
-        data=>loadingInstance.close()
+        data => loadingInstance.close()
       );
     },
     edit(record) {
@@ -138,6 +168,7 @@ export default {
   },
   activated() {
     this.getList();
+    this.getTree();
   }
 };
 </script>

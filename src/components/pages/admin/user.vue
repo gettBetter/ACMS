@@ -1,45 +1,48 @@
 <template>
   <div>
-
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <!-- <div slot="header" class="clearfix">
         <span>用户列表</span>
-      </div>
+      </div> -->
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div style="margin-bottom:20px">部门</div>
+          <el-tree :data="depData" :props="treeProp" accordion @node-click="handleNodeClick" style="max-height:600px;overflow:scroll">
+          </el-tree>
+        </el-col>
+        <el-col :span="18">
+          <div style="margin-bottom:20px">用户列表</div>
+          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="addUser">添加</el-button>
 
-      <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="addUser">添加</el-button>
+          <el-table :data="pageData" border :default-sort="{prop: 'reg_time', order: 'descending'}">
+            <el-table-column fixed="left" label="操作" width="80%">
+              <template slot-scope="scope">
+                <el-button @click="popupEdit(scope.row)" type="text" size="">
+                  <i class="el-icon-edit"></i>
+                </el-button>
 
-      <el-table :data="pageData" border :default-sort="{prop: 'reg_time', order: 'descending'}">
-        <el-table-column fixed="left" label="操作" width="80%">
-          <template slot-scope="scope">
-            <el-button @click="popupEdit(scope.row)" type="text" size="">
-              <i class="el-icon-edit"></i>
-            </el-button>
-
-            <el-button type="text" @click="delUser(scope.row)">
-              <i class="el-icon-delete"></i>
-            </el-button>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="emp_indx" label="用户ID" sortable></el-table-column>
-        <el-table-column prop="emp_code" label="用户编号" sortable></el-table-column>
-        <el-table-column prop="emp_name" label="用户姓名" sortable></el-table-column>
-        <el-table-column prop="dep_name" label="所属部门"></el-table-column>
-        <el-table-column prop="role_name" label="角色"></el-table-column>
-        <el-table-column prop="gdr_indx" label="性别" sortable></el-table-column>
-        <el-table-column prop="reg_time" label="注册时间 " sortable></el-table-column>
-        <el-table-column prop="est_indx" label="人员状态" sortable></el-table-column>
-        <!-- <el-table-column prop="rnk_indx" label="人员类别" sortable></el-table-column>
-        <el-table-column prop="crt_code" label="证件号码"></el-table-column> -->
-      </el-table>
-
-      <div class="block">
-        <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-      </div>
+                <el-button type="text" @click="delUser(scope.row)">
+                  <i class="el-icon-delete"></i>
+                </el-button>
+              </template>
+            </el-table-column>
+            <el-table-column prop="emp_indx" label="用户ID" sortable></el-table-column>
+            <el-table-column prop="emp_code" label="用户编号" sortable></el-table-column>
+            <el-table-column prop="emp_name" label="用户姓名" sortable></el-table-column>
+            <el-table-column prop="dep_name" label="所属部门"></el-table-column>
+            <el-table-column prop="role_name" label="角色"></el-table-column>
+            <el-table-column prop="gdr_indx" label="性别" sortable></el-table-column>
+            <el-table-column prop="reg_time" label="注册时间 " sortable></el-table-column>
+            <el-table-column prop="est_indx" label="人员状态" sortable></el-table-column>
+          </el-table>
+          <div class="block">
+            <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+          </div>
+        </el-col>
+      </el-row>
 
     </el-card>
-
   </div>
 </template>
 
@@ -53,28 +56,40 @@ export default {
     return {
       currentPage: 1,
       pageCurSize: 10,
-      dialogTableVisible: false,
-      dialogFormVisible: false,
       userInfo: {},
-      innerVisible: false,
       depData: [],
-      defaultProps: {
-        children: "children",
-        label: "label"
+      treeProp: {
+        label: "dep_name",
+        children: "children"
       },
-      userEditData: {},
       allListData: []
     };
   },
   methods: {
-    getUserList() {
+    handleNodeClick(node, data) {
+      console.info(node, data);
+      const param = { dep_indx: node.dep_indx };
+      this.allListData = [];
+      this.getUserList(param);
+    },
+    getTree() {
+      axios
+        .get("/index/dept_tree")
+        .then(data => {
+          this.depData = data.data.deptree;
+        })
+        .catch(data => {
+          alert(data.data.msg);
+        });
+    },
+    getUserList(param) {
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
       axios
-        .get("/user/user_list")
+        .get("/user/user_list", { params: param })
         .then(
           data => {
             if (data.data.success === true) {
@@ -141,13 +156,8 @@ export default {
   },
   activated() {
     this.getUserList();
+    this.getTree();
   }
-  // beforeRouteEnter(to, from, next) {
-  //   if (to.query.saveBack) {
-  //     next(vm => vm.getUserList());
-  //   }
-  //   next();
-  // }
 };
 </script>
 
