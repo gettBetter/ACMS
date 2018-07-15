@@ -206,26 +206,7 @@ export default {
 </script>
 
 <style >
-.block {
-  text-align: right;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.submit-btn,
-.cancel-btn {
-  width: 160px;
-}
-.el-select,
-.el-date-editor.el-input,
-.el-date-editor.el-input__inne {
-  width: 100%;
-}
-
 .editdevtermina .container {
-  /* background-color: #ebebeb; */
-  /* padding: 20px; */
-  /* box-sizing: content-box; */
   border: 1px solid #ebebeb;
 }
 </style>

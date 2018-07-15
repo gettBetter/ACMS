@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-card class="box-card">
-      <el-row :gutter="20">
+      <!-- <el-row :gutter="20">
         <el-col :span="6">
-          <div style="margin-bottom:20px">门禁权限管理</div>
-          <el-row>
+          <div style="margin-bottom:20px">门禁权限管理</div> -->
+      <!-- <el-row>
             <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
             <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="copyAuth">复制授权</el-button>
             <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="jobAuth">岗位授权</el-button>
-          </el-row>
-          <!-- show-checkbox  @check="checkTree"-->
-          <el-tree :data="treeData" :props="treeProp" @node-click="handleNodeClick" :expand-on-click-node="false" highlight-current style="max-height:600px;overflow:scroll">
+          </el-row> -->
+      <!-- show-checkbox  @check="checkTree"-->
+      <!-- <el-tree :data="treeData" :props="treeProp" @node-click="handleNodeClick" :expand-on-click-node="false" highlight-current style="max-height:600px;overflow:scroll">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <span v-if="data.tag == 2">
@@ -25,43 +25,47 @@
                 <span>{{node.label}}</span>
               </span>
             </span>
-          </el-tree>
-        </el-col>
-        <el-col :span="18">
-          <div style="margin-bottom:20px">列表</div>
-
-          <el-table :data="list" border>
-            <el-table-column fixed="left" label="操作" width="80%">
-              <template slot-scope="scope">
-                <el-button @click="edit(scope.row)" type="text" size="">
-                  <i class="el-icon-edit"></i>
-                </el-button>
-
-                <el-button type="text" @click="del(scope.row)">
-                  <i class="el-icon-delete"></i>
-                </el-button>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="emp_indx" label="人员编号"></el-table-column>
-            <el-table-column prop="emp_name" label="人员姓名"></el-table-column>
-            <el-table-column prop="dep_name" label="部门"></el-table-column>
-            <el-table-column prop="dev_indx" label="设备编号"></el-table-column>
-            <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
-            <el-table-column prop="tmr_name" label="应用群组"></el-table-column>
-            <el-table-column prop="mcd_name" label="设备组别"></el-table-column>
-            <el-table-column prop="grp_name" label="设备组别"></el-table-column>
-            <el-table-column prop="fcd_name" label="检查APB"></el-table-column>
-            <el-table-column prop="aut_flag" label="是否授权"></el-table-column>
-
-          </el-table>
-
-          <div class="block ">
-            <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
-            </el-pagination>
-          </div>
-        </el-col>
+          </el-tree> -->
+      <!-- </el-col> -->
+      <!-- <el-col :span="18"> -->
+      <div style="margin-bottom:20px">门禁权限列表</div>
+      <el-row>
+        <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
+        <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="copyAuth">复制授权</el-button>
+        <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="jobAuth">岗位授权</el-button>
       </el-row>
+      <el-table :data="pageData" border>
+        <el-table-column fixed="left" label="操作" width="80%">
+          <template slot-scope="scope">
+            <el-button @click="edit(scope.row)" type="text" size="">
+              <i class="el-icon-edit"></i>
+            </el-button>
+
+            <el-button type="text" @click="del(scope.row)">
+              <i class="el-icon-delete"></i>
+            </el-button>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="emp_indx" label="人员编号"></el-table-column>
+        <el-table-column prop="emp_name" label="人员姓名"></el-table-column>
+        <el-table-column prop="dep_name" label="部门"></el-table-column>
+        <el-table-column prop="dev_indx" label="设备编号"></el-table-column>
+        <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
+        <el-table-column prop="tmr_name" label="应用群组"></el-table-column>
+        <el-table-column prop="mcd_name" label="设备组别"></el-table-column>
+        <el-table-column prop="grp_name" label="设备组别"></el-table-column>
+        <el-table-column prop="fcd_name" label="检查APB"></el-table-column>
+        <el-table-column prop="aut_flag" label="是否授权"></el-table-column>
+
+      </el-table>
+
+      <div class="block ">
+        <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
+        </el-pagination>
+      </div>
+      <!-- </el-col> -->
+      <!-- </el-row> -->
 
     </el-card>
 
@@ -71,7 +75,7 @@
 <script>
 import axios from "axios";
 import { Loading } from "element-ui";
-// import _ from "lodash";
+import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
 import { mapMutations } from "vuex";
 

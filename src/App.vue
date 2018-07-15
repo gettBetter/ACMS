@@ -159,4 +159,33 @@ user agent stylesheet div {
 .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover {
   color: white;
 }
+
+.block {
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.submit-btn,
+.cancel-btn {
+  width: 160px;
+}
+.el-select,
+.el-date-editor.el-input,
+.el-date-editor.el-input__inne {
+  width: 100%;
+}
+.block {
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
 </style>
