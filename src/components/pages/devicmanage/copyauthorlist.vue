@@ -66,7 +66,8 @@ export default {
         children: "children"
       },
       b_copy_user: "",
-      s_copy_user: []
+      s_copy_user: [],
+      firstChange: true
     };
   },
   computed: {},
@@ -78,8 +79,14 @@ export default {
       let usercheckbox = document.getElementsByClassName(
         "el-checkbox usercheckbox is-checked"
       );
-      usercheckbox[0].click();
+
+      if (this.firstChange) {
+        this.firstChange = false;
+      } else {
+        usercheckbox[0].click();
+      }
       this.b_copy_user = data.emp_indx;
+      console.info(this.b_copy_user, data.emp_indx);
     },
     changecUserList(checked, node, data) {
       if (checked) {
@@ -144,6 +151,5 @@ export default {
 </script>
 
 <style>
-
 </style>
 

@@ -26,11 +26,11 @@
                     <el-tree :data="devTreeData" :props="devTreeProp" :expand-on-click-node="false" highlight-current style="height:360px;overflow:scroll">
                         <span class="custom-tree-node" slot-scope="{ node, data }">
                             <span>
-                                <span v-if="data.tag == 2">
+                                <span v-if="data.tag !== 1">
                                     <el-checkbox :v-model="false" @change="checed=>changeDevList(checed,node,data)"></el-checkbox>
                                 </span>
                                 <span v-if="data.tag == 1">
-                                    <i class="iconfont iicon-ditu" style="padding:0 4px" />
+                                    <i class="iconfont icon-ditu" style="padding:0 4px" />
                                 </span>
                                 <span v-if="data.tag == 2">
                                     <i class="iconfont icon-menjinshebei" style="padding:0 4px" />
@@ -174,7 +174,8 @@ export default {
         }
       ],
       userList: [],
-      devList: []
+      devList: [],
+      chnList: []
     };
   },
   computed: {},
@@ -187,31 +188,41 @@ export default {
       console.info(node, data);
     },
     changeUserList(checked, node, data) {
-      console.info("changeUserList", checked, node, data);
       if (checked) {
-        this.setUserList({ type: "add", user: data });
+        this.setList(this.userList, { type: "add", data: data.emp_indx });
       } else {
-        this.setUserList({ type: "del", user: data });
+        this.setList(this.userList, { type: "del", data: data.emp_indx });
       }
     },
-    setUserList({ type, user }) {
-      if (type === "add") {
-        this.userList.push(user);
-      } else if (type === "del") {
-        let idx = userList.findIndex(item => item.dev_indx == user.dev_indx);
-        if (idx != -1) {
-          this.userList.splice(idx, 1);
+    changeDevList(checked, node, data) {
+      if (data.tag == 2) {
+        if (checked) {
+          this.setList(this.devList, { type: "add", data: data.dev_indx });
+        } else {
+          this.setList(this.devList, { type: "del", data: data.dev_indx });
         }
-      } else if (type === "clean") {
-        this.userList = [];
+      } else if (data.tag == 3) {
+        if (checked) {
+          this.setList(this.chnList, { type: "add", data: data.chn_indx });
+        } else {
+          this.setList(this.chnList, { type: "del", data: data.chn_indx });
+        }
       }
-      cosnole.info("userList", this.userList);
+    },
+    setList(list, { type, data }) {
+      if (type === "add") {
+        list.push(data);
+      } else if (type === "del") {
+        _.pull(list, data);
+      } else if (type === "clean") {
+        list = [];
+      }
+      console.info("list", list);
     },
     getTreeData() {
       //部门人员树
       axios.get("/authorlist/dept_users_auth_tree").then(data => {
         if (data.data.success) {
-          //   console.info("tree", data.data.data);
           let temp = data.data.data;
           function getChildren(arr) {
             arr.forEach(item => {
@@ -232,14 +243,12 @@ export default {
           }
           getChildren(temp);
           this.userTreeData = temp;
-          console.info("userTreeData", this.userTreeData);
         }
       });
       //   区域设备通道树
       axios.get("/authorlist/authorlist_channel_tree").then(data => {
         if (data.data.success) {
           console.info(data.data);
-          // this.userTreeData =
           let temp = data.data.data;
           function getChildren(arr) {
             arr.forEach(item => {
@@ -260,7 +269,6 @@ export default {
           }
           getChildren(temp);
           this.devTreeData = temp;
-          console.info("userTreeData", this.userTreeData);
         }
       });
     },
@@ -274,8 +282,6 @@ export default {
             this.grp_list = temp.grp_list;
             this.tmr_list = temp.tmr_list;
             this.fcd_list = temp.fcd_list;
-            // this.addData = temp.data[0];
-            // debugger;
           } else {
             alert(data.data.msg);
           }
@@ -286,6 +292,9 @@ export default {
     save() {
       const param = this.addData;
       delete param.ROW_NUMBER;
+      param.user_list = this.userList;
+      param.dev_list = this.devList;
+      param.chn_list = this.chnList;
       console.info(param);
       axios.post("/authorlist/authorlist_add", param).then(data => {
         if (data.data.success) {
