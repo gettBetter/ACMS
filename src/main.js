@@ -20,35 +20,14 @@ Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 Vue.prototype.$_ = _;
 
-// router.afterEach((to, from) => {
-//   if (to.query.saveBack) {
-//     // next(to.path);
-//     // vm => vm.getUserList()
-//     debugger
-//     router.replace(to.path)
-//     // location.reload()
-//   }
-// })
-// router.beforeResolve((to, from, next) => {
-//   if (to.query.saveBack) {
-//     // next(to.path);
-//     // vm => vm.getUserList()
-//     debugger
-//     router.replace(to.path)
-//     // location.reload()
-//   }
-//   next()
-// })
-
 router.beforeEach((to, from, next) => {
-  const token = sessionStorage.userToken
-  const userMenus = sessionStorage.userMenus
-  // const isLogin = store.getters.isLogin
+
+  const token = localStorage.userToken
+  const userMenus = localStorage.userMenus
 
   if (to.path === '/login') {
-    sessionStorage.clear()
+    localStorage.clear()
     store.commit('setMenus', [])
-    // store.commit("isLogin", false);
   }
 
   if (to.path !== '/login' && to.path !== '/unauthority' && token) {
@@ -58,8 +37,8 @@ router.beforeEach((to, from, next) => {
 
     let acceptMenus = ["/", "*", "/login", "/unauthority"];
 
-    if (sessionStorage.acceptMenus) {
-      acceptMenus = JSON.parse(sessionStorage.acceptMenus)
+    if (localStorage.acceptMenus) {
+      acceptMenus = JSON.parse(localStorage.acceptMenus)
     } else {
       menus.forEach(item => {
         acceptMenus.push(item.path)
@@ -68,7 +47,7 @@ router.beforeEach((to, from, next) => {
             acceptMenus.push(item.path))
         }
       })
-      sessionStorage.setItem('acceptMenus', JSON.stringify(acceptMenus))
+      localStorage.setItem('acceptMenus', JSON.stringify(acceptMenus))
     }
 
     let accept = false;
@@ -100,8 +79,8 @@ router.beforeEach((to, from, next) => {
 
   next()
 })
-/* eslint-disable no-new */
 
+/* eslint-disable no-new */
 const app = new Vue({
   el: '#app',
   router,

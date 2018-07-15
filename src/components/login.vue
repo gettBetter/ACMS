@@ -29,7 +29,7 @@
 <script>
 import axios from "axios";
 
-sessionStorage.clear();
+localStorage.clear();
 export default {
   data() {
     return {
@@ -54,7 +54,7 @@ export default {
               this.loginError = true;
               return;
             }
-            sessionStorage.setItem(
+            localStorage.setItem(
               "userToken",
               JSON.stringify({
                 username: data.data.username,
@@ -73,33 +73,8 @@ export default {
                 name: "门禁终端参数设置",
                 path: "/devicmanage/devtermina"
               });
-              // /admin/devicmanage
-              // data.data.menu[0] = {
-              //   path: "/devicmanage",
-              //   component: "@/components/devicmanage",
-              //   name: "门禁通道管理",
-              //   chilren: [
-              //     {
-              //       component: "@/components/pages/devicmanage/devicearea",
-              //       name: "区域设置",
-              //       path: "/devicmanage/devicearea"
-              //     },
-              //     {
-              //       component: "@/components/pages/devicmanage/deviceinfo",
-              //       name: "设备管理",
-              //       path: "/devicmanage/deviceinfo"
-              //     },
-              //     {
-              //       component: "@/components/pages/devicmanage/timerparam",
-              //       name: "门禁时段",
-              //       path: "/devicmanage/timerparam"
-              //     }
-              //   ]
-              // };
-
-              console.info(data.data.menu);
               that.$parent.$store.commit("setMenus", data.data.menu);
-              sessionStorage.setItem(
+              localStorage.setItem(
                 "userMenus",
                 JSON.stringify(data.data.menu)
               );
@@ -155,18 +130,9 @@ export default {
   top: 50%;
   margin-left: -200px;
   margin-top: -240px;
-  /* background-color: red; */
-  /* position: absolute;
-  left: */
-  /* margin-top: 50%; */
 }
-.el-form {
-  /* width: 400px;
-  margin: 0 auto;
-  margin-top: 200px; */
-}
+
 .el-button {
-  /* width: 320px; */
   width: 100%;
   margin-top: 8px;
 }
@@ -177,8 +143,6 @@ export default {
   line-height: 30px;
   margin-top: -20px;
 }
-/* .error-class {
-} */
 </style>
 
 
