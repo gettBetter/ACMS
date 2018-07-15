@@ -11,7 +11,7 @@
           <el-input v-model="username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="password" placeholder="请输入密码" type="password"></el-input>
+          <el-input v-model="password" placeholder="请输入密码" type="password" @keyup.enter="onSubmit"></el-input>
         </el-form-item>
         <el-alert v-if="loginError" :title="loginErrorMsg" type="error">
         </el-alert>
@@ -29,7 +29,7 @@
 <script>
 import axios from "axios";
 
-localStorage.clear();
+sessionStorage.clear();
 export default {
   data() {
     return {
@@ -54,7 +54,7 @@ export default {
               this.loginError = true;
               return;
             }
-            localStorage.setItem(
+            sessionStorage.setItem(
               "userToken",
               JSON.stringify({
                 username: data.data.username,
@@ -74,7 +74,7 @@ export default {
                 path: "/devicmanage/devtermina"
               });
               that.$parent.$store.commit("setMenus", data.data.menu);
-              localStorage.setItem(
+              sessionStorage.setItem(
                 "userMenus",
                 JSON.stringify(data.data.menu)
               );

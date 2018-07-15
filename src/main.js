@@ -20,13 +20,41 @@ Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 Vue.prototype.$_ = _;
 
+// 在多个标签页之间共享sessionStorage
+const getShareSession = function () {
+
+  if (!sessionStorage.length) {
+    // 这个调用能触发目标事件，从而达到共享数据的目的
+    localStorage.setItem('getSessionStorage', Date.now());
+  };
+
+  // 该事件是核心
+  window.addEventListener('storage', function (event) {
+    if (event.key == 'getSessionStorage') {
+      // 已存在的标签页会收到这个事件
+      localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+      localStorage.removeItem('sessionStorage');
+
+    } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
+      // 新开启的标签页会收到这个事件
+      var data = JSON.parse(event.newValue);
+
+      console.info('data', data, typeof data)
+      for (let key in data) {
+        sessionStorage.setItem(key, data[key]);
+      }
+    }
+  });
+}
+
 router.beforeEach((to, from, next) => {
+  debugger
+  getShareSession()
 
-  const token = localStorage.userToken
-  const userMenus = localStorage.userMenus
-
+  const token = sessionStorage.userToken
+  const userMenus = sessionStorage.userMenus
   if (to.path === '/login') {
-    localStorage.clear()
+    sessionStorage.clear()
     store.commit('setMenus', [])
   }
 
@@ -37,8 +65,8 @@ router.beforeEach((to, from, next) => {
 
     let acceptMenus = ["/", "*", "/login", "/unauthority"];
 
-    if (localStorage.acceptMenus) {
-      acceptMenus = JSON.parse(localStorage.acceptMenus)
+    if (sessionStorage.acceptMenus) {
+      acceptMenus = JSON.parse(sessionStorage.acceptMenus)
     } else {
       menus.forEach(item => {
         acceptMenus.push(item.path)
@@ -47,10 +75,11 @@ router.beforeEach((to, from, next) => {
             acceptMenus.push(item.path))
         }
       })
-      localStorage.setItem('acceptMenus', JSON.stringify(acceptMenus))
+      sessionStorage.setItem('acceptMenus', JSON.stringify(acceptMenus))
     }
 
     let accept = false;
+
     if (acceptMenus.some(menu => to.path == menu)) {
       accept = true
     } else {

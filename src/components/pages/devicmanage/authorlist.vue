@@ -209,7 +209,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
-    },
+    }
     // ...mapMutations({
     //   setUserList: "authorlist/setUserList"
     // })
@@ -231,13 +231,12 @@ export default {
   activated() {
     this.getTree();
     this.getList();
-    this.setUserList({ type: "clean", user: [] });
+    // this.setUserList({ type: "clean", user: [] });
   }
 };
 </script>
 
 <style scoped>
-
 </style>
 
 

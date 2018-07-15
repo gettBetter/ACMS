@@ -59,6 +59,9 @@ export default {
       this.$parent.$store.commit("getChildren", path);
       return !!this.$parent.$store.getters.children.length;
     }
+  },
+  beforeDestroy() {
+    // localStorage.clear();
   }
 };
 </script>

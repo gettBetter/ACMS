@@ -17,7 +17,7 @@ axios.interceptors.request.use(
     config.headers = {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
-    const token = localStorage.userToken;
+    const token = sessionStorage.userToken;
     if (token) {
       const param = JSON.parse(token);
       config.url += '/token/' + param.token + '/username/' + param.username
@@ -38,7 +38,7 @@ axios.interceptors.response.use(
   response => {
     if (!response.data.success) {
       console.info(router.currentRoute)
-      localStorage.clear();
+      sessionStorage.clear();
       if (router.currentRoute.fullPath != '/login') {
         router.push({
           path: "/login",
