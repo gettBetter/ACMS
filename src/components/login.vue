@@ -8,10 +8,10 @@
       </div>
       <el-form label-width="60px">
         <el-form-item label="用户名">
-          <el-input v-model="username" placeholder="请输入用户名"></el-input>
+          <el-input v-model="username" placeholder="请输入用户名" autofocus="true"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="password" placeholder="请输入密码" type="password" @keyup.enter="onSubmit"></el-input>
+          <el-input v-model="password" placeholder="请输入密码" type="password" @keyup.enter.native="onSubmit"></el-input>
         </el-form-item>
         <el-alert v-if="loginError" :title="loginErrorMsg" type="error">
         </el-alert>

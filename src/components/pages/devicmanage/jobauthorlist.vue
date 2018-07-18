@@ -36,7 +36,7 @@
                         <span class="custom-tree-node" slot-scope="{ node, data }">
                             <span>
                                 <span v-if="data.tag !== 1">
-                                    <el-checkbox :v-model="false" @change="checed=>changeDevList(checed,node,data)"></el-checkbox>
+                                    <el-checkbox :v-model="devList.includes(data.dev_indx)" @change="checed=>changeDevList(checed,node,data)"></el-checkbox>
                                 </span>
                                 <span v-if="data.tag == 1">
                                     <i class="iconfont icon-ditu" style="padding:0 4px" />
@@ -180,6 +180,11 @@ export default {
             console.info(data.data);
             const temp = data.data;
             this.editData = temp.data[0];
+            this.devList =
+              temp.data[0].dev_chan.length > 0
+                ? temp.data[0].dev_chan.length.split(";")
+                : [];
+            console.info("devlist", this.devList);
             this.mcd_list = temp.mcd_list;
             this.grp_list = temp.grp_list;
             this.tmr_list = temp.tmr_list;
@@ -206,6 +211,7 @@ export default {
                 item.use_cdat = item.use_cdat == 1 ? "是" : "否";
                 return item;
               });
+
               //   this.list = data.data.data;
             } else {
               alert(data.data.msg);
@@ -227,9 +233,14 @@ export default {
     save() {
       const param = this.editData;
       delete param.ROW_NUMBER;
-      param.user_list = this.userList;
-      param.dev_list = this.devList;
-      param.chn_list = this.chnList;
+      console.info(this.devList);
+      //   param.user_list = this.userList;
+      param.dev_chan = this.devList + "";
+      //   param.chn_list = this.chnList;
+      delete param.tmr_name;
+      delete param.mcd_name;
+      delete param.fcd_name;
+      delete param.bas_name;
       console.info(param);
       axios.post("/authorlist/auth_job_save", param).then(data => {
         if (data.data.success) {

@@ -8,12 +8,14 @@ export default new Router({
   scrollBehavior: () => ({
     y: 0
   }),
-  routes: [{
-      path: "/apitest",
-      name: "apitest",
-      component: () =>
-        import ("@/components/apitest")
-    }, {
+  routes: [
+    // {
+    //   path: "/apitest",
+    //   name: "apitest",
+    //   component: () =>
+    //     import ("@/components/apitest")
+    // }, 
+    {
       path: "/login",
       name: "login",
       component: () =>
@@ -64,6 +66,26 @@ export default new Router({
           name: "dep",
           component: () =>
             import ("@/components/pages/admin/dep")
+        },
+        {
+          path: "/admin/useradmin",
+          name: "useradmin",
+          component: () =>
+            import ("@/components/pages/admin/useradmin")
+        },
+        {
+          path: "/admin/useradmin/edituseradmin/:emp",
+          name: "edituseradmin",
+          props: true,
+          component: () =>
+            import ("@/components/pages/admin/edituseradmin")
+        },
+        {
+          path: "/admin/useradmin/adduseradmin",
+          name: "adduseradmin",
+          props: true,
+          component: () =>
+            import ("@/components/pages/admin/adduseradmin")
         },
         {
           path: "/admin/dep/addDep",

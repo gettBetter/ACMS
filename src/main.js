@@ -21,38 +21,38 @@ Vue.prototype.$post = post;
 Vue.prototype.$_ = _;
 
 // 在多个标签页之间共享sessionStorage
-const getShareSession = function () {
+window.addEventListener('storage', function (event) {
+  if (event.key == 'getSessionStorage') {
+    // 已存在的标签页会收到这个事件
+    console.info('bbb')
+    localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+    localStorage.removeItem('sessionStorage');
 
-  if (!sessionStorage.length) {
-    // 这个调用能触发目标事件，从而达到共享数据的目的
-    localStorage.setItem('getSessionStorage', Date.now());
-  };
+  } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
+    // 新开启的标签页会收到这个事件
+    console.info('ccc')
+    var data = JSON.parse(event.newValue),
+      value;
 
-  // 该事件是核心
-  window.addEventListener('storage', function (event) {
-    if (event.key == 'getSessionStorage') {
-      // 已存在的标签页会收到这个事件
-      localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
-      localStorage.removeItem('sessionStorage');
-
-    } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
-      // 新开启的标签页会收到这个事件
-      var data = JSON.parse(event.newValue);
-
-      console.info('data', data, typeof data)
-      for (let key in data) {
-        sessionStorage.setItem(key, data[key]);
-      }
+    for (let key in data) {
+      sessionStorage.setItem(key, data[key]);
     }
-  });
-}
+  }
+});
 
+if (!sessionStorage.length) {
+  localStorage.setItem('getSessionStorage', Date.now());
+  console.info('aaa')
+}else{
+  
+}
+console.info('end')
 router.beforeEach((to, from, next) => {
-  debugger
-  getShareSession()
+  console.info('start')
 
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
+  console.info('token', token)
   if (to.path === '/login') {
     sessionStorage.clear()
     store.commit('setMenus', [])
@@ -107,6 +107,7 @@ router.beforeEach((to, from, next) => {
   }
 
   next()
+
 })
 
 /* eslint-disable no-new */
@@ -117,5 +118,8 @@ const app = new Vue({
   components: {
     App
   },
-  template: '<App/>'
+  template: '<App/>',
+  // beforeCreate() {
+  //   console.info('beforeCreate')
+  // }
 })

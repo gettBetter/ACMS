@@ -1,139 +1,140 @@
 <template>
-    <div class="addaut">
-        <el-card class="box-card">
-            <el-row :gutter="20">
-                <el-col :span="11" :offset="1">
-                    <div style="margin-bottom:20px">部门人员树</div>
-                    <el-tree :data="userTreeData" :props="userTreeProp" :expand-on-click-node="false" highlight-current style="height:360px;overflow:scroll">
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <span>
-                                <span v-if="data.tag == 2">
-                                    <el-checkbox :v-model="false" @change="checed=>changeUserList(checed,node,data)"></el-checkbox>
-                                </span>
-                                <span v-if="data.tag == 1">
-                                    <i class="iconfont icon-plus-departments" style="padding:0 4px" />
-                                </span>
-                                <span v-if="data.tag == 2">
-                                    <i class="iconfont icon-renyuan" style="padding:0 4px" />
-                                </span>
-                                <span>{{node.label}}</span>
-                            </span>
-                        </span>
-                    </el-tree>
-                </el-col>
-                <el-col :span="11" :offset="1">
-                    <div style="margin-bottom:20px">区域设备通道树</div>
-                    <el-tree :data="devTreeData" :props="devTreeProp" :expand-on-click-node="false" highlight-current style="height:360px;overflow:scroll">
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <span>
-                                <span v-if="data.tag !== 1">
-                                    <el-checkbox :v-model="false" @change="checed=>changeDevList(checed,node,data)"></el-checkbox>
-                                </span>
-                                <span v-if="data.tag == 1">
-                                    <i class="iconfont icon-ditu" style="padding:0 4px" />
-                                </span>
-                                <span v-if="data.tag == 2">
-                                    <i class="iconfont icon-menjinshebei" style="padding:0 4px" />
-                                </span>
-                                <span v-if="data.tag == 3">
-                                    <i class="iconfont icon-tongdao" style="padding:0 4px" />
-                                </span>
-                                <span>{{node.label}}</span>
-                            </span>
-                        </span>
-                    </el-tree>
-                </el-col>
-            </el-row>
+  <div class="addaut">
+    <el-card class="box-card">
+      <el-row :gutter="20">
+        <el-col :span="11" :offset="1">
+          <div style="margin-bottom:20px">部门人员树</div>
+          <el-tree :data="userTreeData" :props="userTreeProp" :expand-on-click-node="false" highlight-current style="height:360px;overflow:scroll">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>
+                <span v-if="data.tag == 2">
+                  <el-checkbox :v-model="false" @change="checed=>changeUserList(checed,node,data)"></el-checkbox>
+                </span>
+                <span v-if="data.tag == 1">
+                  <i class="iconfont icon-plus-departments" style="padding:0 4px" />
+                </span>
+                <span v-if="data.tag == 2">
+                  <i class="iconfont icon-renyuan" style="padding:0 4px" />
+                </span>
+                <span>{{node.label}}</span>
+              </span>
+            </span>
+          </el-tree>
+        </el-col>
+        <el-col :span="11" :offset="1">
+          <div style="margin-bottom:20px">区域设备通道树</div>
+          <el-tree :data="devTreeData" :props="devTreeProp" :expand-on-click-node="false" highlight-current style="height:360px;overflow:scroll">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>
+                <span v-if="data.tag !== 1">
+                  <el-checkbox :v-model="false" @change="checed=>changeDevList(checed,node,data)"></el-checkbox>
+                </span>
+                <span v-if="data.tag == 1">
+                  <i class="iconfont icon-ditu" style="padding:0 4px" />
+                </span>
+                <span v-if="data.tag == 2">
+                  <i class="iconfont icon-menjinshebei" style="padding:0 4px" />
+                </span>
+                <span v-if="data.tag == 3">
+                  <i class="iconfont icon-tongdao" style="padding:0 4px" />
+                </span>
+                <span>{{node.label}}</span>
+              </span>
+            </span>
+          </el-tree>
+        </el-col>
+      </el-row>
 
-            <el-form style="margin-top:20px">
-                <el-row>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="应用群组:">
-                            <el-select v-model="addData.tmr_indx">
-                                <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="检查APB
+      <el-form style="margin-top:20px">
+        <el-row>
+          <el-col :span="11" :offset="1">
+            <el-form-item :label-width="formLabelWidth" label="应用群组:">
+              <el-select v-model="addData.tmr_indx">
+                <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11" :offset="1">
+            <el-form-item :label-width="formLabelWidth" label="检查APB
 :">
-                            <el-select v-model="addData.fcd_indx">
-                                <el-option v-for="opt in fcd_list" :label="opt.fcd_name" :value="opt.fcd_indx" :key="opt.fcd_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+              <el-select v-model="addData.fcd_indx">
+                <el-option v-for="opt in fcd_list" :label="opt.fcd_name" :value="opt.fcd_indx" :key="opt.fcd_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-                <el-row>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="卡片类型:">
-                            <el-select v-model="addData.mcd_indx">
-                                <el-option v-for="opt in mcd_list" :label="opt.mcd_name" :value="opt.mcd_indx" :key="opt.mcd_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="设备组别
+        <el-row>
+          <el-col :span="11" :offset="1">
+            <el-form-item :label-width="formLabelWidth" label="卡片类型:">
+              <el-select v-model="addData.mcd_indx">
+                <el-option v-for="opt in mcd_list" :label="opt.mcd_name" :value="opt.mcd_indx" :key="opt.mcd_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11" :offset="1">
+            <el-form-item :label-width="formLabelWidth" label="设备组别
 :">
-                            <el-select v-model="addData.grp_indx">
-                                <el-option v-for="opt in grp_list" :label="opt.grp_name" :value="opt.grp_indx" :key="opt.grp_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+              <el-select v-model="addData.grp_indx">
+                <el-option v-for="opt in grp_list" :label="opt.grp_name" :value="opt.grp_indx" :key="opt.grp_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-                <!-- <el-row>
-                <el-col :span="11" :offset="1">
+        <el-row>
+          <el-col :span="11" :offset="1">
 
-                    <el-form-item :label-width="formLabelWidth" label="是否授权:">
-                        <el-select v-model="addData.aut_flag">
-                            <el-option v-for="opt in aut_list" :label="opt.aut_name" :value="opt.aut_indx" :key="opt.aut_indx">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="11" :offset="1">
+            <el-form-item :label-width="formLabelWidth" label="是否授权:">
+              <el-select v-model="addData.aut_flag">
+                <el-option v-for="opt in aut_list" :label="opt.aut_name" :value="opt.aut_indx" :key="opt.aut_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <!-- <el-col :span="11" :offset="1">
                     <el-form-item :label-width="formLabelWidth" label="门禁密码:">
                         <el-input v-model="addData.acc_pswd"></el-input>
                     </el-form-item>
+                </el-col> -->
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <div>
+              <div class="itemclass">
+                <!-- use_cdat -->
+                <el-checkbox v-model="enableDate">启用卡证有效日期</el-checkbox>
+              </div>
+              <div style="margin: 15px 0;"></div>
+              <el-row>
+                <el-col :span="11" :offset="1">
+                  <el-form-item :label-width="formLabelWidth" label="起始日期:">
+                    <el-date-picker value-format="yyyy-MM-dd" v-model="addData.bgn_date" type="date" :disabled="!this.enableDate">
+                    </el-date-picker>
+                  </el-form-item>
                 </el-col>
-            </el-row> -->
-                <el-row>
-                    <el-col :span="24">
-                        <div>
-                            <div class="itemclass">
-                                <el-checkbox @change="enableDate" v-model="enableDate">启用卡证有效日期</el-checkbox>
-                            </div>
-                            <div style="margin: 15px 0;"></div>
-                            <el-row>
-                                <el-col :span="11" :offset="1">
-                                    <el-form-item :label-width="formLabelWidth" label="起始日期:">
-                                        <el-date-picker value-format="yyyy-MM-dd" v-model="addData.bgn_date" type="date" :disabled="!this.enableDate">
-                                        </el-date-picker>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="11" :offset="1">
-                                    <el-form-item :label-width="formLabelWidth" label="截止日期 
+                <el-col :span="11" :offset="1">
+                  <el-form-item :label-width="formLabelWidth" label="截止日期 
 :">
-                                        <el-date-picker value-format="yyyy-MM-dd" v-model="addData.end_date" type="date" :disabled="!this.enableDate">
-                                        </el-date-picker>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                        </div>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <el-row style="text-align:center;margin-top:40px;margin-bottom:20px">
-                <el-button class="submit-btn" type="primary" @click="save">确定</el-button>
-                <el-button class="cancel-btn" @click="cancel">取消</el-button>
-            </el-row>
-        </el-card>
-    </div>
+                    <el-date-picker value-format="yyyy-MM-dd" v-model="addData.end_date" type="date" :disabled="!this.enableDate">
+                    </el-date-picker>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
+      <el-row style="text-align:center;margin-top:40px;margin-bottom:20px">
+        <el-button class="submit-btn" type="primary" @click="save">确定</el-button>
+        <el-button class="cancel-btn" @click="cancel">取消</el-button>
+      </el-row>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -252,7 +253,7 @@ export default {
           let temp = data.data.data;
           function getChildren(arr) {
             arr.forEach(item => {
-              item.label = item.are_name || item.emp_name;
+              item.label = item.are_name || item.dev_name;
               if (item.children) {
                 if (item.dev_list) {
                   item.children = item.children.concat(item.dev_list);
@@ -260,10 +261,12 @@ export default {
                 getChildren(item.children);
               } else {
                 item.label = item.are_name || item.dev_name;
-                item.children = item.dev_list.map(item => {
-                  item.label = item.emp_name || item.dev_name;
-                  return item;
-                });
+                if (item.dev_list) {
+                  item.children = item.dev_list.map(item => {
+                    item.label = item.emp_name || item.dev_name;
+                    return item;
+                  });
+                }
               }
             });
           }
@@ -294,7 +297,8 @@ export default {
       delete param.ROW_NUMBER;
       param.user_list = this.userList;
       param.dev_list = this.devList;
-      param.chn_list = this.chnList;
+      // param.chn_list = this.chnList;
+      param.use_cdat = this.enableDate === true ? "1" : "0";
       console.info(param);
       axios.post("/authorlist/authorlist_add", param).then(data => {
         if (data.data.success) {
