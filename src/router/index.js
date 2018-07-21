@@ -87,6 +87,14 @@ export default new Router({
           component: () =>
             import ("@/components/pages/admin/adduseradmin")
         },
+        // assignpermission
+        {
+          path: "/admin/useradmin/assignpermission/:emp",
+          name: "assignpermission",
+          props: true,
+          component: () =>
+            import ("@/components/pages/admin/assignpermission")
+        },
         {
           path: "/admin/dep/addDep",
           name: "addDep",

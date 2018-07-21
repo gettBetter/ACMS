@@ -9,7 +9,7 @@
             <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="jobAuth">岗位授权</el-button> -->
 
       <el-table :data="pageData" border>
-        <el-table-column fixed="left" label="操作" width="120px">
+        <el-table-column fixed="left" label="操作" width="160px">
           <template slot-scope="scope">
             <el-button @click="edit(scope.row)" type="text" title="编辑">
               <i class="el-icon-edit"></i>
@@ -21,7 +21,12 @@
             <el-button type="text" @click="resetPW(scope.row)" title="重置密码">
               <i class="iconfont icon-zhongzhi"></i>
             </el-button>
+            <el-button type="text" @click="assignPermission(scope.row)" title="重置密码">
+              <i class="iconfont icon-fenpeiquanxian"></i>
+            </el-button>
           </template>
+
+          <!-- icon-fenpeiquanxian -->
         </el-table-column>
 
         <el-table-column prop="emp_indx" label="人员序号"></el-table-column>
@@ -91,6 +96,12 @@ export default {
     add() {
       this.$parent.$router.push({
         name: "adduseradmin"
+      });
+    },
+    assignPermission(record) {
+      this.$parent.$router.push({
+        name: "assignpermission",
+        params: { emp: record.emp_indx }
       });
     },
     del(record) {
