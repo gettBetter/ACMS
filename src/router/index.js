@@ -275,9 +275,45 @@ export default new Router({
           props: true,
           component: () =>
             import ("@/components/pages/devicmanage/copyauthorlist")
+        }
+      ]
+    },
+    //卡证管理
+    {
+      path: "/card",
+      name: "card",
+      redirect: '/card/cardmanage',
+      component: () =>
+        import ("@/components/card"),
+      children: [
+        // 卡证日常管理
+        {
+          path: "/card/cardmanage",
+          name: "cardmanage",
+          component: () =>
+            import ("@/components/pages/card/cardmanage")
         },
-
+        {
+          path: "/card/cardmanage/addcard",
+          name: "addcard",
+          component: () =>
+            import ("@/components/pages/card/addcard")
+        },
+        {
+          path: "/card/cardlog",
+          name: "cardlog",
+          component: () =>
+            import ("@/components/pages/card/cardlogs")
+        },
+        // 操作日志
+        // {
+        //   path: "/card/cardlog",
+        //   name: "cardlog",
+        //   component: () =>
+        //     import ("@/components/pages/card/cardlog")
+        // }
       ]
     }
+
   ]
 });

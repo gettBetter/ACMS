@@ -63,16 +63,16 @@ export default {
             );
             this.loginError = false;
             axios.get("/index/left").then(data => {
-              data.data.menu[0].chilren.push({
-                component: "/devicmanage/devchannel",
-                name: "门禁通道",
-                path: "/devicmanage/devchannel"
-              });
-              data.data.menu[0].chilren.push({
-                component: "/devicmanage/devtermina",
-                name: "门禁终端参数设置",
-                path: "/devicmanage/devtermina"
-              });
+              // data.data.menu[0].chilren.push({
+              //   component: "/devicmanage/devchannel",
+              //   name: "门禁通道",
+              //   path: "/devicmanage/devchannel"
+              // });
+              // data.data.menu[0].chilren.push({
+              //   component: "/devicmanage/devtermina",
+              //   name: "门禁终端参数设置",
+              //   path: "/devicmanage/devtermina"
+              // });
               that.$parent.$store.commit("setMenus", data.data.menu);
               sessionStorage.setItem(
                 "userMenus",
