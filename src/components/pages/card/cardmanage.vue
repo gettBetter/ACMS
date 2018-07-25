@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cardpage">
         <el-card class="box-card">
             <el-row :gutter="20">
                 <el-col :span="6">

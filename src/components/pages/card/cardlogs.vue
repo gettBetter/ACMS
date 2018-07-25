@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <div style="margin-bottom:20px">部门人员树</div>
-          <el-tree :data="treeData" :props="treeProp" @node-click="handleNodeClick" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll" show-checkbox @check-change="handleCheckChange" ref="depTree" node-key="emp_indx">
+          <el-tree :data="treeData" :props="treeProp"  :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll" show-checkbox @check-change="handleCheckChange" ref="depTree" node-key="emp_indx">
 
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
@@ -23,7 +23,30 @@
           </el-tree>
         </el-col>
         <el-col :span="18">
-          <div style="margin-bottom:20px">日志列表</div>
+          <!-- <div style="margin-bottom:20px">日志列表</div> -->
+          <el-form :inline="true" :model="queryData" class="demo-form-inline">
+            <el-form-item label="操作时间:"></el-form-item>
+            <el-form-item label="">
+              <el-date-picker
+                v-model="queryData.bgn_date "
+                type="datetime"
+                placeholder="开始时间">
+              </el-date-picker>
+            </el-form-item>
+       
+            <el-form-item label="-">
+              <el-date-picker
+                v-model="queryData.end_date "
+                type="datetime"
+                placeholder="截止时间">
+              </el-date-picker>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">查询</el-button>
+            </el-form-item>
+          </el-form>
+          
           <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button>
 
           <el-table :data="pageData" border>
@@ -66,7 +89,8 @@ export default {
         children: "children"
       },
       list: [],
-      user_list: []
+      user_list: [],
+      queryData: {}
     };
   },
   methods: {
