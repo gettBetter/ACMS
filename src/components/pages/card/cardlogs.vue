@@ -4,13 +4,9 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <div style="margin-bottom:20px">部门人员树</div>
-          <el-tree :data="treeData" :props="treeProp"  :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll" show-checkbox @check-change="handleCheckChange" ref="depTree" node-key="emp_indx">
-
+          <el-tree :data="treeData" :props="treeProp" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll" show-checkbox @check-change="handleCheckChange" ref="depTree" node-key="emp_indx">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
-                <!-- <span v-if="data.emp_indx">
-                                    <el-checkbox :v-model="false" :id="data.emp_indx" @change="checed=>changeUserList(checed,node,data)"></el-checkbox>
-                                </span> -->
                 <span v-if="!data.emp_indx">
                   <i class="iconfont icon-plus-departments" style="padding:0 4px" />
                 </span>
@@ -23,43 +19,31 @@
           </el-tree>
         </el-col>
         <el-col :span="18">
-          <!-- <div style="margin-bottom:20px">日志列表</div> -->
           <el-form :inline="true" :model="queryData" class="demo-form-inline">
             <el-form-item label="操作时间:"></el-form-item>
             <el-form-item label="">
-              <el-date-picker
-                v-model="queryData.bgn_date "
-                type="datetime"
-                placeholder="开始时间">
+              <el-date-picker v-model="queryData.bgn_date" type="datetime" placeholder="开始时间">
               </el-date-picker>
             </el-form-item>
-       
             <el-form-item label="-">
-              <el-date-picker
-                v-model="queryData.end_date "
-                type="datetime"
-                placeholder="截止时间">
+              <el-date-picker v-model="queryData.end_date" type="datetime" placeholder="截止时间">
               </el-date-picker>
             </el-form-item>
-
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">查询</el-button>
+              <el-button type="primary" @click="getList">查询</el-button>
             </el-form-item>
           </el-form>
-          
-          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button>
-
+          <div style="margin-bottom:20px">日志查询列表</div>
           <el-table :data="pageData" border>
-            <el-table-column prop="emp_indx" label="用户ID"></el-table-column>
-            <el-table-column prop="crd_indx" label="卡序号"></el-table-column>
-            <el-table-column prop="emp_code" label="用户编号"></el-table-column>
+            <el-table-column prop="emp_code" label="人员编号"></el-table-column>
             <el-table-column prop="emp_name" label="用户姓名"></el-table-column>
             <el-table-column prop="dep_name" label="所属部门"></el-table-column>
-            <el-table-column prop="crd_code" label="卡物理号"></el-table-column>
-            <el-table-column prop="sta_name" label="证卡状态"></el-table-column>
-            <el-table-column prop="typ_name" label="卡类型"></el-table-column>
-            <el-table-column prop="inc_cost" label="收工本费"></el-table-column>
-            <el-table-column prop="exp_cost" label="退工本费"></el-table-column>
+            <el-table-column prop="old_indx" label="之前卡号"></el-table-column>
+            <el-table-column prop="new_indx" label="之后卡号"></el-table-column>
+            <el-table-column prop="opr_name" label="操作类型"></el-table-column>
+            <el-table-column prop="usr_name" label="操作人员"></el-table-column>
+            <el-table-column prop="log_time" label="操作时间"></el-table-column>
+            <el-table-column prop="opr_addr" label="IP地址"></el-table-column>
           </el-table>
           <div class="block">
             <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
@@ -82,7 +66,6 @@ export default {
     return {
       currentPage: 1,
       pageCurSize: 10,
-      userInfo: {},
       treeData: [],
       treeProp: {
         label: "label",
@@ -95,7 +78,9 @@ export default {
   },
   methods: {
     handleCheckChange(data, checked, indeterminate) {
-      this.user_list = this.$refs.depTree.getCheckedKeys().filter(item => !!item)
+      this.user_list = this.$refs.depTree
+        .getCheckedKeys()
+        .filter(item => !!item);
     },
     getTree() {
       axios
@@ -127,14 +112,19 @@ export default {
           alert(data.data.msg);
         });
     },
-    getList(param) {
+    getList() {
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".cardpage")
       });
       this.list = [];
-   
+
+      const param = {
+        user_list: this.user_list,
+        bgn_date: queryData.bgn_date,
+        end_data: queryData.end_date
+      };
       axios
         .get("/card/card_log", { params: param })
         .then(
@@ -149,140 +139,8 @@ export default {
           data => loadingInstance.close()
         )
         .catch(err => loadingInstance.close());
-
-      
-    },
-    getDepList(param, loadingInstance) {
-      axios
-        .get("/card/card_user_list", { params: param })
-        .then(
-          data => {
-            if (data.data.success === true) {
-              loadingInstance.close();
-              this.list = data.data.data;
-            } else {
-              alert(data.data.msg);
-            }
-          },
-          data => loadingInstance.close()
-        )
-        .catch(err => loadingInstance.close());
-    },
-    getEmpList(param, loadingInstance) {
-      axios
-        .get("/card/card_user_select", { params: param })
-        .then(
-          data => {
-            if (data.data.success === true) {
-              loadingInstance.close();
-              this.list = data.data.data;
-            } else {
-              alert(data.data.msg);
-            }
-          },
-          data => loadingInstance.close()
-        )
-        .catch(err => loadingInstance.close());
-    },
-    add() {
-      this.$parent.$router.push({
-        name: "addcard"
-      });
-    },
-    exchange() {
-      this.$parent.$router.push("/admin/user/adduser");
-    },
-    loss(recored) {
-      let param = {
-        crd_indx: recored.crd_indx
-      };
-
-      this.$confirm(
-        `卡片一经挂失，其卡号被列入各业务系统黑名单中，导致卡片不可用。确实要挂失卡号为${
-          recored.crd_indx
-        }的卡片?`,
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
-      )
-        .then(() => {
-          axios
-            .post("/card/card_loss", param)
-            .then(data => {
-              if (data.data.success === true) {
-                this.$message({
-                  type: "success",
-                  message: "挂失成功!"
-                });
-                this.getList();
-              }
-            })
-            .catch(err => alert(err));
-        })
-        .catch(() => {});
-    },
-    unloss(recored) {
-      let param = {
-        crd_indx: recored.crd_indx
-      };
-
-      this.$confirm(
-        `卡片一经解挂，其卡号变为可用。确实要解挂卡号为${
-          recored.crd_indx
-        }的卡片?`,
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
-      )
-        .then(() => {
-          axios
-            .post("/card/card_unloss", param)
-            .then(data => {
-              if (data.data.success === true) {
-                this.$message({
-                  type: "success",
-                  message: "解挂成功!"
-                });
-                this.getList();
-              }
-            })
-            .catch(err => alert(err));
-        })
-        .catch(() => {});
     },
 
-    remove(recored) {
-      let param = {
-        crd_indx: recored.crd_indx
-      };
-
-      this.$confirm("此操作需要回收所有POS的交易数据，是否已回收?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          axios
-            .post("/card/card_remove", param)
-            .then(data => {
-              if (data.data.success === true) {
-                this.$message({
-                  type: "success",
-                  message: "销户成功!"
-                });
-                this.getList();
-              }
-            })
-            .catch(err => alert(err));
-        })
-        .catch(() => {});
-    },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
