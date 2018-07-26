@@ -103,7 +103,7 @@ export default {
     },
     getTree() {
       axios
-        .get("/card/dept_add_data_tree")
+        .get("/card/card_add_data_tree")
         .then(data => {
           console.info("tree", data.data);
           //   const temp = data.data.data[0].children;

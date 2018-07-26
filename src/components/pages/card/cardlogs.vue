@@ -22,15 +22,15 @@
           <el-form :inline="true" :model="queryData" class="demo-form-inline">
             <el-form-item label="操作时间:"></el-form-item>
             <el-form-item label="">
-              <el-date-picker v-model="queryData.bgn_date" type="datetime" placeholder="开始时间">
+              <el-date-picker v-model="queryData.bgn_date" type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="-">
-              <el-date-picker v-model="queryData.end_date" type="datetime" placeholder="截止时间">
+              <el-date-picker v-model="queryData.end_date" type="datetime" placeholder="截止时间" value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="getList">查询</el-button>
+              <el-button type="primary" @click="query">查询</el-button>
             </el-form-item>
           </el-form>
           <div style="margin-bottom:20px">日志查询列表</div>
@@ -82,6 +82,20 @@ export default {
         .getCheckedKeys()
         .filter(item => !!item);
     },
+    query() {
+      const param = {};
+      if (this.user_list.length > 0) {
+        param.user_list = this.user_list.join("-");
+      }
+      if (this.queryData.bgn_date) {
+        param.bgn_date = this.queryData.bgn_date;
+      }
+      if (this.queryData.end_date) {
+        param.end_date = this.queryData.end_date;
+      }
+
+      this.getList(param);
+    },
     getTree() {
       axios
         .get("/index/dept_users_tree")
@@ -112,7 +126,7 @@ export default {
           alert(data.data.msg);
         });
     },
-    getList() {
+    getList(param) {
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
@@ -120,11 +134,6 @@ export default {
       });
       this.list = [];
 
-      const param = {
-        user_list: this.user_list,
-        bgn_date: queryData.bgn_date,
-        end_data: queryData.end_date
-      };
       axios
         .get("/card/card_log", { params: param })
         .then(

@@ -76,7 +76,8 @@ export default {
       axios
         .get("/index/dept_tree")
         .then(data => {
-          this.depData = data.data.deptree;
+          // console.info(data.data.data.deptree);
+          this.depData = data.data.data.deptree;
         })
         .catch(data => {
           alert(data.data.msg);
