@@ -11,38 +11,40 @@
                     <el-form :model="data">
                         <el-form-item :label-width="formLabelWidth" label="人员编号:">
                             <span v-text="data.emp_code"></span>
-                        </el-form-item>  
+                        </el-form-item>
                         <el-form-item :label-width="formLabelWidth" label="人员姓名:">
                             <span v-text="data.emp_name"></span>
-                        </el-form-item>  
+                        </el-form-item>
                         <el-form-item :label-width="formLabelWidth" label="所属部门:">
                             <span v-text="data.dep_name"></span>
-                        </el-form-item>  
+                        </el-form-item>
                         <el-form-item :label-width="formLabelWidth" label="人员类别:">
                             <span v-text="data.rnk_name"></span>
-                        </el-form-item> 
+                        </el-form-item>
                         <el-form-item :label-width="formLabelWidth" label="证件号码:">
                             <span v-text="data.crt_code"></span>
-                        </el-form-item> 
+                        </el-form-item>
 
                         <el-form-item :label-width="formLabelWidth" label="卡序号:">
                             <el-input v-model="data.crd_indx"></el-input>
-                        </el-form-item> 
+                        </el-form-item>
                         <el-form-item :label-width="formLabelWidth" label="卡物理号:">
                             <el-input v-model="data.crd_code"></el-input>
-                        </el-form-item> 
+                        </el-form-item>
                         <el-form-item :label-width="formLabelWidth" label="证卡状态:">
-                            <!-- <span v-model="data.sta_indx"></span> -->
-                            <!-- <el-select v-model="editMenuData.parent_id">
-                                <el-option v-for="opt in firstMenu" :label="opt.name" :value="opt.a_id" :key="opt.a_id">
+                            <el-select v-model="data.sta_indx">
+                                <el-option v-for="opt in sta_list" :label="opt.sta_name" :value="opt.sta_indx" :key="opt.sta_indx">
                                 </el-option>
-                            </el-select> -->
-                        </el-form-item> 
+                            </el-select>
+                        </el-form-item>
                         <el-form-item :label-width="formLabelWidth" label="证卡类型:">
-                            <span v-model="data.typ_nam"></span>
-                        </el-form-item> 
-                        
-                    </el-form>     
+                            <el-select v-model="data.typ_indx">
+                                <el-option v-for="opt in type_list" :label="opt.typ_name" :value="opt.typ_indx" :key="opt.typ_indx">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                    </el-form>
                 </el-col>
             </el-row>
 
@@ -57,11 +59,6 @@
 <script>
 import axios from "axios";
 export default {
-  props: {
-      crdIndx: {
-          require: true
-      }
-  },
   data() {
     return {
       dialogVisible: false,
@@ -72,25 +69,34 @@ export default {
         children: "children"
       },
       data: {},
-      areaList: []
+      exchangeData: {},
+      type_list: [],
+      sta_list: [],
+      areaList: [],
     };
   },
   methods: {
     openExchange() {
       this.dialogVisible = true;
+      this.isExchanged = false;
       this.getTree();
-    //   console.info(this.crdIndx)
+      const param = {
+        crd_indx: this.crdIndx
+      };
+      this.getData(param);
+      console.info("param", param);
     },
+
     handleCheckChange(data, checked, indeterminate) {
-      console.info(
-        data,
-        checked,
-        indeterminate,
-        this.$refs.areaTree.getCheckedKeys()
-      );
-        this.areaList = this.$refs.areaTree
-          .getCheckedKeys()
-          .filter(item => !!item);
+      //   console.info(
+      //     data,
+      //     checked,
+      //     indeterminate,
+      //     this.$refs.areaTree.getCheckedKeys()
+      //   );
+      //   this.areaList = this.$refs.areaTree
+      //     .getCheckedKeys()
+      //     .filter(item => !!item);
     },
     getTree() {
       axios
@@ -104,30 +110,61 @@ export default {
         });
     },
     getData(param) {
-        axios
-        .get("/card/card_exchange",{params:param})
+      axios
+        .get("/card/card_exchange", { params: param })
         .then(data => {
           console.info("card_exchange", data.data);
-          this.data = data.data.data[0]
-          console.info('this.data',this.data)
+          this.data = data.data.data[0];
+          this.type_list = data.data.card_type;
+          this.sta_list = data.data.card_sta;
+          console.info("this.data", this.data);
         })
         .catch(data => {
           alert(data.data.msg);
         });
     },
-    save() {}
-  },
-  computed: {},
-  created() {},
-  mounted() {},
-  watch:{
-      crdIndx(newVal,oldVal){
-        const param = {
-            crd_indx: newVal
+    save() {
+      //...
+      const param = this.data;
+      delete param.ROW_NUMBER;
+      delete param.emp_code;
+      delete param.emp_name;
+      delete param.dep_name;
+      delete param.dep_indx;
+      delete param.rnk_name;
+      delete param.rnk_indx;
+      delete param.dep_indx;
+      delete param.crt_code;
+      delete param.emp_pswd;
+      delete param.sta_name;
+      delete param.typ_name;
+
+      console.info(param);
+      axios.post("/card/card_exchange_save", param).then(data => {
+        if (data.data.success) {
+          this.$message({
+            type: "success",
+            message: "换卡成功!"
+          });
+          //   this.$router.go(-1);
+          this.dialogVisible = false;
+          this.$emit("exchanged", true);
         }
-        this.getData(param)
-        console.info('param',param)
-      }
+      });
+    }
+  },
+  computed: {
+    crdIndx() {
+      return this.$parent.$data.crdIndx;
+    }
+  },
+  created() {},
+  mounted() {
+    console.info(this.$parent.$data);
+  },
+  watch: {
+    // crdIndx(newVal, oldVal) {
+    // }
   }
 };
 </script>

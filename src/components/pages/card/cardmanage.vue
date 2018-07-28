@@ -75,7 +75,7 @@
 
     </el-card>
 
-    <exchange-card ref="exchangeCard" :crdIndx="crdIndx"></exchange-card>
+    <exchange-card ref="exchangeCard" @exchanged="isExchange"></exchange-card>
   </div>
 </template>
 
@@ -102,7 +102,7 @@ export default {
       },
       list: [],
       user_list: [],
-      crdIndx:''
+      crdIndx: ""
     };
   },
   methods: {
@@ -213,10 +213,16 @@ export default {
       });
     },
     exchange(record) {
-      this.crdIndx = record.crd_indx 
-      // debugger
-      // this.$set(this.crdIndx,record.crd_indx)
-      this.$refs.exchangeCard.openExchange();
+      this.crdIndx = record.crd_indx;
+      this.$nextTick(() => {
+        this.$refs.exchangeCard.openExchange();
+      });
+    },
+    isExchange(val) {
+      debugger;
+      if (val) {
+        this.getList();
+      }
     },
     loss(recored) {
       let param = {
