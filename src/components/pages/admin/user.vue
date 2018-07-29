@@ -77,7 +77,7 @@ export default {
         .get("/index/dept_tree")
         .then(data => {
           // console.info(data.data.data.deptree);
-          this.depData = data.data.data.deptree;
+          this.depData = data.data.deptree;
         })
         .catch(data => {
           alert(data.data.msg);

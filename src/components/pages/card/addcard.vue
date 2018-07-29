@@ -23,30 +23,17 @@
         </el-col>
         <el-col :span="18">
           <div style="margin-bottom:20px">发卡列表</div>
-          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="save">发卡</el-button>
+          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="cardConfig" :disabled="disableBtn">发卡</el-button>
 
-          <el-table :data="pageData" border>
-
-            <!--<el-table-column fixed="left" label="操作" width="160px">
-              <template slot-scope="scope">
-
-                <el-button type="text" @click="delUser(scope.row)" title="删除">
-                                    <i class="el-icon-delete"></i>
-                                </el-button> 
-              </template>
-            </el-table-column>-->
+          <el-table :data="pageData" border @selection-change="selectionChange">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="emp_indx" label="用户ID"></el-table-column>
-            <el-table-column prop="crd_indx" label="卡序号"></el-table-column>
             <el-table-column prop="emp_code" label="用户编号"></el-table-column>
             <el-table-column prop="emp_name" label="用户姓名"></el-table-column>
+            <el-table-column prop="crd_code" label="证件编码"></el-table-column>
             <el-table-column prop="dep_name" label="所属部门"></el-table-column>
-            <el-table-column prop="crd_code" label="卡物理号"></el-table-column>
-            <el-table-column prop="sta_name" label="证卡状态"></el-table-column>
-            <el-table-column prop="typ_name" label="卡类型"></el-table-column>
-            <el-table-column prop="inc_cost" label="收工本费"></el-table-column>
-            <el-table-column prop="exp_cost" label="退工本费"></el-table-column>
+            <el-table-column prop="rnk_name" label="人员类别"></el-table-column>
           </el-table>
           <div class="block">
             <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
@@ -55,6 +42,7 @@
         </el-col>
       </el-row>
     </el-card>
+    <card-config ref="cardConfig" :config="config"></card-config>
   </div>
 </template>
 
@@ -63,8 +51,12 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
+import CardConfig from "./CardConfig";
 
 export default {
+  components: {
+    CardConfig
+  },
   data() {
     return {
       currentPage: 1,
@@ -76,20 +68,21 @@ export default {
         children: "children"
       },
       list: [],
-      user_list: []
+      user_list: [],
+      disableBtn: true
     };
   },
   methods: {
-    handleCheckChange(data, checked, indeterminate) {
-      console.info(
-        data,
-        checked,
-        indeterminate,
-        this.$refs.depTree.getCheckedKeys()
-      );
-      // this.areaList = this.$refs.areaTree
-      //   .getCheckedKeys()
-      //   .filter(item => !!item);
+    reset() {
+      this.user_list = [];
+    },
+    selectionChange(data) {
+      console.info(data);
+      this.user_list = data.map(item => {
+        let { emp_indx, crd_code } = item;
+        return { emp_indx, crd_code };
+      });
+      if (this.user_list.length) this.disableBtn = false;
     },
     handleNodeClick(node, data) {
       const isDep = !node.emp_indx;
@@ -185,24 +178,13 @@ export default {
         )
         .catch(err => loadingInstance.close());
     },
-    save() {
-      //   /card/card_add
-      // const param = this.addData;
-      // delete param.ROW_NUMBER;
-      // param.user_list = this.userList;
-      // param.dev_list = this.devList;
-      // // param.chn_list = this.chnList;
-
-      // console.info(param);
-      // axios.post("/card/card_add", param).then(data => {
-      //   if (data.data.success) {
-      //     this.$message({
-      //       type: "success",
-      //       message: "发卡成功!"
-      //     });
-      //     this.$router.go(-1);
-      //   }
-      // });
+    cardConfig() {
+      this.$refs.cardConfig.openConfig();
+    },
+    config(val) {
+      if (val) {
+        this.getList();
+      }
     },
 
     handleCurrentChange(val) {
@@ -221,19 +203,9 @@ export default {
       return this.chunkList[this.currentPage - 1];
     }
   },
-  activated() {
-    // this.getList();
+  created() {
+    this.reset();
     this.getTree();
   }
 };
 </script>
-
-<style >
-.block {
-  text-align: right;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-</style>
-
-
