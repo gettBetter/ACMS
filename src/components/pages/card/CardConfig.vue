@@ -2,7 +2,7 @@
     <el-dialog width="70%" style="min-height:400px" title="换卡" :visible.sync="dialogVisible" append-to-body center>
         <el-row :gutter="20">
             <el-col :span="8">
-                <div style="margin-bottom:20px">部门人员树</div>
+                <div style="margin-bottom:20px">区域</div>
                 <el-tree :data="treeData" :props="treeProp" ref="areaTree" :expand-on-click-node="false" @check-change="handleCheckChange" highlight-current style="max-height:600px;overflow:scroll" show-checkbox node-key="are_indx">
                 </el-tree>
             </el-col>
@@ -53,7 +53,6 @@ export default {
       data: {},
       formLabelWidth: "80px",
       type_list: [],
-      //   sta_list: [],
       are_list: []
     };
   },

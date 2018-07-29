@@ -28,11 +28,11 @@
 
           <el-table :data="pageData" border>
             width="80%"
-            <el-table-column fixed="left" label="操作" width="160px">
+            <el-table-column fixed="left" label="操作" width="140px">
               <template slot-scope="scope">
-                <el-button @click="edit(scope.row)" type="text" title="编辑">
+                <!-- <el-button @click="edit(scope.row)" type="text" title="编辑">
                   <i class="el-icon-edit"></i>
-                </el-button>
+                </el-button> -->
 
                 <el-button @click="loss(scope.row)" type="text" title="挂失" style="font-size:12px" v-if="scope.row.sta_indx != '4'">
                   <i class="iconfont icon-guashi"></i>
@@ -219,7 +219,6 @@ export default {
       });
     },
     isExchange(val) {
-      debugger;
       if (val) {
         this.getList();
       }

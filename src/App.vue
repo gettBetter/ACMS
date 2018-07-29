@@ -191,4 +191,10 @@ user agent stylesheet div {
   font-size: 14px;
   padding-right: 8px;
 }
+hr {
+  border: 0;
+  background-color: #eee;
+  margin: 20px 0;
+  height: 1px;
+}
 </style>
