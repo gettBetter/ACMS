@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog width="40%" style="min-height:400px" :title="type" :visible.sync="dialogVisible" append-to-body center>
+    <el-dialog width="40%" style="min-height:400px" :title="clockType" :visible.sync="dialogVisible" append-to-body center>
       <el-form :model="data" label-width="80px">
         <el-form-item label="设备组别:">
           <span>{{grpIndx}}</span>
@@ -34,20 +34,6 @@
 <script>
 import axios from "axios";
 export default {
-  props: {
-    grpIndx: {
-      type: String,
-      default: "1"
-    },
-    type: {
-      type: String,
-      default: ""
-    },
-    tmrIndx: {
-      type: String,
-      default: ""
-    }
-  },
   data() {
     return {
       dialogVisible: false,
@@ -55,37 +41,43 @@ export default {
       tmr_list: []
     };
   },
+  computed: {
+    grpIndx() {
+      console.info("111", this.$parent.$data);
+      return this.$parent.$data.grpIndx;
+    },
+    clockType() {
+      return this.$parent.$data.clockType;
+    },
+    tmrIndx() {
+      return this.$parent.$data.tmrIndx;
+    }
+  },
   methods: {
+    reset() {
+      this.data = {};
+    },
     open() {
       this.dialogVisible = true;
-      this.getTree();
+      this.reset();
       this.getData();
     },
-    getTree() {
+    getData() {
+      // if (this.type === "添加时段时钟") {
+      console.info("clockType", this.clockType, this.tmrIndx, this.grpIndx);
       axios
-        .get("/card/card_area_config_data")
+        .get("/timerparam/prmtmrclck_add_data")
         .then(data => {
-          console.info("tree", data.data);
-          this.treeData = data.data.data[0].children;
+          console.info("添加", data.data);
+          this.tmr_list = data.data.data;
         })
         .catch(data => {
           alert(data.data.msg);
         });
-    },
-    getData() {
-      if (this.type === "添加时段时钟") {
+
+      if (this.clockType === "编辑时段时钟") {
         axios
-          .get("/timerparam/prmtmrclck_add_data")
-          .then(data => {
-            console.info("添加", data.data);
-            this.tmr_list = data.data.data;
-          })
-          .catch(data => {
-            alert(data.data.msg);
-          });
-      } else if (this.type === "编辑时段时钟") {
-        axios
-          .get("/timerparam/prmtmrclck_add_data", {
+          .get("/timerparam/prmtmrclck_edit_data", {
             params: {
               grp_indx: this.grpIndx,
               tmr_indx: this.tmrIndx
@@ -94,17 +86,21 @@ export default {
           .then(data => {
             console.info("编辑", data.data);
             // this.tmr_list = data.data.data;
+            this.data = data.data.data[0];
           })
           .catch(data => {
             alert(data.data.msg);
           });
+        // }
       }
     },
     save() {
       const param = this.data;
       param.grp_indx = this.grpIndx;
+      delete param.tmr_name;
+      delete param.ROW_NUMBER;
       console.info(param);
-      if (this.type === "添加时段时钟") {
+      if (this.clockType === "添加时段时钟") {
         axios.post("/timerparam/prmtmrclck_add", param).then(data => {
           if (data.data.success) {
             this.$message({
@@ -115,7 +111,7 @@ export default {
             this.$emit("addClockSucc", true);
           }
         });
-      } else if (this.type === "编辑时段时钟") {
+      } else if (this.clockType === "编辑时段时钟") {
         axios.post("/timerparam/prmtmrclck_edit_save", param).then(data => {
           if (data.data.success) {
             this.$message({

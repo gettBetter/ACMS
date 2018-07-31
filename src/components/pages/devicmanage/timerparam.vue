@@ -41,7 +41,7 @@
             <!-- 时段时钟 -->
             <el-tab-pane label="时段时钟" name="clock">
               <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddClockdialog">添加时段时钟</el-button>
-              <el-table :data="clockList" border>
+              <el-table :data="clockPageData" border>
                 <el-table-column fixed="left" label="操作" width="80%">
                   <template slot-scope="scope">
                     <el-button @click="openEditClockdialog(scope.row)" type="text" size="">
@@ -56,29 +56,89 @@
                 <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
                 <el-table-column prop="tmr_indx" label="时段编号"></el-table-column>
                 <el-table-column prop="tmr_name" label="时段名称"></el-table-column>
-                <el-table-column prop="bgn_date" label="开始日期"></el-table-column>
-                <el-table-column prop="end_date" label="结束日期"></el-table-column>
+                <el-table-column prop="bgn_time" label="开始日期"></el-table-column>
+                <el-table-column prop="end_time" label="结束日期"></el-table-column>
               </el-table>
+              <div class="block ">
+                <el-pagination @current-change="clockHandleCurrentChange" :current-page="clockCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="clockTotal">
+                </el-pagination>
+              </div>
             </el-tab-pane>
 
             <!-- 时段时区 -->
-            <el-tab-pane label="时段时区" name="second"></el-tab-pane>
+            <el-tab-pane label="时段时区" name="zone">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddZonedialog">添加时段时区</el-button>
+              <el-table :data="zonePageData" border>
+                <el-table-column fixed="left" label="操作" width="80%">
+                  <template slot-scope="scope">
+                    <el-button @click="openEditZonedialog(scope.row)" type="text" size="">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+
+                    <el-button type="text" @click="delZone(scope.row)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
+                <el-table-column prop="tzn_indx" label="设备组别"></el-table-column>
+                <el-table-column prop="tzn_name" label="时区名称"></el-table-column>
+                <el-table-column prop="tmr1_name" label="段一关联"></el-table-column>
+                <el-table-column prop="tmr2_name" label="段二关联"></el-table-column>
+                <el-table-column prop="tmr3_name" label="段三关联"></el-table-column>
+              </el-table>
+              <div class="block ">
+                <el-pagination @current-change="zoneHandleCurrentChange" :current-page="zoneCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="zoneTotal">
+                </el-pagination>
+              </div>
+            </el-tab-pane>
 
             <!-- 应用群控 -->
-            <el-tab-pane label="应用群控" name="third"></el-tab-pane>
+            <el-tab-pane label="应用群控" name="ctrl">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddCtrldialog">添加应用群控</el-button>
+              <el-table :data="ctrlPageData" border>
+                <el-table-column fixed="left" label="操作" width="80%">
+                  <template slot-scope="scope">
+                    <el-button @click="openEditCtrldialog(scope.row)" type="text" size="">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+
+                    <el-button type="text" @click="delCtrl(scope.row)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
+                <el-table-column prop="ctr_indx" label="群控编号"></el-table-column>
+                <el-table-column prop="trm_ctrl" label="终端位控"></el-table-column>
+                <el-table-column prop="chn_ctrl" label="通道位控"></el-table-column>
+                <el-table-column prop="chn_sptz" label="安密通道"></el-table-column>
+                <el-table-column prop="chn_pptz" label="个密通道"></el-table-column>
+
+                <el-table-column prop="phd_hdtz" label="假日前天时控"></el-table-column>
+                <el-table-column prop="phd_ctrl" label="假日前天位控"></el-table-column>
+                <el-table-column prop="thd_hdtz" label="假日当天时控"></el-table-column>
+                <el-table-column prop="thd_ctrl" label="假日当天位控"></el-table-column>
+                <el-table-column prop="nhd_hdtz" label="假日后天时控"></el-table-column>
+                <el-table-column prop="nhd_ctrl" label="假日后天位控"></el-table-column>
+                <el-table-column prop="wek_wktz" label="周计划时控"></el-table-column>
+                <el-table-column prop="wek_ctrl" label="周位控"></el-table-column>
+              </el-table>
+              <div class="block ">
+                <el-pagination @current-change="ctrlHandleCurrentChange" :current-page="ctrlCurrentPage" :page-size="10 " layout="total, prev, pager, next, jumper " :total="ctrlTotal ">
+                </el-pagination>
+              </div>
+            </el-tab-pane>
           </el-tabs>
 
         </el-col>
 
       </el-row>
 
-      <!-- <div class="block ">
-        <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
-        </el-pagination>
-      </div> -->
-
     </el-card>
-    <AddClock ref="clockDialog" :grpIndx="grpIndx" :type="type" :tmrIndx="tmrIndx" @addClockSucc="addClockSucc"></AddClock>
+    <AddClock ref="clockDialog" @addClockSucc="addClockSucc"></AddClock>
+    <Zone ref="zoneDialog" @addZoneSucc="addZoneSucc"></Zone>
+    <Ctrl ref="ctrlDialog" @addCtrlSucc="addCtrlSucc"></Ctrl>
   </div>
 </template>
 
@@ -88,63 +148,277 @@ import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
 import AddClock from "./AddClock";
+import Zone from "./Zone";
+import Ctrl from "./Ctrl";
 
 export default {
   components: {
-    AddClock
+    AddClock,
+    Zone,
+    Ctrl
   },
   data() {
     return {
       activeName: "clock",
-      currentPage: 1,
-      pageCurSize: 10,
+      clockCurrentPage: 1,
+      clockPageCurSize: 10,
+      zoneCurrentPage: 1,
+      zonePageCurSize: 10,
+      ctrlCurrentPage: 1,
+      ctrlkPageCurSize: 10,
       treeData: [],
       treeProp: {
         label: "label",
         children: "children"
       },
       clockList: [],
+      zoneList: [],
+      ctrlList: [],
       devGroup: [],
-      // devgrp: {},
       grpIndx: "1",
       tmrIndx: "",
+      tznIndx: "",
+      ctrIndx: "",
       data: {},
-      type: ""
+      clockType: "",
+      zoneType: "",
+      ctrlType: ""
     };
   },
   methods: {
+    handleTab(tab, event) {
+      // console.info(tab, event);
+      this.activeName = tab.name;
+      switch (this.activeName) {
+        case "clock":
+          this.getClockList(this.grpIndx);
+          break;
+        case "zone":
+          this.getZoneList(this.grpIndx);
+          break;
+        case "ctrl":
+          this.getCtrlList(this.grpIndx);
+          break;
+      }
+      console.info("this.activeName", this.activeName);
+    },
+    changeGrp(val) {
+      console.info(val);
+      const param = {
+        grp_indx: val
+      };
+      this.grpIndx = val;
+      this.getTree(param);
+      switch (this.activeName) {
+        case "clock":
+          this.getClockList(val);
+          break;
+        case "zone":
+          this.getZoneList(val);
+          break;
+        case "ctrl":
+          this.getCtrlList(val);
+          break;
+      }
+    },
+    getClockList(grp_indx = 1) {
+      this.clockList = [];
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".adminpage")
+      });
+      axios.get(`/timerparam/prmtmrclck_list/grp_indx/${grp_indx}`).then(
+        data => {
+          loadingInstance.close();
+          if (data.data.success === true) {
+            console.info(data.data);
+            this.clockList = data.data.data;
+          }
+        },
+        data => loadingInstance.close()
+      );
+    },
     openAddClockdialog() {
-      this.type = "添加时段时钟";
-      this.$refs.clockDialog.open();
+      console.info("clockType", this.clockType);
+      this.clockType = "添加时段时钟";
+      this.$nextTick(() => {
+        this.$refs.clockDialog.open();
+      });
     },
     openEditClockdialog(record) {
-      this.type = "编辑时段时钟";
+      this.clockType = "编辑时段时钟";
       this.tmrIndx = record.tmr_indx;
-      this.$refs.clockDialog.open();
+      this.$nextTick(() => {
+        this.$refs.clockDialog.open();
+      });
     },
     addClockSucc(val) {
       if (val) {
+        this.clockType = "";
         this.getClockList(this.grpIndx);
       }
     },
-    handleTab(tab, event) {
-      console.info(tab, event);
+    delClock(record) {
+      const { grp_indx, tmr_indx } = record;
+      const param = {
+        grp_indx,
+        tmr_indx
+      };
+      this.$confirm("请确认是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios
+            .post("/timerparam/prmtmrclck_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getClockList(this.grpIndx);
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
+    },
+    getZoneList(grp_indx = 1) {
+      this.zoneList = [];
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".adminpage")
+      });
+      axios.get(`/timerparam/prmtmrzone_list/grp_indx/${grp_indx}`).then(
+        data => {
+          loadingInstance.close();
+          if (data.data.success === true) {
+            console.info(data.data);
+            this.zoneList = data.data.data;
+            console.info("zoneList", this.zoneList.length, this.zonePageData);
+          }
+        },
+        data => loadingInstance.close()
+      );
+    },
+    openAddZonedialog() {
+      this.zoneType = "添加时段时区";
+
+      this.$nextTick(() => {
+        this.$refs.zoneDialog.open();
+      });
+    },
+    openEditZonedialog(record) {
+      this.zoneType = "编辑时段时区";
+      this.tznIndx = record.tzn_indx;
+      this.$nextTick(() => {
+        this.$refs.zoneDialog.open();
+      });
+    },
+    addZoneSucc(val) {
+      if (val) {
+        this.zoneType = "";
+        this.getZoneList(this.grpIndx);
+      }
+    },
+    delZone(record) {
+      const { grp_indx, tzn_indx } = record;
+      const param = {
+        grp_indx,
+        tzn_indx
+      };
+      this.$confirm("请确认是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios
+            .post("/timerparam/prmtmrzone_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getZoneList(this.grpIndx);
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
+    },
+    getCtrlList(grp_indx = 1) {
+      this.ctrlList = [];
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".adminpage")
+      });
+      axios.get(`/timerparam/prmtmrctrl_list/grp_indx/${grp_indx}`).then(
+        data => {
+          loadingInstance.close();
+          if (data.data.success === true) {
+            console.info(data.data);
+            this.ctrlList = data.data.data;
+          }
+        },
+        data => loadingInstance.close()
+      );
+    },
+    openAddCtrldialog() {
+      this.ctrlType = "添加应用群控";
+
+      this.$nextTick(() => {
+        this.$refs.ctrlDialog.open();
+      });
+    },
+    openEditCtrldialog(record) {
+      this.ctrlType = "编辑应用群控";
+      // this.ctrIndx = record.ctr_indx;
+      this.$nextTick(() => {
+        this.$refs.ctrlDialog.open();
+      });
+    },
+    addCtrlSucc(val) {
+      if (val) {
+        this.ctrlType = "";
+        this.getCtrlList(this.grpIndx);
+      }
+    },
+    delCtrl(record) {
+      const { grp_indx, tzn_indx } = record;
+      const param = {
+        grp_indx,
+        tzn_indx
+      };
+      this.$confirm("请确认是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios
+            .post("/timerparam/prmtmrctrl_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getCtrlList(this.grpIndx);
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
     },
     changeTreeList(checked, node, data) {
       console.info("changeDevList", checked, node, data);
-      // if (data.tag == 2) {
-      //   if (checked) {
-      //     this.setList(this.devList, { type: "add", data: data.dev_indx });
-      //   } else {
-      //     this.setList(this.devList, { type: "del", data: data.dev_indx });
-      //   }
-      // } else if (data.tag == 3) {
-      //   if (checked) {
-      //     this.setList(this.chnList, { type: "add", data: data.chn_indx });
-      //   } else {
-      //     this.setList(this.chnList, { type: "del", data: data.chn_indx });
-      //   }
-      // }
     },
     getDepGroup() {
       axios.get("/index/devgrp_list").then(data => {
@@ -159,15 +433,7 @@ export default {
     //     .filter(item => !!item);
     //   console.info(this.areaList);
     // },
-    changeGrp(val) {
-      console.info(val);
-      const param = {
-        grp_indx: val
-      };
-      this.grpIndx = val;
-      this.getTree(param);
-      this.getClockList(val);
-    },
+
     getChildren(arr) {
       arr.forEach(item => {
         item.label = item.are_name || item.dev_name;
@@ -199,79 +465,47 @@ export default {
           alert(data.data.msg);
         });
     },
-    getClockList(grp_indx = 1) {
-      let loadingInstance = Loading.service({
-        lock: true,
-        background: "rgba(0, 0, 0, 0.5)",
-        target: document.querySelector(".adminpage")
-      });
-      axios.get(`/timerparam/prmtmrclck_list/grp_indx/${grp_indx}`).then(
-        data => {
-          loadingInstance.close();
-          if (data.data.success === true) {
-            console.info(data.data);
-            // clockList = data
-            //   let d = data.data.data;
-            //   d.forEach(item => {
-            //     if (item.use_isok === "1") {
-            //       item.use_isok = "启用";
-            //     } else if (item.use_isok === "0") {
-            //       item.use_isok = "未启用";
-            //     }
-            //   });
-            //   this.list = d;
-            // } else {
-            //   alert(data.data.msg);
-          }
-        },
-        data => loadingInstance.close()
-      );
-    },
-    delClock(recored) {
-      // let param = {
-      //   tmr_indx: recored.tmr_indx
-      // };
-      const { grp_indx, tmr_indx } = record;
-      const param = {
-        grp_indx,
-        tmr_indx
-      };
-      this.$confirm("请确认是否删除?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          axios
-            .post("/timerparam/prmtmrclck_del", param)
-            .then(data => {
-              if (data.data.success === true) {
-                this.$message({
-                  type: "success",
-                  message: "删除成功!"
-                });
-                this.getList();
-              }
-            })
-            .catch(err => alert(err));
-        })
-        .catch(() => {});
-    },
-    handleCurrentChange(val) {
+    clockHandleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.currentPage = val;
+      this.clockCurrentPage = val;
+    },
+    zoneHandleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.zoneCurrentPage = val;
+    },
+    ctrlHandleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.ctrlCurrentPage = val;
     }
   },
   computed: {
-    // total() {
-    //   return this.list.length;
-    // },
-    // chunkList() {
-    //   return _.chunk(this.list, this.pageCurSize);
-    // },
-    // pageData() {
-    //   return this.chunkList[this.currentPage - 1];
-    // }
+    clockTotal() {
+      return this.clockList.length;
+    },
+    clockChunkList() {
+      return _.chunk(this.clockList, this.clockPageCurSize);
+    },
+    clockPageData() {
+      return this.clockChunkList[this.clockCurrentPage - 1];
+    },
+    zoneTotal() {
+      return this.zoneList.length;
+    },
+    zoneChunkList() {
+      return _.chunk(this.zoneList, this.zonePageCurSize);
+    },
+    zonePageData() {
+      return this.zoneChunkList[this.zoneCurrentPage - 1];
+    },
+    ctrlTotal() {
+      return this.ctrlList.length;
+    },
+    ctrlChunkList() {
+      return _.chunk(this.ctrlList, this.ctrlPageCurSize);
+    },
+    ctrlPageData() {
+      return this.ctrlChunkList[this.ctrlCurrentPage - 1];
+    }
   },
   created() {
     this.getDepGroup();
