@@ -125,7 +125,7 @@
                 <el-table-column prop="wek_ctrl" label="周位控"></el-table-column>
               </el-table>
               <div class="block ">
-                <el-pagination @current-change="ctrlHandleCurrentChange" :current-page="ctrlCurrentPage" :page-size="10 " layout="total, prev, pager, next, jumper " :total="ctrlTotal ">
+                <el-pagination @current-change="ctrlHandleCurrentChange" :current-page="ctrlCurrentPage" :page-size="10 " layout="total, prev, pager, next, jumper " :total="ctrlTotal">
                 </el-pagination>
               </div>
             </el-tab-pane>
@@ -165,7 +165,7 @@ export default {
       zoneCurrentPage: 1,
       zonePageCurSize: 10,
       ctrlCurrentPage: 1,
-      ctrlkPageCurSize: 10,
+      ctrlPageCurSize: 10,
       treeData: [],
       treeProp: {
         label: "label",
@@ -379,7 +379,7 @@ export default {
     },
     openEditCtrldialog(record) {
       this.ctrlType = "编辑应用群控";
-      // this.ctrIndx = record.ctr_indx;
+      this.ctrIndx = record.ctr_indx;
       this.$nextTick(() => {
         this.$refs.ctrlDialog.open();
       });
@@ -391,10 +391,10 @@ export default {
       }
     },
     delCtrl(record) {
-      const { grp_indx, tzn_indx } = record;
+      const { grp_indx, ctr_indx } = record;
       const param = {
         grp_indx,
-        tzn_indx
+        ctr_indx
       };
       this.$confirm("请确认是否删除?", "提示", {
         confirmButtonText: "确定",

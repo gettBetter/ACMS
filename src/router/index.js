@@ -188,18 +188,18 @@ export default new Router({
           component: () =>
             import ("@/components/pages/devicmanage/timerparam")
         },
-        {
-          path: "/devicmanage/timerparam/edittimerparam/:id",
-          name: "edittimerparam",
-          component: () =>
-            import ("@/components/pages/devicmanage/edittimerparam")
-        },
-        {
-          path: "/devicmanage/timerparam/addtimerparam",
-          name: "addtimerparam",
-          component: () =>
-            import ("@/components/pages/devicmanage/addtimerparam")
-        },
+        // {
+        //   path: "/devicmanage/timerparam/edittimerparam/:id",
+        //   name: "edittimerparam",
+        //   component: () =>
+        //     import ("@/components/pages/devicmanage/edittimerparam")
+        // },
+        // {
+        //   path: "/devicmanage/timerparam/addtimerparam",
+        //   name: "addtimerparam",
+        //   component: () =>
+        //     import ("@/components/pages/devicmanage/addtimerparam")
+        // },
         //门禁通道
         {
           path: "/devicmanage/devchannel",

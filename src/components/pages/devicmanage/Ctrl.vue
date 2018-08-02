@@ -10,7 +10,7 @@
                     </el-col>
                     <el-col :span="5" :offset="1">
                         <el-form-item label="群控编号:">
-                            <el-select v-model="data.tzn_indx">
+                            <el-select v-model="data.ctr_indx">
                                 <el-option v-for="opt in ctrinfo_list" :label="opt.ctr_name" :value="opt.ctr_indx" :key="opt.ctr_indx">
                                 </el-option>
                             </el-select>
@@ -91,7 +91,7 @@
                     </el-col>
                     <el-col :span="5" :offset="1">
                         <span>通道位控</span>
-                        <el-row style="margin-top:5px;" v-for="n in 8" :key="n">
+                        <el-row style="margin-top:5px;" v-for="n in 4" :key="n">
                             <el-col :span="5" :offset="1" style="margin-top: 10px">
                                 <el-checkbox v-model="chn_ctrl['data'+n]">{{n}}</el-checkbox>
                             </el-col>
@@ -169,13 +169,24 @@ export default {
     }
   },
   methods: {
-    reset() {
-      this.data = {};
-    },
     open() {
       this.dialogVisible = true;
       this.reset();
       this.getData();
+    },
+    reset() {
+      this.phd_hdtz = {};
+      this.phd_ctrl = {};
+      this.thd_hdtz = {};
+      this.thd_ctrl = {};
+      this.nhd_hdtz = {};
+      this.nhd_ctrl = {};
+      this.wek_wktz = {};
+      this.wek_ctrl = {};
+      this.trm_ctrl = {};
+      this.chn_ctrl = {};
+      this.chn_sptz = {};
+      this.chn_pptz = {};
     },
     getData() {
       // if (this.type === "添加时段时钟") {
@@ -195,13 +206,32 @@ export default {
           .get("/timerparam/prmtmrctrl_edit_data", {
             params: {
               grp_indx: this.grpIndx,
-              tzn_indx: this.ctrIndx
+              ctr_indx: this.ctrIndx
             }
           })
           .then(data => {
             console.info("编辑", data.data);
+            const temp = data.data.data;
+            this.phd_hdtz = this.revertSelectDataGet(temp.phd_hdtz, 8);
+            this.thd_hdtz = this.revertSelectDataGet(temp.thd_hdtz, 8);
+            this.nhd_hdtz = this.revertSelectDataGet(temp.nhd_hdtz, 8);
+            this.wek_wktz = this.revertSelectDataGet(temp.wek_wktz, 7);
+
+            this.chn_sptz = this.revertSelectDataGet(temp.chn_sptz, 4);
+            this.chn_pptz = this.revertSelectDataGet(temp.chn_pptz, 4);
+
+            this.phd_ctrl = this.revertCheckDataGet(temp.phd_ctrl, 8);
+            this.thd_ctrl = this.revertCheckDataGet(temp.thd_ctrl, 8);
+            this.nhd_ctrl = this.revertCheckDataGet(temp.nhd_ctrl, 8);
+            this.wek_ctrl = this.revertCheckDataGet(
+              this.revertWeekGet(temp.wek_ctrl),
+              7
+            );
+            this.trm_ctrl = this.revertCheckDataGet(temp.trm_ctrl, 8);
+            this.chn_ctrl = this.revertCheckDataGet(temp.chn_ctrl, 4);
+
             // this.tmr_list = data.data.data;
-            this.data = data.data.data[0];
+            // this.data = data.data.data;
           })
           .catch(data => {
             alert(data.data.msg);
@@ -229,7 +259,44 @@ export default {
           ret += "0";
         }
       }
+      return ret
+        .split("")
+        .reverse()
+        .join("");
+    },
+    revertSelectDataGet(selectData, count) {
+      let ret = {};
+      let arr = selectData.split("");
+
+      for (let i = 0; i < count; i + 1) {
+        ret["data" + (i + 1)] = false;
+        if (arr[i * 2] != "0" && arr[i * 2 + 1] != "0") {
+          ret["data" + i] = true;
+        }
+      }
       return ret;
+    },
+    revertCheckDataGet(checkData, count) {
+      let ret = {};
+      //   wek_ctrl
+      let arr = checkData.split("").reverse();
+      for (let i = 0; i < count; i++) {
+        ret["data" + (i + 1)] = false;
+        if (arr[i] == "1") {
+          ret["data" + (i + 1)] = true;
+        }
+      }
+      return ret;
+    },
+    revertWeekGet(checkData) {
+      let arr = checkData.split("").reverse();
+      return arr.unshift(arr.pop()).join("");
+    },
+    revertWeekPost(checkData) {
+      let arr = checkData.split("");
+      let [a, ...rest] = arr;
+      arr = [...rest, a];
+      return arr.join("");
     },
     save() {
       const param = this.data;
@@ -246,10 +313,12 @@ export default {
       param.phd_ctrl = this.revertCheckDataPost(this.phd_ctrl, 8);
       param.thd_ctrl = this.revertCheckDataPost(this.thd_ctrl, 8);
       param.nhd_ctrl = this.revertCheckDataPost(this.nhd_ctrl, 8);
-      param.wek_ctrl = this.revertCheckDataPost(this.wek_ctrl, 7);
-      param.trm_ctrl = this.revertCheckDataPost(this.phd_ctrl, 8);
-      param.chn_ctrl = this.revertCheckDataPost(this.phd_ctrl, 4);
-      console.info(param, phd_hdtz, phd_ctrl);
+      param.wek_ctrl = this.revertWeekPost(
+        this.revertCheckDataPost(this.wek_ctrl, 7)
+      );
+      param.trm_ctrl = this.revertCheckDataPost(this.trm_ctrl, 8);
+      param.chn_ctrl = this.revertCheckDataPost(this.chn_ctrl, 4);
+      console.info(param);
       if (this.ctrlType === "添加应用群控") {
         axios.post("/timerparam/prmtmrctrl_add", param).then(data => {
           if (data.data.success) {
