@@ -207,18 +207,18 @@ export default new Router({
           component: () =>
             import ("@/components/pages/devicmanage/devchannel")
         },
-        {
-          path: "/devicmanage/timerparam/editdevchannel/:dev/:chn",
-          name: "editdevchannel",
-          component: () =>
-            import ("@/components/pages/devicmanage/editdevchannel")
-        },
-        {
-          path: "/devicmanage/timerparam/adddevchannel/:id",
-          name: "adddevchannel",
-          component: () =>
-            import ("@/components/pages/devicmanage/adddevchannel")
-        },
+        // {
+        //   path: "/devicmanage/timerparam/editdevchannel/:dev/:chn",
+        //   name: "editdevchannel",
+        //   component: () =>
+        //     import ("@/components/pages/devicmanage/editdevchannel")
+        // },
+        // {
+        //   path: "/devicmanage/timerparam/adddevchannel/:id",
+        //   name: "adddevchannel",
+        //   component: () =>
+        //     import ("@/components/pages/devicmanage/adddevchannel")
+        // },
         // 门禁终端参数设置
         {
           path: "/devicmanage/devtermina",

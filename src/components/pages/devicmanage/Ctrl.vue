@@ -1,15 +1,15 @@
 <template>
     <div>
         <el-dialog width="80%" :title="ctrlType" :visible.sync="dialogVisible" append-to-body center>
-            <el-form :model="data" label-width="80px" style="max-height:500px;overflow-y:scroll">
+            <el-form :model="data" label-width="100px" style="max-height:500px;overflow-y:scroll" :rules="rules" ref="ctrForm">
                 <el-row>
                     <el-col :span="5" :offset="1">
                         <el-form-item label="设备组别:">
                             <span>{{grpIndx}}</span>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="5" :offset="1">
-                        <el-form-item label="群控编号:">
+                    <el-col :span="6" :offset="1">
+                        <el-form-item label="群控编号:" prop="ctr">
                             <el-select v-model="data.ctr_indx">
                                 <el-option v-for="opt in ctrinfo_list" :label="opt.ctr_name" :value="opt.ctr_indx" :key="opt.ctr_indx">
                                 </el-option>
@@ -100,7 +100,7 @@
 
                     <el-col :span="5" :offset="1">
                         <span>个人密码时控</span>
-                        <el-row style="margin-top:5px;" v-for="n in 8" :key="n">
+                        <el-row style="margin-top:5px;" v-for="n in 4" :key="n">
                             <el-col :span="18">
                                 <el-select v-model="chn_pptz['data'+n]">
                                     <el-option v-for="opt in zninf_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
@@ -112,7 +112,7 @@
 
                     <el-col :span="5" :offset="1">
                         <span>安全密码通道时控</span>
-                        <el-row style="margin-top:5px;" v-for="n in 8" :key="n">
+                        <el-row style="margin-top:5px;" v-for="n in 4" :key="n">
                             <el-col :span="18">
                                 <el-select v-model="chn_sptz['data'+n]">
                                     <el-option v-for="opt in zninf_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
@@ -154,7 +154,10 @@ export default {
       trm_ctrl: {},
       chn_ctrl: {},
       chn_sptz: {},
-      chn_pptz: {}
+      chn_pptz: {},
+      rules: {
+        ctr: [{ required: true, message: "请选择群控编号", trigger: "blur" }]
+      }
     };
   },
   computed: {
@@ -189,18 +192,25 @@ export default {
       this.chn_pptz = {};
     },
     getData() {
-      // if (this.type === "添加时段时钟") {
-      console.info("ctrlType", this.ctrlType, this.grpIndx);
-      axios
-        .get("/timerparam/prmtmrctrl_add_data")
-        .then(data => {
-          console.info("添加", data.data);
-          this.ctrinfo_list = data.data.data.ctrinfo_list;
-          this.zninf_list = data.data.data.zninf_list;
-        })
-        .catch(data => {
-          alert(data.data.msg);
+      this.data = {};
+      if (this.ctrlType === "添加应用群控") {
+        console.info("ctrlType", this.ctrlType, this.grpIndx);
+
+        this.$refs.ctrForm.validate(valid => {
+          if (valid) {
+            axios
+              .get("/timerparam/prmtmrctrl_add_data")
+              .then(data => {
+                console.info("添加", data.data);
+                this.ctrinfo_list = data.data.data.ctrinfo_list;
+                this.zninf_list = data.data.data.zninf_list;
+              })
+              .catch(data => {
+                alert(data.data.msg);
+              });
+          }
         });
+      }
       if (this.ctrlType === "编辑应用群控") {
         axios
           .get("/timerparam/prmtmrctrl_edit_data", {
@@ -211,8 +221,12 @@ export default {
           })
           .then(data => {
             console.info("编辑", data.data);
+            this.ctrinfo_list = data.data.ctrinfo_list;
+            this.zninf_list = data.data.zninf_list;
             const temp = data.data.data;
+            // debugger;
             this.phd_hdtz = this.revertSelectDataGet(temp.phd_hdtz, 8);
+            console.info("this.phd_hdtz", this.phd_hdtz);
             this.thd_hdtz = this.revertSelectDataGet(temp.thd_hdtz, 8);
             this.nhd_hdtz = this.revertSelectDataGet(temp.nhd_hdtz, 8);
             this.wek_wktz = this.revertSelectDataGet(temp.wek_wktz, 7);
@@ -223,6 +237,7 @@ export default {
             this.phd_ctrl = this.revertCheckDataGet(temp.phd_ctrl, 8);
             this.thd_ctrl = this.revertCheckDataGet(temp.thd_ctrl, 8);
             this.nhd_ctrl = this.revertCheckDataGet(temp.nhd_ctrl, 8);
+            console.info(this.revertWeekGet(temp.wek_ctrl));
             this.wek_ctrl = this.revertCheckDataGet(
               this.revertWeekGet(temp.wek_ctrl),
               7
@@ -230,11 +245,16 @@ export default {
             this.trm_ctrl = this.revertCheckDataGet(temp.trm_ctrl, 8);
             this.chn_ctrl = this.revertCheckDataGet(temp.chn_ctrl, 4);
 
-            // this.tmr_list = data.data.data;
-            // this.data = data.data.data;
+            this.tmr_list = data.data.data;
+            this.data.ctr_indx = temp.ctr_indx;
+            console.info(
+              this.data,
+              this.ctrinfo_list.length,
+              this.zninf_list.length
+            );
           })
-          .catch(data => {
-            alert(data.data.msg);
+          .catch(err => {
+            console.info(err);
           });
         // }
       }
@@ -243,9 +263,17 @@ export default {
       let ret = "";
       for (let i = 1; i <= count; i++) {
         if (selectData["data" + i]) {
-          ret += selectData["data" + i];
+          if (i == count) {
+            ret += selectData["data" + i];
+          } else {
+            ret += selectData["data" + i] + "-";
+          }
         } else {
-          ret += "00";
+          if (i == count) {
+            ret += "00";
+          } else {
+            ret += "00-";
+          }
         }
       }
       return ret;
@@ -268,10 +296,10 @@ export default {
       let ret = {};
       let arr = selectData.split("");
 
-      for (let i = 0; i < count; i + 1) {
-        ret["data" + (i + 1)] = false;
-        if (arr[i * 2] != "0" && arr[i * 2 + 1] != "0") {
-          ret["data" + i] = true;
+      for (let i = 0; i < count; i++) {
+        ret["data" + (i + 1)] = "";
+        if (arr[i * 2] + arr[i * 2 + 1] != "00") {
+          ret["data" + (i + 1)] = Number(arr[i * 2] + arr[i * 2 + 1]) + "";
         }
       }
       return ret;
@@ -290,7 +318,8 @@ export default {
     },
     revertWeekGet(checkData) {
       let arr = checkData.split("").reverse();
-      return arr.unshift(arr.pop()).join("");
+      arr.unshift(arr.pop());
+      return arr.join("");
     },
     revertWeekPost(checkData) {
       let arr = checkData.split("");

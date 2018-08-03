@@ -31,8 +31,7 @@ window.addEventListener('storage', function (event) {
   } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
     // 新开启的标签页会收到这个事件
     console.info('ccc')
-    var data = JSON.parse(event.newValue),
-      value;
+    var data = JSON.parse(event.newValue);
 
     for (let key in data) {
       sessionStorage.setItem(key, data[key]);
@@ -49,7 +48,7 @@ if (!sessionStorage.length) {
 console.info('end')
 router.beforeEach((to, from, next) => {
   console.info('start')
-
+  
   const token = sessionStorage.userToken
   const userMenus = sessionStorage.userMenus
   console.info('token', token)
