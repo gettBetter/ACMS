@@ -226,18 +226,18 @@ export default new Router({
           component: () =>
             import ("@/components/pages/devicmanage/devtermina")
         },
-        {
-          path: "/devicmanage/devtermina/editdevtermina/:dev/:trm",
-          name: "editdevtermina",
-          component: () =>
-            import ("@/components/pages/devicmanage/editdevtermina")
-        },
-        {
-          path: "/devicmanage/devtermina/adddevtermina/:id",
-          name: "adddevtermina",
-          component: () =>
-            import ("@/components/pages/devicmanage/adddevtermina")
-        },
+        // {
+        //   path: "/devicmanage/devtermina/editdevtermina/:dev/:trm",
+        //   name: "editdevtermina",
+        //   component: () =>
+        //     import ("@/components/pages/devicmanage/editdevtermina")
+        // },
+        // {
+        //   path: "/devicmanage/devtermina/adddevtermina/:id",
+        //   name: "adddevtermina",
+        //   component: () =>
+        //     import ("@/components/pages/devicmanage/adddevtermina")
+        // },
         // 门禁权限
         {
           path: "/devicmanage/authorlist",

@@ -36,36 +36,101 @@
           </el-tree>
         </el-col>
         <el-col :span="16">
-          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddDialog">添加通道</el-button>
-          <el-table :data="pageData" border>
-            <el-table-column fixed="left" label="操作" width="80%">
-              <template slot-scope="scope">
-                <el-button @click="openEditDialog(scope.row)" type="text">
-                  <i class="el-icon-edit"></i>
-                </el-button>
-                <el-button type="text" @click="del(scope.row)">
-                  <i class="el-icon-delete"></i>
-                </el-button>
-              </template>
-            </el-table-column>
-            <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
-            <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
-            <el-table-column prop="chn_name" label="通道名称"></el-table-column>
+          <el-tabs v-model="activeName" type="card" @tab-click="handleTab" lazy="true">
+            <el-tab-pane label="开门关门" name="door">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddDoorDialog">添加开关门</el-button>
+              <el-table :data="pageData" border>
+                <el-table-column fixed="left" label="操作" width="80%">
+                  <template slot-scope="scope">
+                    <el-button @click="openEditDoorDialog(scope.row)" type="text">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+                    <el-button type="text" @click="del(scope.row)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <!-- <el-table-column prop="grp_indx" label="设备组别"></el-table-column> -->
+                <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
+                <el-table-column prop="chn_name" label="通道名称"></el-table-column>
 
-            <el-table-column prop="dly_time" label="控制方式"></el-table-column>
-            <el-table-column prop="chn_stat_name" label="门位名称"></el-table-column>
-            <el-table-column prop="apb_name" label="反潜回名称"></el-table-column>
-            <!-- <el-table-column prop="pin_spwd" label="安全密码"></el-table-column> -->
+                <el-table-column prop="dly_time" label="控制方式"></el-table-column>
+                <el-table-column prop="chn_stat_name" label="门位状态"></el-table-column>
+                <!-- <el-table-column prop="apb_name" label="反潜回名称"></el-table-column> -->
+                <!-- <el-table-column prop="pin_spwd" label="安全密码"></el-table-column> -->
 
-          </el-table>
-          <div class="block ">
-            <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="total">
-            </el-pagination>
-          </div>
+              </el-table>
+              <div class="block ">
+                <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="total">
+                </el-pagination>
+              </div>
+            </el-tab-pane>
+
+            <el-tab-pane label="反潜回控制" name="stat">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddStatDialog">添加反潜回控制</el-button>
+              <el-table :data="pageData" border>
+                <el-table-column fixed="left" label="操作" width="80%">
+                  <template slot-scope="scope">
+                    <el-button @click="openEditStatDialog(scope.row)" type="text">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+                    <el-button type="text" @click="del(scope.row)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <!-- <el-table-column prop="grp_indx" label="设备组别"></el-table-column> -->
+                <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
+                <el-table-column prop="chn_name" label="通道名称"></el-table-column>
+
+                <!-- <el-table-column prop="dly_time" label="控制方式"></el-table-column>
+                <el-table-column prop="chn_stat_name" label="门位名称"></el-table-column> -->
+                <el-table-column prop="apb_name" label="反潜回名称"></el-table-column>
+                <!-- <el-table-column prop="pin_spwd" label="安全密码"></el-table-column> -->
+
+              </el-table>
+              <div class="block ">
+                <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="total">
+                </el-pagination>
+              </div>
+            </el-tab-pane>
+
+            <el-tab-pane label="安全密码" name="spwd">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddSpwdDialog">添加安全密码</el-button>
+              <el-table :data="pageData" border>
+                <el-table-column fixed="left" label="操作" width="80%">
+                  <template slot-scope="scope">
+                    <el-button @click="openEditSpwdDialog(scope.row)" type="text">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+                    <el-button type="text" @click="del(scope.row)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <!-- <el-table-column prop="grp_indx" label="设备组别"></el-table-column> -->
+                <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
+                <el-table-column prop="chn_name" label="通道名称"></el-table-column>
+
+                <!-- <el-table-column prop="dly_time" label="控制方式"></el-table-column>
+              <el-table-column prop="chn_stat_name" label="门位名称"></el-table-column>
+                <el-table-column prop="apb_name" label="反潜回名称"></el-table-column> -->
+                <el-table-column prop="pin_spwd" label="安全密码"></el-table-column>
+
+              </el-table>
+              <div class="block ">
+                <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="total">
+                </el-pagination>
+              </div>
+            </el-tab-pane>
+
+          </el-tabs>
         </el-col>
       </el-row>
     </el-card>
-    <channel ref="channelDialog" @channelSucc="channelSucc"></channel>
+    <Door ref="doorDialog" @channelSucc="channelSucc"></Door>
+    <Stat ref="statDialog" @channelSucc="channelSucc"></Stat>
+    <Spwd ref="spwdDialog" @channelSucc="channelSucc"></Spwd>
   </div>
 </template>
 
@@ -74,14 +139,19 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
-import Channel from "./Channel";
+import Door from "./Door";
+import Stat from "./Stat";
+import Spwd from "./Spwd";
 
 export default {
   components: {
-    Channel
+    Door,
+    Stat,
+    Spwd
   },
   data() {
     return {
+      activeName: "door",
       currentPage: 1,
       pageCurSize: 10,
       treeData: [],
@@ -98,6 +168,11 @@ export default {
     };
   },
   methods: {
+    handleTab(tab, event) {
+      // console.info(tab, event);
+      this.activeName = tab.name;
+      // this.getList(this.grpIndx);
+    },
     changeGrp(val) {
       console.info(val);
       const param = {
@@ -125,18 +200,46 @@ export default {
         data => loadingInstance.close()
       );
     },
-    openAddDialog() {
+    openAddDoorDialog() {
       console.info("type", this.type);
-      this.type = "添加门禁通道";
+      this.type = "添加开门关门";
       this.$nextTick(() => {
-        this.$refs.channelDialog.open();
+        this.$refs.doorDialog.open();
       });
     },
-    openEditDialog(record) {
-      this.type = "编辑门禁通道";
+    openEditDoorDialog(record) {
+      this.type = "编辑开门关门";
       this.chn_indx = record.chn_indx;
       this.$nextTick(() => {
-        this.$refs.channelDialog.open();
+        this.$refs.doorDialog.open();
+      });
+    },
+    openAddStatDialog() {
+      console.info("type", this.type);
+      this.type = "添加反潜回控制";
+      this.$nextTick(() => {
+        this.$refs.statDialog.open();
+      });
+    },
+    openEditStatDialog(record) {
+      this.type = "编辑反潜回控制";
+      this.chn_indx = record.chn_indx;
+      this.$nextTick(() => {
+        this.$refs.statDialog.open();
+      });
+    },
+    openAddSpwdDialog() {
+      console.info("type", this.type);
+      this.type = "添加安全密码";
+      this.$nextTick(() => {
+        this.$refs.spwdDialog.open();
+      });
+    },
+    openEditSpwdDialog(record) {
+      this.type = "编辑安全密码";
+      this.chn_indx = record.chn_indx;
+      this.$nextTick(() => {
+        this.$refs.spwdDialog.open();
       });
     },
     channelSucc(val) {
@@ -158,7 +261,7 @@ export default {
       })
         .then(() => {
           axios
-            .post("/timerparam/prmtmrclck_del", param)
+            .post("/devchannel/devchannel_del", param)
             .then(data => {
               if (data.data.success === true) {
                 this.$message({
