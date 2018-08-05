@@ -54,91 +54,137 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
-                <el-table-column prop="tmr_indx" label="时段编号"></el-table-column>
-                <el-table-column prop="tmr_name" label="时段名称"></el-table-column>
-                <el-table-column prop="bgn_time" label="开始日期"></el-table-column>
-                <el-table-column prop="end_time" label="结束日期"></el-table-column>
+                <el-table-column prop="trm_indx" label="终端ID"></el-table-column>
+                <el-table-column prop="trm_indx_name" label="终端编号"></el-table-column>
+                <el-table-column prop="trm_name" label="终端名称"></el-table-column>
+                <el-table-column prop="pkb_isok" label="启用密码开门"></el-table-column>
+                <el-table-column prop="att_isok" label="考勤扩展"></el-table-column>
+                <el-table-column prop="con_isok" label="次计就餐"></el-table-column>
+                <el-table-column prop="oep_isok" label="在线巡逻"></el-table-column>
+                <el-table-column prop="met_isok" label="会议签到"></el-table-column>
+                <el-table-column prop="chn_indx" label="关联通道"></el-table-column>
               </el-table>
               <div class="block ">
                 <el-pagination @current-change="terminaHandleCurrentChange" :current-page="terminaCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="terminaTotal">
                 </el-pagination>
               </div>
             </el-tab-pane>
-
-            <!-- 时段时区 -->
-            <el-tab-pane label="时段时区" name="zone">
-              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddZonedialog">添加时段时区</el-button>
-              <el-table :data="zonePageData" border>
+            <!-- 模组端口 -->
+            <el-tab-pane label="模组端口" name="models">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddModelsDialog">添加模组端口</el-button>
+              <el-table :data="modelsPageData" border>
                 <el-table-column fixed="left" label="操作" width="80%">
                   <template slot-scope="scope">
-                    <el-button @click="openEditZonedialog(scope.row)" type="text" size="">
+                    <el-button @click="openEditModelsDialog(scope.row)" type="text" size="">
                       <i class="el-icon-edit"></i>
                     </el-button>
 
-                    <el-button type="text" @click="delZone(scope.row)">
+                    <el-button type="text" @click="delModels(scope.row)">
                       <i class="el-icon-delete"></i>
                     </el-button>
                   </template>
                 </el-table-column>
                 <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
-                <el-table-column prop="tzn_indx" label="设备组别"></el-table-column>
-                <el-table-column prop="tzn_name" label="时区名称"></el-table-column>
-                <el-table-column prop="tmr1_name" label="段一关联"></el-table-column>
-                <el-table-column prop="tmr2_name" label="段二关联"></el-table-column>
-                <el-table-column prop="tmr3_name" label="段三关联"></el-table-column>
+                <el-table-column prop="mod_indx" label="模组编号"></el-table-column>
+                <el-table-column prop="rly_code" label="接点状态"></el-table-column>
+                <el-table-column prop="act_code" label="动作状态"></el-table-column>
               </el-table>
               <div class="block ">
-                <el-pagination @current-change="zoneHandleCurrentChange" :current-page="zoneCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="zoneTotal">
+                <el-pagination @current-change="modelsHandleCurrentChange" :current-page="modelsCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="modelsTotal">
                 </el-pagination>
               </div>
             </el-tab-pane>
 
-            <!-- 应用群控 -->
-            <el-tab-pane label="应用群控" name="ctrl">
-              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddCtrldialog">添加应用群控</el-button>
-              <el-table :data="ctrlPageData" border>
+            <!-- 报警输入 -->
+            <el-tab-pane label="报警输入" name="warn">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddWarnDialog">添加报警输入</el-button>
+              <el-table :data="warnPageData" border>
                 <el-table-column fixed="left" label="操作" width="80%">
                   <template slot-scope="scope">
-                    <el-button @click="openEditCtrldialog(scope.row)" type="text" size="">
+                    <el-button @click="openEditWarnDialog(scope.row)" type="text" size="">
                       <i class="el-icon-edit"></i>
                     </el-button>
 
-                    <el-button type="text" @click="delCtrl(scope.row)">
+                    <el-button type="text" @click="delWarn(scope.row)">
                       <i class="el-icon-delete"></i>
                     </el-button>
                   </template>
                 </el-table-column>
                 <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
-                <el-table-column prop="ctr_indx" label="群控编号"></el-table-column>
-                <el-table-column prop="trm_ctrl" label="终端位控"></el-table-column>
-                <el-table-column prop="chn_ctrl" label="通道位控"></el-table-column>
-                <el-table-column prop="chn_sptz" label="安密通道"></el-table-column>
-                <el-table-column prop="chn_pptz" label="个密通道"></el-table-column>
-
-                <el-table-column prop="phd_hdtz" label="假日前天时控"></el-table-column>
-                <el-table-column prop="phd_ctrl" label="假日前天位控"></el-table-column>
-                <el-table-column prop="thd_hdtz" label="假日当天时控"></el-table-column>
-                <el-table-column prop="thd_ctrl" label="假日当天位控"></el-table-column>
-                <el-table-column prop="nhd_hdtz" label="假日后天时控"></el-table-column>
-                <el-table-column prop="nhd_ctrl" label="假日后天位控"></el-table-column>
-                <el-table-column prop="wek_wktz" label="周计划时控"></el-table-column>
-                <el-table-column prop="wek_ctrl" label="周位控"></el-table-column>
+                <el-table-column prop="ctr_indx" label="群控ID"></el-table-column>
+                <el-table-column prop="htz_code" label="假日时控"></el-table-column>
+                <el-table-column prop="wtz_code" label="周时控"></el-table-column>
+                <el-table-column prop="sta_code" label="动作类型"></el-table-column>
               </el-table>
               <div class="block ">
-                <el-pagination @current-change="ctrlHandleCurrentChange" :current-page="ctrlCurrentPage" :page-size="10 " layout="total, prev, pager, next, jumper " :total="ctrlTotal">
+                <el-pagination @current-change="warnHandleCurrentChange" :current-page="warnCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="warnTotal">
                 </el-pagination>
               </div>
             </el-tab-pane>
+
+            <!-- 端口输出 -->
+            <el-tab-pane label="端口输出" name="output">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddOutputDialog">添加端口输出</el-button>
+              <el-table :data="outputPageData" border>
+                <el-table-column fixed="left" label="操作" width="80%">
+                  <template slot-scope="scope">
+                    <el-button @click="openEditOutputDialog(scope.row)" type="text" size="">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+
+                    <el-button type="text" @click="delOutput(scope.row)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
+                <el-table-column prop="ctr_indx" label="群控ID"></el-table-column>
+                <el-table-column prop="htz_code" label="假日时控"></el-table-column>
+                <el-table-column prop="wtz_code" label="周时控"></el-table-column>
+                <el-table-column prop="sta_code" label="动作类型"></el-table-column>
+              </el-table>
+              <div class="block ">
+                <el-pagination @current-change="outputHandleCurrentChange" :current-page="outputCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="outputTotal">
+                </el-pagination>
+              </div>
+            </el-tab-pane>
+
+            <!-- 模组配置 -->
+            <el-tab-pane label="模组配置" name="conf">
+              <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddConfDialog">添加模组配置</el-button>
+              <el-table :data="confPageData" border>
+                <el-table-column fixed="left" label="操作" width="80%">
+                  <template slot-scope="scope">
+                    <el-button @click="openEditConfDialog(scope.row)" type="text" size="">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+
+                    <el-button type="text" @click="delConf(scope.row)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
+                <el-table-column prop="mod_indx" label="模组编号"></el-table-column>
+                <el-table-column prop="typ_code" label="模式类型"></el-table-column>
+                <el-table-column prop="trm_indx" label="终端编号"></el-table-column>
+                <el-table-column prop="typ_indx" label="模式编号"></el-table-column>
+              </el-table>
+              <div class="block ">
+                <el-pagination @current-change="confHandleCurrentChange" :current-page="confCurrentPage" :page-size="10" layout="total, prev, pager, next, jumper " :total="confTotal">
+                </el-pagination>
+              </div>
+            </el-tab-pane>
+
           </el-tabs>
-
         </el-col>
-
       </el-row>
-
     </el-card>
-    <!-- <Termina ref="terminaDialog" @terminaSucc="terminaSucc"></Termina>
-    <Zone ref="zoneDialog" @addZoneSucc="addZoneSucc"></Zone>
-    <Ctrl ref="ctrlDialog" @addCtrlSucc="addCtrlSucc"></Ctrl> -->
+    <Termina ref="terminaDialog" @terminaSucc="terminaSucc"></Termina>
+    <Models ref="modelsDialog" @modelsSucc="modelsSucc"></Models>
+    <Warn ref="warnDialog" @warnSucc="warnSucc"></Warn>
+    <Output ref="outputDialog" @outputSucc="outputSucc"></Output>
+    <Conf ref="confDialog" @confSucc="confSucc"></Conf>
   </div>
 </template>
 
@@ -147,42 +193,53 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
-// import Termina from "./Termina";
-// import Zone from "./Zone";
-// import Ctrl from "./Ctrl";
+import Termina from "./Termina";
+import Models from "./Models";
+import Warn from "./Warn";
+import Output from "./Output";
+import Conf from "./Conf";
 
 export default {
-  // components: {
-  //   ATermina,
-  //   Zone,
-  //   Ctrl
-  // },
+  components: {
+    Termina,
+    Models,
+    Warn,
+    Output,
+    Conf
+  },
   data() {
     return {
       activeName: "termina",
       terminaCurrentPage: 1,
       terminaPageCurSize: 10,
-      zoneCurrentPage: 1,
-      zonePageCurSize: 10,
-      ctrlCurrentPage: 1,
-      ctrlPageCurSize: 10,
+      modelsCurrentPage: 1,
+      modelsPageCurSize: 10,
+      warnCurrentPage: 1,
+      warnPageCurSize: 10,
+      outputCurrentPage: 1,
+      outputPageCurSize: 10,
+      confCurrentPage: 1,
+      confPageCurSize: 10,
       treeData: [],
       treeProp: {
         label: "label",
         children: "children"
       },
-      terminaList: [],
-      zoneList: [],
-      ctrlList: [],
       devGroup: [],
+      terminaList: [],
+      modelsList: [],
+      warnList: [],
+      outputList: [],
+      confList: [],
       grpIndx: "1",
-      tmrIndx: "",
-      tznIndx: "",
-      ctrIndx: "",
-      data: {},
-      terminaType: "",
-      zoneType: "",
-      ctrlType: ""
+      type: "",
+      trm_indx: "",
+      mod_indx: "",
+      ctr_indx: "",
+      data: {
+        grp_indx: "1"
+      },
+      revertFields: ["pkb_isok", "att_isok", "con_isok", "oep_isok", "met_isok"]
     };
   },
   methods: {
@@ -193,11 +250,17 @@ export default {
         case "termina":
           this.getTerminaList(this.grpIndx);
           break;
-        case "zone":
-          this.getZoneList(this.grpIndx);
+        case "models":
+          this.getModelsList(this.grpIndx);
           break;
-        case "ctrl":
-          this.getCtrlList(this.grpIndx);
+        case "warn":
+          this.getWarnList(this.grpIndx);
+          break;
+        case "output":
+          this.getOutputList(this.grpIndx);
+          break;
+        case "conf":
+          this.getConfList(this.grpIndx);
           break;
       }
       console.info("this.activeName", this.activeName);
@@ -213,11 +276,17 @@ export default {
         case "termina":
           this.getTerminaList(val);
           break;
-        case "zone":
-          this.getZoneList(val);
+        case "models":
+          this.getModelsList(val);
           break;
-        case "ctrl":
-          this.getCtrlList(val);
+        case "warn":
+          this.getWarnList(val);
+          break;
+        case "output":
+          this.getOutputList(val);
+          break;
+        case "conf":
+          this.getConfList(val);
           break;
       }
     },
@@ -234,37 +303,47 @@ export default {
           loadingInstance.close();
           if (data.data.success === true) {
             console.info(data.data);
-            this.terminaList = data.data.data;
+            // this.terminaList = data.data.data;
+            let temp = data.data.data || [];
+
+            temp.forEach(item => {
+              for (let p in item) {
+                if (this.revertFields.includes(p)) {
+                  item[p] = this.revertData(item[p]);
+                }
+              }
+              this.terminaList.push(item);
+            });
           }
         },
         data => loadingInstance.close()
       );
     },
     openAddTerminaDialog() {
-      console.info("terminaType", this.terminaType);
-      this.terminaType = "添加终端卡机";
+      console.info("type", this.type);
+      this.type = "添加终端卡机";
       this.$nextTick(() => {
         this.$refs.terminaDialog.open();
       });
     },
     openEditTerminaDialog(record) {
-      this.terminaType = "编辑终端卡机";
-      this.tmrIndx = record.tmr_indx;
+      this.type = "编辑终端卡机";
+      this.trm_indx = record.trm_indx;
       this.$nextTick(() => {
         this.$refs.terminaDialog.open();
       });
     },
     terminaSucc(val) {
       if (val) {
-        this.terminaType = "";
+        this.type = "";
         this.getTerminaList(this.grpIndx);
       }
     },
     delTermina(record) {
-      const { grp_indx, tmr_indx } = record;
+      const { grp_indx, trm_indx } = record;
       const param = {
         grp_indx,
-        tmr_indx
+        trm_indx
       };
       this.$confirm("请确认是否删除?", "提示", {
         confirmButtonText: "确定",
@@ -273,7 +352,7 @@ export default {
       })
         .then(() => {
           axios
-            .post("/timerparam/prmtmrclck_del", param)
+            .post("/devtermina/devtermina_del", param)
             .then(data => {
               if (data.data.success === true) {
                 this.$message({
@@ -287,50 +366,50 @@ export default {
         })
         .catch(() => {});
     },
-    getZoneList(grp_indx = 1) {
-      this.zoneList = [];
+    getModelsList(grp_indx = 1) {
+      this.modelsList = [];
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
-      axios.get(`/timerparam/prmtmrzone_list/grp_indx/${grp_indx}`).then(
+      // /devtermina/devtermina_list
+      axios.get(`/devtermina/prmtrmmods_list/grp_indx/${grp_indx}`).then(
         data => {
           loadingInstance.close();
           if (data.data.success === true) {
             console.info(data.data);
-            this.zoneList = data.data.data;
-            console.info("zoneList", this.zoneList.length, this.zonePageData);
+            this.modelsList = data.data.data;
           }
         },
         data => loadingInstance.close()
       );
     },
-    openAddZonedialog() {
-      this.zoneType = "添加时段时区";
-
+    openAddModelsDialog() {
+      console.info("type", this.type);
+      this.type = "添加模组端口";
       this.$nextTick(() => {
-        this.$refs.zoneDialog.open();
+        this.$refs.modelsDialog.open();
       });
     },
-    openEditZonedialog(record) {
-      this.zoneType = "编辑时段时区";
-      this.tznIndx = record.tzn_indx;
+    openEditModelsDialog(record) {
+      this.type = "编辑模组端口";
+      this.mod_indx = record.mod_indx;
       this.$nextTick(() => {
-        this.$refs.zoneDialog.open();
+        this.$refs.modelsDialog.open();
       });
     },
-    addZoneSucc(val) {
+    modelsSucc(val) {
       if (val) {
-        this.zoneType = "";
-        this.getZoneList(this.grpIndx);
+        this.type = "";
+        this.getModelsList(this.grpIndx);
       }
     },
-    delZone(record) {
-      const { grp_indx, tzn_indx } = record;
+    delModels(record) {
+      const { grp_indx, mod_indx } = record;
       const param = {
         grp_indx,
-        tzn_indx
+        mod_indx
       };
       this.$confirm("请确认是否删除?", "提示", {
         confirmButtonText: "确定",
@@ -339,59 +418,59 @@ export default {
       })
         .then(() => {
           axios
-            .post("/timerparam/prmtmrzone_del", param)
+            .post("/devtermina/prmtrmmods_del", param)
             .then(data => {
               if (data.data.success === true) {
                 this.$message({
                   type: "success",
                   message: "删除成功!"
                 });
-                this.getZoneList(this.grpIndx);
+                this.getModelsList(this.grpIndx);
               }
             })
             .catch(err => alert(err));
         })
         .catch(() => {});
     },
-    getCtrlList(grp_indx = 1) {
-      this.ctrlList = [];
+    getWarnList(grp_indx = 1) {
+      this.warnList = [];
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
         target: document.querySelector(".adminpage")
       });
-      axios.get(`/timerparam/prmtmrctrl_list/grp_indx/${grp_indx}`).then(
+      axios.get(`/devtermina/prmtrmwarn_list/grp_indx/${grp_indx}`).then(
         data => {
           loadingInstance.close();
           if (data.data.success === true) {
             console.info(data.data);
-            this.ctrlList = data.data.data;
+            this.warnList = data.data.data;
           }
         },
         data => loadingInstance.close()
       );
     },
-    openAddCtrldialog() {
-      this.ctrlType = "添加应用群控";
-
+    openAddWarnDialog() {
+      console.info("type", this.type);
+      this.type = "添加报警输入";
       this.$nextTick(() => {
-        this.$refs.ctrlDialog.open();
+        this.$refs.warnDialog.open();
       });
     },
-    openEditCtrldialog(record) {
-      this.ctrlType = "编辑应用群控";
-      this.ctrIndx = record.ctr_indx;
+    openEditWarnDialog(record) {
+      this.type = "编辑报警输入";
+      this.ctr_indx = record.ctr_indx;
       this.$nextTick(() => {
-        this.$refs.ctrlDialog.open();
+        this.$refs.warnDialog.open();
       });
     },
-    addCtrlSucc(val) {
+    warnSucc(val) {
       if (val) {
-        this.ctrlType = "";
-        this.getCtrlList(this.grpIndx);
+        this.type = "";
+        this.getWarnList(this.grpIndx);
       }
     },
-    delCtrl(record) {
+    delWarn(record) {
       const { grp_indx, ctr_indx } = record;
       const param = {
         grp_indx,
@@ -404,14 +483,145 @@ export default {
       })
         .then(() => {
           axios
-            .post("/timerparam/prmtmrctrl_del", param)
+            .post("/devtermina/prmtrmwarn_del", param)
             .then(data => {
               if (data.data.success === true) {
                 this.$message({
                   type: "success",
                   message: "删除成功!"
                 });
-                this.getCtrlList(this.grpIndx);
+                this.getWarnList(this.grpIndx);
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
+    },
+
+    getOutputList(grp_indx = 1) {
+      this.outputList = [];
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".adminpage")
+      });
+      axios.get(`/devtermina/prmtrmoutp_list/grp_indx/${grp_indx}`).then(
+        data => {
+          loadingInstance.close();
+          if (data.data.success === true) {
+            console.info(data.data);
+            this.outputList = data.data.data;
+          }
+        },
+        data => loadingInstance.close()
+      );
+    },
+    openAddOutputDialog() {
+      console.info("type", this.type);
+      this.type = "添加端口输出";
+      this.$nextTick(() => {
+        this.$refs.outputDialog.open();
+      });
+    },
+    openEditOutputDialog(record) {
+      this.type = "编辑端口输出";
+      this.ctr_indx = record.ctr_indx;
+      this.$nextTick(() => {
+        this.$refs.outputDialog.open();
+      });
+    },
+    outputSucc(val) {
+      if (val) {
+        this.type = "";
+        this.getOutputList(this.grpIndx);
+      }
+    },
+    delOutput(record) {
+      const { grp_indx, ctr_indx } = record;
+      const param = {
+        grp_indx,
+        ctr_indx
+      };
+      this.$confirm("请确认是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios
+            .post("/devtermina/prmtrmoutp_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getOutputList(this.grpIndx);
+              }
+            })
+            .catch(err => alert(err));
+        })
+        .catch(() => {});
+    },
+    getConfList(grp_indx = 1) {
+      this.confList = [];
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".adminpage")
+      });
+      axios.get(`/devtermina/prmmodecfg_list/grp_indx/${grp_indx}`).then(
+        data => {
+          loadingInstance.close();
+          if (data.data.success === true) {
+            console.info(data.data);
+            this.confList = data.data.data;
+          }
+        },
+        data => loadingInstance.close()
+      );
+    },
+    openAddConfDialog() {
+      console.info("type", this.type);
+      this.type = "添加模组配置";
+      this.$nextTick(() => {
+        this.$refs.confDialog.open();
+      });
+    },
+    openEditConfDialog(record) {
+      this.type = "编辑模组配置";
+      this.ctr_indx = record.ctr_indx;
+      this.$nextTick(() => {
+        this.$refs.confDialog.open();
+      });
+    },
+    confSucc(val) {
+      if (val) {
+        this.type = "";
+        this.getConfList(this.grpIndx);
+      }
+    },
+    delConf(record) {
+      const { grp_indx, ctr_indx } = record;
+      const param = {
+        grp_indx,
+        ctr_indx
+      };
+      this.$confirm("请确认是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios
+            .post("/devtermina/prmmodecfg_del", param)
+            .then(data => {
+              if (data.data.success === true) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getConfList(this.grpIndx);
               }
             })
             .catch(err => alert(err));
@@ -453,7 +663,6 @@ export default {
         }
       });
     },
-
     getTree(param) {
       axios
         .get("/index/area_dev_auth_tree", { params: param })
@@ -470,13 +679,29 @@ export default {
       console.log(`当前页: ${val}`);
       this.terminaCurrentPage = val;
     },
-    zoneHandleCurrentChange(val) {
+    modelsHandleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.zoneCurrentPage = val;
+      this.terminaCurrentPage = val;
     },
-    ctrlHandleCurrentChange(val) {
+    warnHandleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.ctrlCurrentPage = val;
+      this.terminaCurrentPage = val;
+    },
+    outputHandleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.terminaCurrentPage = val;
+    },
+    confHandleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.terminaCurrentPage = val;
+    },
+
+    revertData(input) {
+      if (input === "1") {
+        return "是";
+      } else {
+        return "否";
+      }
     }
   },
   computed: {
@@ -489,23 +714,41 @@ export default {
     terminaPageData() {
       return this.terminaChunkList[this.terminaCurrentPage - 1];
     },
-    zoneTotal() {
-      return this.zoneList.length;
+    modelsTotal() {
+      return this.modelsList.length;
     },
-    zoneChunkList() {
-      return _.chunk(this.zoneList, this.zonePageCurSize);
+    modelsChunkList() {
+      return _.chunk(this.modelsList, this.modelsPageCurSize);
     },
-    zonePageData() {
-      return this.zoneChunkList[this.zoneCurrentPage - 1];
+    modelsPageData() {
+      return this.modelsChunkList[this.modelsCurrentPage - 1];
     },
-    ctrlTotal() {
-      return this.ctrlList.length;
+    warnTotal() {
+      return this.warnList.length;
     },
-    ctrlChunkList() {
-      return _.chunk(this.ctrlList, this.ctrlPageCurSize);
+    warnChunkList() {
+      return _.chunk(this.warnList, this.warnPageCurSize);
     },
-    ctrlPageData() {
-      return this.ctrlChunkList[this.ctrlCurrentPage - 1];
+    warnPageData() {
+      return this.warnChunkList[this.warnCurrentPage - 1];
+    },
+    outputTotal() {
+      return this.outputList.length;
+    },
+    outputChunkList() {
+      return _.chunk(this.outputList, this.outputPageCurSize);
+    },
+    outputPageData() {
+      return this.outputChunkList[this.outputCurrentPage - 1];
+    },
+    confTotal() {
+      return this.confList.length;
+    },
+    confChunkList() {
+      return _.chunk(this.confList, this.confPageCurSize);
+    },
+    confPageData() {
+      return this.confChunkList[this.confCurrentPage - 1];
     }
   },
   created() {
@@ -517,13 +760,3 @@ export default {
   }
 };
 </script>
-
-<style >
-.block {
-  text-align: right;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-</style>
-
-

@@ -163,7 +163,9 @@ export default {
       devGroup: [],
       grpIndx: "1",
       chn_indx: "",
-      data: {},
+      data: {
+        grp_indx: "1"
+      },
       type: ""
     };
   },

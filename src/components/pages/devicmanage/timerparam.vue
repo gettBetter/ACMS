@@ -129,8 +129,8 @@
                 </el-pagination>
               </div>
             </el-tab-pane>
-          </el-tabs>
 
+          </el-tabs>
         </el-col>
 
       </el-row>
@@ -179,7 +179,9 @@ export default {
       tmrIndx: "",
       tznIndx: "",
       ctrIndx: "",
-      data: {},
+      data: {
+        grp_indx: "1"
+      },
       clockType: "",
       zoneType: "",
       ctrlType: ""
