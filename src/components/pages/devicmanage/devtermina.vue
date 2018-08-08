@@ -590,7 +590,7 @@ export default {
     },
     openEditConfDialog(record) {
       this.type = "编辑模组配置";
-      this.ctr_indx = record.ctr_indx;
+      this.mod_indx = record.mod_indx;
       this.$nextTick(() => {
         this.$refs.confDialog.open();
       });
@@ -602,10 +602,10 @@ export default {
       }
     },
     delConf(record) {
-      const { grp_indx, ctr_indx } = record;
+      const { grp_indx, mod_indx } = record;
       const param = {
         grp_indx,
-        ctr_indx
+        mod_indx
       };
       this.$confirm("请确认是否删除?", "提示", {
         confirmButtonText: "确定",

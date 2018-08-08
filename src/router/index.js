@@ -9,12 +9,6 @@ export default new Router({
     y: 0
   }),
   routes: [
-    // {
-    //   path: "/apitest",
-    //   name: "apitest",
-    //   component: () =>
-    //     import ("@/components/apitest")
-    // }, 
     {
       path: "/login",
       name: "login",
@@ -45,10 +39,18 @@ export default new Router({
       component: () =>
         import ("@/components/personal"),
       children: [{
-        path: "/personal/setting",
-        component: () =>
-          import ("@/components/pages/personal/setting"),
-      }]
+          path: "/personal/setting",
+          name: "setting",
+          component: () =>
+            import ("@/components/pages/personal/setting"),
+        },
+        {
+          path: "/personal/emap",
+          name: 'emap',
+          component: () =>
+            import ("@/components/pages/personal/emap"),
+        }
+      ]
     },
     {
       path: "/admin",

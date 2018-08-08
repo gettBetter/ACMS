@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="useri">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>编辑用户</span>
@@ -102,7 +102,7 @@
               </el-col>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="政治面貌：">
-                  
+
                 </el-form-item>
               </el-col>
             </el-row>
@@ -200,28 +200,12 @@
                 </el-form-item>
               </el-col>
             </el-row>
-
             <el-row>
-              <!-- <el-col :span="11" :offset="1"> 
-              <el-form-item  :label-width="formLabelWidth" label="注册时间：" >
-                <span>{{userInfo.reg_time}}</span>
-              </el-form-item>
-            </el-col> -->
-
-              <!-- v-for="opt in userEditData.role_list"
-                    :label="opt.bas_name"  
-                    :value="opt.bas_indx"
-                    :key="opt.bas_indx" -->
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="用户角色：">
                   <el-select v-model="userInfo.role_name">
                     <el-option v-for="opt in userEditData.role_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
                     </el-option>
-                    <!-- <el-select> -->
-                    <!-- <el-option value="1" label="是">
-                    </el-option>
-                    <el-option value="0" label="否">
-                    </el-option> -->
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -241,8 +225,13 @@
             </el-row>
           </el-col>
 
-          <el-col :span="5">
-            <div>照片在这里</div>
+          <el-col :span="5" :offset="1">
+            <div style="margin-left:55px;margin-bottom:10px">用户头像</div>
+            <el-upload class="avatar-uploader" :action="action" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+
           </el-col>
         </el-row>
       </el-form>
@@ -269,9 +258,9 @@ export default {
       treeProp: {
         label: "dep_name",
         children: "children"
-        // id: dep_indx
       },
       depCn: "",
+      imageUrl: "",
       formLabelWidth: "120px",
       treeVisible: false,
       userEditData: {},
@@ -282,6 +271,22 @@ export default {
     };
   },
   methods: {
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG，PNG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
+
     getUserEditData(param) {
       return new Promise(resolve => {
         this.$get("/user/user_edit_data", param).then(
@@ -333,29 +338,20 @@ export default {
       this.treeVisible = true;
     },
     submit() {
-      // if (JSON.stringify(this.userInfo) != JSON.stringify(this.originalData))
       const hasModifyDep = !this.$_.isEqual(this.userInfo, this.originalData);
-
       if (hasModifyDep) {
         const params = this.getDiffer(this.userInfo, this.originalData);
-        // params.emp_indx = this.userInfo.emp_indx;
         this.$_.merge(params, {
           emp_indx: this.userInfo.emp_indx
         });
         _.has(params, "dep_name") && delete params.dep_name;
-        // this.$_.omit(params, ['dep_name']);
         this.$post("/user/user_edit_save", params)
           .then(data => {
             this.$message({
               type: "success",
               message: "编辑成功!"
             });
-
             this.$router.go(-1);
-            // this.$router.push({
-            //   path: "/admin/user"
-            //   // query: {_time:new Date().getTime()/1000}
-            // });
           })
           .catch(err => alert(err));
       } else {
@@ -364,14 +360,35 @@ export default {
     },
     cancel() {
       this.$router.go(-1);
+    },
+    getImg() {
+      this.$get(`/user/show_image/emp_indx/${this.userId}`)
+        .then(data => {})
+        .catch(data => {
+          console.info(data);
+        });
     }
   },
-  computed: {},
+  computed: {
+    token() {
+      return JSON.parse(sessionStorage.userToken).token;
+    },
+    username() {
+      return JSON.parse(sessionStorage.userToken).username;
+    },
+    action() {
+      return `http://203.195.236.217:9000/admin/user/show_image/emp_indx/${
+        this.userId
+      }/token/${this.token}/username/${this.username}`;
+    }
+  },
   activated() {
     this.userId = this.$route.params.userId;
     this.userInfo = {};
+    this.imageUrl = "";
     this.userEditData = [];
     console.info(this.userId);
+    this.getImg();
     this.getUserEditData({ emp_indx: this.userId }).then(data => {
       this.userInfo = data.user_info[0];
       this.userEditData = data;
@@ -381,49 +398,29 @@ export default {
 };
 </script>
 
-<style scoped>
-html,
-body {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
-.container {
-  height: 100%;
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
 }
-.el-card__header span {
-  line-height: 27px;
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
 }
-.box-card {
-  width: 100%;
-}
-
-.el-card__header span {
-  line-height: 27px;
-}
-.el-form-item__content {
-  text-align: left;
-  /* float: left; */
-}
-.el-dialog {
-  min-height: 280px;
-  /* max-height: 680px; */
-}
-.el-main {
-  line-height: 0;
-}
-.el-select,
-.el-date-editor.el-input,
-.el-date-editor.el-input__inne {
-  width: 100%;
-}
-.el-form-item__label {
-  text-align: left;
-}
-.submit-btn,
-.cancel-btn {
-  width: 160px;
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
 

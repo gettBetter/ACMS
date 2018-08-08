@@ -17,7 +17,6 @@
           <el-input type="textarea" :rows="2" v-model="editData.description"></el-input>
         </el-form-item>
 
-        
         <el-form-item :label-width="formLabelWidth" label="菜单权限：">
 
           <div v-for="menu in menuTree" :key="menu.a_id">
@@ -111,9 +110,17 @@ export default {
             type: "success",
             message: "编辑成功!"
           });
-          this.$router.go(-1);
+          //编辑角色后，刷新menu
+          this.getMenu().then(data => {
+            this.$parent.$store.commit("setMenus", data.data.menu);
+            sessionStorage.setItem("userMenus", JSON.stringify(data.data.menu));
+            this.$router.go(-1);
+          });
         }
       });
+    },
+    getMenu() {
+      return axios.get("/index/left");
     },
     editCancel() {
       this.$router.go(-1);

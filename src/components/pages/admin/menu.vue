@@ -147,6 +147,9 @@ export default {
         }
       });
     },
+    getMenu() {
+      return axios.get("/index/left");
+    },
     menuEditSave() {
       const param = this.editMenuData;
       delete param.ROW_NUMBER;
@@ -155,8 +158,15 @@ export default {
         .post("/sysmenu/sysmenu_edit_save", param)
         .then(data => {
           if (data.data.success) {
-            this.editDialog = false;
-            this.getMenuTree();
+            this.getMenu().then(data => {
+              this.$parent.$store.commit("setMenus", data.data.menu);
+              sessionStorage.setItem(
+                "userMenus",
+                JSON.stringify(data.data.menu)
+              );
+              this.editDialog = false;
+              this.getMenuTree();
+            });
           }
         })
         .catch(err => alert(err));
