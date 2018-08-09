@@ -29,7 +29,7 @@
 <script>
 import axios from "axios";
 
-sessionStorage.clear();
+localStorage.clear();
 export default {
   data() {
     return {
@@ -54,7 +54,11 @@ export default {
               this.loginError = true;
               return;
             }
-            sessionStorage.setItem(
+            localStorage.setItem(
+              "expire",new Date().getDate()
+            );
+            //  expire: ,
+            localStorage.setItem(
               "userToken",
               JSON.stringify({
                 username: data.data.username,
@@ -64,7 +68,7 @@ export default {
             this.loginError = false;
             axios.get("/index/left").then(data => {
               that.$parent.$store.commit("setMenus", data.data.menu);
-              sessionStorage.setItem(
+              localStorage.setItem(
                 "userMenus",
                 JSON.stringify(data.data.menu)
               );

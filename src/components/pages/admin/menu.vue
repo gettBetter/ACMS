@@ -160,7 +160,7 @@ export default {
           if (data.data.success) {
             this.getMenu().then(data => {
               this.$parent.$store.commit("setMenus", data.data.menu);
-              sessionStorage.setItem(
+              localStorage.setItem(
                 "userMenus",
                 JSON.stringify(data.data.menu)
               );

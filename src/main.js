@@ -20,93 +20,75 @@ Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 Vue.prototype.$_ = _;
 
-// 在多个标签页之间共享sessionStorage
-window.addEventListener('storage', function (event) {
-  if (event.key == 'getSessionStorage') {
-    // 已存在的标签页会收到这个事件
-    console.info('bbb')
-    localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
-    localStorage.removeItem('sessionStorage');
-
-  } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
-    // 新开启的标签页会收到这个事件
-    console.info('ccc')
-    var data = JSON.parse(event.newValue);
-
-    for (let key in data) {
-      sessionStorage.setItem(key, data[key]);
-    }
-  }
-});
-
-if (!sessionStorage.length) {
-  localStorage.setItem('getSessionStorage', Date.now());
-  console.info('aaa')
-}else{
-  
-}
-console.info('end')
 router.beforeEach((to, from, next) => {
-  console.info('start')
-  
-  const token = sessionStorage.userToken
-  const userMenus = sessionStorage.userMenus
-  console.info('token', token)
+  const expireDate = localStorage.expire;
+  const isExpire = new Date().getDate() != expireDate
+
   if (to.path === '/login') {
-    sessionStorage.clear()
+    localStorage.clear()
     store.commit('setMenus', [])
-  }
-
-  if (to.path !== '/login' && to.path !== '/unauthority' && token) {
-
-    const menus = JSON.parse(userMenus)
-    store.commit("setMenus", menus);
-
-    let acceptMenus = ["/", "*", "/login", "/unauthority"];
-
-    if (sessionStorage.acceptMenus) {
-      acceptMenus = JSON.parse(sessionStorage.acceptMenus)
-    } else {
-      menus.forEach(item => {
-        acceptMenus.push(item.path)
-        if (item.chilren) {
-          item.chilren.forEach(item =>
-            acceptMenus.push(item.path))
-        }
+  } else {
+    if (isExpire) {
+      next({
+        path: '/login',
+        replace: true,
+        query: {
+          redirect: from.path
+        } //从哪个页面跳转
       })
-      sessionStorage.setItem('acceptMenus', JSON.stringify(acceptMenus))
-    }
-
-    let accept = false;
-
-    if (acceptMenus.some(menu => to.path == menu)) {
-      accept = true
     } else {
-      let pathChunk = to.path.match(/\/\w+/g);
-      let parentPath = `${pathChunk[0]}${pathChunk[1]}`
-      console.info('parentPath', parentPath)
-      if (acceptMenus.some(menu => parentPath == menu)) {
-        accept = true
+      const token = JSON.parse(localStorage.userToken)
+      const menus = JSON.parse(localStorage.userMenus)
+
+      if (to.path !== '/unauthority') {
+
+        store.commit("setMenus", menus);
+
+        let acceptMenus = ["/", "*", "/login", "/unauthority"];
+
+        if (localStorage.acceptMenus) {
+          acceptMenus = JSON.parse(localStorage.acceptMenus)
+        } else {
+          menus.forEach(item => {
+            acceptMenus.push(item.path)
+            if (item.chilren) {
+              item.chilren.forEach(item =>
+                acceptMenus.push(item.path))
+            }
+          })
+          localStorage.setItem('acceptMenus', JSON.stringify(acceptMenus))
+        }
+
+        let accept = false;
+        if (acceptMenus.some(menu => to.path == menu)) {
+          accept = true
+        } else {
+          let pathChunk = to.path.match(/\/\w+/g);
+          let parentPath = `${pathChunk[0]}${pathChunk[1]}`
+          console.info('parentPath', parentPath)
+          if (acceptMenus.some(menu => parentPath == menu)) {
+            accept = true
+          }
+        }
+
+        if (!accept) {
+          next({
+            path: '/unauthority',
+            replace: true
+          })
+        }
       }
     }
-
-    if (!accept) {
-      next({
-        path: '/unauthority',
-        replace: true
-      })
-    }
   }
 
-  if (!token && to.fullPath !== '/login') {
-    next({
-      path: '/login',
-      replace: true
-    })
-  }
+  // if (!token && to.fullPath !== '/login') {
+  //   next({
+  //     path: '/login',
+  //     replace: true
+  //   })
+  // }
 
   next()
-
 })
 
 /* eslint-disable no-new */
@@ -117,8 +99,5 @@ const app = new Vue({
   components: {
     App
   },
-  template: '<App/>',
-  // beforeCreate() {
-  //   console.info('beforeCreate')
-  // }
+  template: '<App/>'
 })

@@ -51,12 +51,12 @@ export default {
       return this.$route.path;
     },
     username() {
-      if (sessionStorage.userToken) {
-        return JSON.parse(sessionStorage.userToken).username;
+      if (localStorage.userToken) {
+        return JSON.parse(localStorage.userToken).username;
       }
     },
     islogin() {
-      return !!sessionStorage.userToken;
+      return !!localStorage.userToken;
     }
   }
 };

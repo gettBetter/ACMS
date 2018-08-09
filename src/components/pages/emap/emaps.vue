@@ -8,8 +8,8 @@
         <el-button-group>
           <!-- <el-button type="primary" @click="enlarge">放大</el-button>
           <el-button type="primary" @click="narrow">缩小</el-button> -->
-          <el-button type="primary">新增</el-button>
-          <el-button type="primary">修改</el-button>
+          <el-button type="primary" @click="openAddDialog">新增</el-button>
+          <el-button type="primary" @click="openEditDialog">修改</el-button>
           <el-button type="primary">关联门</el-button>
           <el-button type="primary">出库</el-button>
           <el-button type="primary">入库</el-button>
@@ -23,14 +23,7 @@
 
       </el-tabs>
       <Map></Map>
-      <!-- <div class="map">
-        <img :src="emapSrc" :style="imgStyle" />
-        <div id="box2" v-dragx="dragBox2" @bindUpdate="bindUpdate" :style="{left:dragBox2.left+'px',top:dragBox2.top+'px',width:dragBox2.width+'px',height:dragBox2.height+'px'}">
-          <span>通过绑定值实现拖到</span><br/>
-          <div class="drag1"></div>
-        </div>
-      </div> -->
-
+      <ConfMap ref="confMap"></ConfMap>
     </el-card>
   </div>
 </template>
@@ -38,25 +31,56 @@
 <script>
 import axios from "axios";
 import Map from "./Map";
+import ConfMap from "./ConfMap";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   components: {
-    Map
+    Map,
+    ConfMap
   },
   data() {
     return {
-      curMap: "map1",
-      list: [],
-      curId: ""
+      curMap: "",
+      list: [
+        {
+          map_indx: "1",
+          map_name: "x1"
+        },
+        {
+          map_indx: "2",
+          map_name: "x2"
+        }
+      ],
+      type: ""
     };
   },
+  computed: {
+    ...mapState(["mapId"])
+  },
   methods: {
-    handleTabClick() {},
+    ...mapMutations(["setMapId"]),
+    handleTabClick(tab, e) {
+      // this.curId = tab.name;
+
+      this.setMapId(tab.name);
+      console.info("mapId", this.mapId);
+    },
+    openAddDialog() {
+      this.type = "新增电子地图";
+      console.info("this.type", this.type);
+      this.$nextTick(() => {
+        this.$refs.confMap.open();
+      });
+    },
+    openEditDialog() {},
     getList() {
       axios
         .get("/mapdevchan/map_list")
         .then(data => {
           console.info(data.data);
+          this.curMap = this.list[0] && this.list[0].map_indx;
+          this.setMapId(this.curMap);
           this.list = data.data.data;
         })
         .catch(err => console.error(err));

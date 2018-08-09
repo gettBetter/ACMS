@@ -113,7 +113,7 @@ export default {
           //编辑角色后，刷新menu
           this.getMenu().then(data => {
             this.$parent.$store.commit("setMenus", data.data.menu);
-            sessionStorage.setItem("userMenus", JSON.stringify(data.data.menu));
+            localStorage.setItem("userMenus", JSON.stringify(data.data.menu));
             this.$router.go(-1);
           });
         }

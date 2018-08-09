@@ -8,8 +8,7 @@ export default new Router({
   scrollBehavior: () => ({
     y: 0
   }),
-  routes: [
-    {
+  routes: [{
       path: "/login",
       name: "login",
       component: () =>
@@ -44,12 +43,12 @@ export default new Router({
           component: () =>
             import ("@/components/pages/personal/setting"),
         },
-        {
-          path: "/personal/emap",
-          name: 'emap',
-          component: () =>
-            import ("@/components/pages/personal/emap"),
-        }
+        // {
+        //   path: "/personal/emap",
+        //   name: 'emap',
+        //   component: () =>
+        //     import ("@/components/pages/personal/emap"),
+        // }
       ]
     },
     {
@@ -315,7 +314,23 @@ export default new Router({
         //     import ("@/components/pages/card/cardlog")
         // }
       ]
+    },
+    //电子地图
+    {
+      path: "/emap",
+      name: "emap",
+      redirect: '/emap/emaps',
+      component: () =>
+        import ("@/components/emap"),
+      children: [
+        // 区域管理
+        {
+          path: "/emap/emaps",
+          name: "emaps",
+          component: () =>
+            import ("@/components/pages/emap/emaps")
+        }
+      ]
     }
-
   ]
 });

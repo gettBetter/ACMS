@@ -371,10 +371,10 @@ export default {
   },
   computed: {
     token() {
-      return JSON.parse(sessionStorage.userToken).token;
+      return JSON.parse(localStorage.userToken).token;
     },
     username() {
-      return JSON.parse(sessionStorage.userToken).username;
+      return JSON.parse(localStorage.userToken).username;
     },
     action() {
       return `http://203.195.236.217:9000/admin/user/show_image/emp_indx/${
