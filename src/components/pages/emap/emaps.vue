@@ -6,8 +6,8 @@
       </div>
       <div style="margin-bottom:10px;margin-top:-20px">
         <el-button-group>
-          <!-- <el-button type="primary" @click="enlarge">放大</el-button>
-          <el-button type="primary" @click="narrow">缩小</el-button> -->
+          <el-button type="primary" @click="enlarge">放大</el-button>
+          <el-button type="primary" @click="narrow">缩小</el-button>
           <el-button type="primary" @click="openAddDialog">新增</el-button>
           <el-button type="primary" @click="openEditDialog">修改</el-button>
           <el-button type="primary" @click="selectMap">关联门</el-button>
@@ -22,8 +22,9 @@
         </el-tab-pane>
 
       </el-tabs>
-      <Map></Map>
-      <ConfMap ref="confMap"></ConfMap>
+      <Map ref="map" :changedev="changedev"></Map>
+      <ConfMap ref="confMap" @configSucc="configSucc"></ConfMap>
+      <SelectMap ref="selectMap" @slectDev="changeDev"></SelectMap>
     </el-card>
   </div>
 </template>
@@ -32,30 +33,49 @@
 import axios from "axios";
 import Map from "./Map";
 import ConfMap from "./ConfMap";
+import SelectMap from "./SelectMap";
+
 import { mapState, mapMutations } from "vuex";
 
 export default {
   components: {
     Map,
-    ConfMap
+    ConfMap,
+    SelectMap
   },
   data() {
     return {
       curMap: "",
       list: [],
-      type: ""
+      type: "",
+      changedev: false
     };
   },
   computed: {
     ...mapState(["mapId"])
   },
   methods: {
+    reset() {
+      this.curMap = "";
+      this.list = [];
+      this.type = "";
+      this.setMapId("");
+    },
     ...mapMutations(["setMapId"]),
     handleTabClick(tab, e) {
       this.setMapId(tab.name);
       console.info("mapId", this.mapId);
     },
-    selectMap() {},
+    configSucc(val) {
+      if (val) {
+        this.getList;
+      }
+    },
+    selectMap() {
+      this.$nextTick(() => {
+        this.$refs.selectMap.open();
+      });
+    },
     openAddDialog() {
       this.type = "新增电子地图";
       console.info("this.type", this.type);
@@ -80,6 +100,7 @@ export default {
             type: "success",
             message: "删除成功!"
           });
+          this.getList();
           // this.$router.go(-1);
         }
       });
@@ -97,10 +118,19 @@ export default {
         .catch(err => console.error(err));
     },
     enlarge() {
-      // this.
+      this.$refs.map.enlarge();
+    },
+    narrow() {
+      this.$refs.map.narrow();
+    },
+    changeDev(val) {
+      if (val === true) {
+        this.changeDev = true;
+      }
     }
   },
   activated() {
+    this.reset();
     this.getList();
   }
 };

@@ -1,20 +1,13 @@
 <template>
   <div class="map">
-    <img :src="emapSrc" :style="imgStyle" />
+    <img v-if="!!this.mapId" :src="emapSrc" :style="imgStyle" />
 
-    <div class="box" v-dragx="dragBox" @bindUpdate="bindUpdate" :style="{left: dragBox.left + 'px',top: dragBox.top + 'px',width: dragBox.width +'px',height: dragBox.height + 'px'}">
-      <span>dragBox1</span><br/>
-      <div class="drag1"></div>
+    <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' }">
+      <span>{{item.chn_indx}}
+      </span><br/>
+      <div :class="'drag'+index"></div>
     </div>
 
-    <!-- <div class="box" v-dragx="dragBox" @bindUpdate="bindUpdate" :style="dragStyle">
-      <span>dragBox1</span><br/>
-      <div class="drag1"></div>
-    </div> -->
-    <!-- <div class="box" v-dragx="dragBox" @bindUpdate="bindUpdate" :style="{left:dragBox.left+'px',top:dragBox.top+'px',width:dragBox.width+'px',height:dragBox.height+'px'}">
-      <span>dragBox2</span><br/>
-      <div class="drag1"></div>
-    </div> -->
   </div>
 </template>
 
@@ -24,9 +17,15 @@ import axios from "axios";
 import url from "@/assets/Untitled.jpg";
 import "@/directive/dragx";
 export default {
+  props: {
+    changedev: {
+      type: Boolean,
+      defaule: false
+    }
+  },
   data() {
     return {
-      emapSrc: url,
+      // emapSrc: "url",
       imgStyle: {
         width: "100%"
       },
@@ -34,42 +33,36 @@ export default {
       height: 100,
       marginLeft: 0,
       marginTop: 0,
-      drag: [],
-      dragBox: {
-        dragBarClass: "drag1",
-        left: 0,
-        top: 0,
-        width: 75,
-        height: 23,
-        dirctDom: false
-      },
-      // dragStyle: {
-      //   left: this.dragBox.left + "px",
-      //   top: this.dragBox.top + "px",
-      //   width: this.dragBox.width + "px",
-      //   height: this.dragBox.height + "px"
-      // },
       devList: [],
       data: {}
     };
   },
   computed: {
-    ...mapState(["mapId"])
+    ...mapState(["mapId"]),
+    emapSrc() {
+      return `http://203.195.236.217:9000/admin//index/map_showimg/map_indx/${
+        this.mapId
+      }`;
+    }
   },
   watch: {},
   methods: {
-    reset() {
-      // this.data = {};
-    },
-    // open() {
-    //   this.reset();
-    //   this.getData();
-    // },
-    getMap() {
-      axios.get(`/index/map_showimg/map_indx/${mapId}`).then(data => {
-        confirm.info(data.data);
-        // this.data = data.data.data;
-        // this.devList = data.data.
+    reset() {},
+    getDevList(param) {
+      axios.get(`/mapdevchan/map_devchan/map_indx/${param}`).then(data => {
+        console.info("devlist", data.data);
+        this.devList = data.data.data.map((item, index) => {
+          item.dirctDom = false;
+          item.dragBarClass = "drag" + index;
+          item.left = item.map_locx || 0;
+          item.top = item.map_locy || 0;
+          item.width = item.map_wide || 75;
+          item.height = item.map_high || 23;
+          return item;
+        });
+        console.info("devlist", this.devList);
+
+        // dragBarClass
       });
     },
     enlarge() {
@@ -93,20 +86,75 @@ export default {
       this.imgStyle.marginTop = this.marginTop + "%";
     },
     bindUpdate(event) {
-      let data = event.detail;
-      this.dragBox.top = data.top;
-      this.dragBox.left = data.left;
-      if (data.width <= 100) data.width = 100;
-      if (data.height <= 50) data.height = 50;
-      this.dragBox.width = data.width;
-      this.dragBox.height = data.height;
+      // console.info(event);
+      let data = event.detail.data;
+      let original = event.detail.original;
+
+      if (data.width <= 75) data.width = 75;
+      if (data.height <= 23) data.height = 23;
+      if (data.top <= 0) data.top = 0;
+      if (data.left <= 0) data.left = 0;
+      original.top = data.top;
+      original.left = data.left;
+      original.width = data.width;
+      original.height = data.height;
+
+      console.info(this.devList);
+    },
+    bindChange(event) {
+      // let data = event.detail.data;
+      // let original = event.detail.original;
+      // const param = {
+      //   dev_chan_list: this.devList.map(item => {
+      //     item.map_wide = item.width;
+      //     item.map_high = item.height;
+      //     item.map_locx = item.left;
+      //     item.map_locy = item.top;
+      //     // item.dev_chan = '00'
+      //     delete item.ROW_NUMBER;
+      //     delete item.width;
+      //     delete item.height;
+      //     delete item.left;
+      //     delete item.top;
+      //     delete item.dragBarClass;
+      //     return item;
+      //   })
+      // };
+      // console.info("param", param);
+      // axios.post("/mapdevchan/map_devchan_save", param).then(data => {
+      //   if (data.data.success) {
+      //     this.$message({
+      //       type: "success",
+      //       message: "坐标已保存!"
+      //     });
+      //   }
+      // });
+      // this.devList = param.dev_chan_list.map((item, index) => {
+      //   item.dirctDom = false;
+      //   item.dragBarClass = "drag" + index;
+      //   item.left = item.map_locx || 0;
+      //   item.top = item.map_locy || 0;
+      //   item.width = item.map_wide || 75;
+      //   item.height = item.map_high || 23;
+      //   return item;
+      // });
+      // console.info("change", this.devList);
     }
   },
   watch: {
     mapId(newVal, oldVal) {
-      console.info("mapId2", newVal, oldVal);
+      console.info("mapId2", newVal, "22222", oldVal);
+      if (newVal) {
+        this.getDevList(newVal);
+      }
+    },
+    changedev(newVal, oldVal) {
+      if (newVal) {
+        this.getDevList(this.mapId);
+      }
     }
-  }
+  },
+  updated() {}
 };
 </script>
 
@@ -117,22 +165,21 @@ export default {
   max-height: 600px;
   box-sizing: border-box;
   border: 2px solid #ddd;
-  overflow: hidden;
+  overflow: scroll;
   position: relative;
 }
-.box {
+[class*="dBox"] {
   border: solid 1px rgba(33, 61, 223, 0.5);
   position: absolute;
+  background-color: #ccc;
+  text-align: center;
 }
 [class*="drag"] {
-  /* background-color: #ccc; */
   position: absolute;
   top: 2px;
   left: 2px;
   bottom: 2px;
   right: 2px;
-  /* border-top: solid 1px rgba(33, 61, 223, 0.541);
-  border-bottom: solid 1px rgba(33, 61, 223, 0.541); */
 }
 .bindBox {
   clear: both;
