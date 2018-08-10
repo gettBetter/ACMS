@@ -54,9 +54,7 @@ export default {
               this.loginError = true;
               return;
             }
-            localStorage.setItem(
-              "expire",new Date().getDate()
-            );
+            localStorage.setItem("expire", new Date().getDate());
             //  expire: ,
             localStorage.setItem(
               "userToken",
@@ -68,10 +66,14 @@ export default {
             this.loginError = false;
             axios.get("/index/left").then(data => {
               that.$parent.$store.commit("setMenus", data.data.menu);
-              localStorage.setItem(
-                "userMenus",
-                JSON.stringify(data.data.menu)
-              );
+              localStorage.setItem("userMenus", JSON.stringify(data.data.menu));
+              if (data.data.success) {
+                this.$message({
+                  type: "success",
+                  message: "登陆成功!"
+                });
+                // this.$router.go(-1);
+              }
               setTimeout(() => {
                 const query = that.$router.query;
                 if (query) {

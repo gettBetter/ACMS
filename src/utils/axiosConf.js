@@ -14,16 +14,18 @@ if (process.env.NODE_ENV == 'development') {
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    config.headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
+    const isFormData = config.headers['Content-Type'] == 'multipart/form-data';
+    if (!isFormData) {
+      config.headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+      config.data = qs.stringify(config.data);
     }
     const token = localStorage.userToken;
     if (token) {
       const param = JSON.parse(token);
       config.url += '/token/' + param.token + '/username/' + param.username
     }
-    config.data = qs.stringify(config.data);
-
     return config;
   },
   error => {

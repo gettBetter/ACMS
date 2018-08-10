@@ -10,9 +10,9 @@
           <el-button type="primary" @click="narrow">缩小</el-button> -->
           <el-button type="primary" @click="openAddDialog">新增</el-button>
           <el-button type="primary" @click="openEditDialog">修改</el-button>
-          <el-button type="primary">关联门</el-button>
-          <el-button type="primary">出库</el-button>
-          <el-button type="primary">入库</el-button>
+          <el-button type="primary" @click="selectMap">关联门</el-button>
+          <el-button type="primary" @click="del">删除</el-button>
+          <!-- <el-button type="primary">入库</el-button> -->
         </el-button-group>
       </div>
 
@@ -42,16 +42,7 @@ export default {
   data() {
     return {
       curMap: "",
-      list: [
-        {
-          map_indx: "1",
-          map_name: "x1"
-        },
-        {
-          map_indx: "2",
-          map_name: "x2"
-        }
-      ],
+      list: [],
       type: ""
     };
   },
@@ -61,11 +52,10 @@ export default {
   methods: {
     ...mapMutations(["setMapId"]),
     handleTabClick(tab, e) {
-      // this.curId = tab.name;
-
       this.setMapId(tab.name);
       console.info("mapId", this.mapId);
     },
+    selectMap() {},
     openAddDialog() {
       this.type = "新增电子地图";
       console.info("this.type", this.type);
@@ -73,15 +63,36 @@ export default {
         this.$refs.confMap.open();
       });
     },
-    openEditDialog() {},
+    openEditDialog() {
+      this.type = "编辑电子地图";
+      console.info("this.type", this.type);
+      this.$nextTick(() => {
+        this.$refs.confMap.open();
+      });
+    },
+    del() {
+      const param = {
+        map_indx: this.mapId
+      };
+      axios.post("/mapdevchan/map_del", param).then(data => {
+        if (data.data.success) {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+          // this.$router.go(-1);
+        }
+      });
+    },
     getList() {
       axios
         .get("/mapdevchan/map_list")
         .then(data => {
           console.info(data.data);
-          this.curMap = this.list[0] && this.list[0].map_indx;
-          this.setMapId(this.curMap);
           this.list = data.data.data;
+          this.curMap = this.list[0] && this.list[0].map_indx;
+          console.info("curmap", this.curMap);
+          this.setMapId(this.curMap);
         })
         .catch(err => console.error(err));
     },
