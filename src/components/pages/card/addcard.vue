@@ -24,6 +24,15 @@
         <el-col :span="18">
           <div style="margin-bottom:20px">发卡列表</div>
           <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="cardConfig" :disabled="disableBtn">发卡</el-button>
+          <el-row>
+            <el-col :span="8">
+              <el-form>
+                <el-form-item label-width="100px" label="设备端口：">
+                  <el-input v-model="dev_param"></el-input>
+                </el-form-item>
+              </el-form>
+            </el-col>
+          </el-row>
 
           <el-table :data="pageData" border @selection-change="selectionChange">
             <el-table-column type="selection" width="55">
@@ -69,7 +78,8 @@ export default {
       },
       list: [],
       user_list: [],
-      disableBtn: true
+      disableBtn: true,
+      dev_param: ""
     };
   },
   methods: {
@@ -90,9 +100,6 @@ export default {
       let param = {};
       if (isDep) {
         param = `/card/nocard_userlist/dep_indx/${node.dep_indx}`;
-        // param = {
-        //   dep_indx: node.dep_indx
-        // };
       } else {
         param = {
           emp_indx: node.emp_indx
@@ -107,7 +114,7 @@ export default {
         .then(data => {
           console.info("tree", data.data);
           // this.treeData = data.data.data[0].children;
-          const temp = data.data.data[0].children;
+          const temp = data.data.data[0];
           function getChildren(arr) {
             arr.forEach(item => {
               item.label = item.dep_name || item.emp_name;
@@ -181,7 +188,25 @@ export default {
         .catch(err => loadingInstance.close());
     },
     cardConfig() {
-      this.$refs.cardConfig.openConfig();
+      // this.$refs.cardConfig.openConfig();
+      // const num = this.user_list
+      const users = this.user_list;
+      const count = users.length;
+      this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.$confirm(
+          `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
+        ).then(() => {});
+      });
     },
     config(val) {
       if (val) {
@@ -208,6 +233,21 @@ export default {
   created() {
     this.reset();
     this.getTree();
+  },
+  mounted() {
+    // try {
+    //   var objCard = new ActiveXObject("WSPCPP.WSPCPPCtrl.1");
+    // } catch (e) {
+    //   this.$confirm("调用控件失败，先进行下载安装!", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   }).then(() => {
+    //     // http://203.195.236.217:9000/WSPCPP.rar
+    //     window.open("http://203.195.236.217:9000/WSPCPP.rar");
+    //   });
+    //   //注意:弹出一个下载地址,或者一个页面.http://网站地址/WSPCPP.rar
+    // }
   }
 };
 </script>

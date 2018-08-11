@@ -21,6 +21,7 @@
         </el-container>
       </el-container>
     </el-container>
+    <object classid="clsid:EDFCE70C-1AA8-4C7F-BE71-D22B2D0DC8BD" :codebase="codebase" width=10 height=10 align=center hspace=0 vspace=0 id="WSPCPP"></object>
   </div>
 </template>
 
@@ -37,6 +38,10 @@ export default {
     return {};
   },
   computed: {
+    codebase() {
+      const host = location.host;
+      return `${host}/WSPCPP.ocx#version=1,0,0,0`;
+    },
     children() {
       let path = this.$route.path;
       if (path == "/") {
@@ -60,8 +65,8 @@ export default {
       return !!this.$parent.$store.getters.children.length;
     }
   },
-  beforeDestroy() {
-    // localStorage.clear();
+  mounted() {
+    console.info("location", location);
   }
 };
 </script>
