@@ -49,6 +49,7 @@ export default {
   methods: {
     reset() {},
     getDevList(param) {
+      this.devList = [];
       axios.get(`/mapdevchan/map_devchan/map_indx/${param}`).then(data => {
         console.info("devlist", data.data);
         this.devList = data.data.data.map((item, index) => {

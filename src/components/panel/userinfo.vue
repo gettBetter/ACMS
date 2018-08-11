@@ -201,14 +201,14 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="11" :offset="1">
+              <!-- <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="用户角色：">
                   <el-select v-model="userInfo.role_name">
                     <el-option v-for="opt in userEditData.role_list" :label="opt.bas_name" :value="opt.bas_indx" :key="opt.bas_indx">
                     </el-option>
                   </el-select>
                 </el-form-item>
-              </el-col>
+              </el-col> -->
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="用户密码：">
                   <el-input v-model="userInfo.emp_pswd" type="password"></el-input>
@@ -216,13 +216,13 @@
               </el-col>
             </el-row>
 
-            <el-row>
+            <!-- <el-row>
               <el-col :span="11" :offset="1">
                 <el-form-item :label-width="formLabelWidth" label="注册时间：">
                   <span>{{userInfo.reg_time}}</span>
                 </el-form-item>
               </el-col>
-            </el-row>
+            </el-row> -->
           </el-col>
 
           <el-col :span="5" :offset="1">
@@ -330,6 +330,7 @@ export default {
     submit() {
       const param = this.userInfo;
       delete param.ROW_NUMBER;
+      delete param.role_id;
       let url = this.url;
       let oMyForm = new FormData();
       let config = {
@@ -337,9 +338,12 @@ export default {
           "Content-Type": "multipart/form-data"
         }
       };
-
+      console.info(param);
       for (let p in param) {
         if (!p.includes("name")) {
+          if (param[p] === null) {
+            param[p] = "";
+          }
           oMyForm.set(p, param[p]);
         }
       }

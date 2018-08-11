@@ -61,15 +61,6 @@ export default {
   },
   watch: {},
   methods: {
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
     reset() {},
     open() {
       this.dialogVisible = true;
@@ -103,6 +94,7 @@ export default {
 
       let msg = "";
 
+      console.info(this.type, "this.type");
       if (this.type === "新增电子地图") {
         msg = "新增电子地图成功！";
         if ("lastModified" in this.map_file) {
@@ -111,11 +103,13 @@ export default {
           alert("请上传地图");
           return;
         }
-      } else if (this.type === "编辑电子地图成功") {
+      } else if (this.type === "编辑电子地图") {
         if ("lastModified" in this.map_file) {
           oMyForm.set("map_file", this.map_file);
+          // oMyForm.set("map_indx", this.map_indx);
         }
-        oMyForm.set("map_indx", this.data.map_indx);
+        oMyForm.set("map_indx", this.mapId);
+        console.info("map_indx", oMyForm.get("map_indx"));
         msg = "编辑电子地图成功！";
       }
       axios
