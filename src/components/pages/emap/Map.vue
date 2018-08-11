@@ -3,7 +3,7 @@
     <img v-if="!!this.mapId" :src="emapSrc" :style="imgStyle" />
 
     <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' }">
-      <span>{{item.chn_indx}}
+      <span>{{item.dev_chan}}
       </span><br/>
       <div :class="'drag'+index"></div>
     </div>
@@ -85,6 +85,45 @@ export default {
       this.imgStyle.marginLeft = this.marginLeft + "%";
       this.imgStyle.marginTop = this.marginTop + "%";
     },
+    saveLoc() {
+      const param = {
+        dev_chan_list: this.devList.map(item => {
+          item.map_wide = item.width;
+          item.map_high = item.height;
+          item.map_locx = item.left;
+          item.map_locy = item.top;
+          // item.dev_chan = '00'
+          delete item.ROW_NUMBER;
+          delete item.width;
+          delete item.height;
+          delete item.left;
+          delete item.top;
+          delete item.dragBarClass;
+          delete item.dirctDom;
+          return item;
+        })
+      };
+      console.info("post", param);
+      axios.post("/mapdevchan/map_devchan_save", param).then(data => {
+        if (data.data.success) {
+          this.$message({
+            type: "success",
+            message: "坐标已保存!"
+          });
+          this.devList = param.dev_chan_list.map((item, index) => {
+            item.dirctDom = false;
+            item.dragBarClass = "drag" + index;
+            item.left = item.map_locx || 0;
+            item.top = item.map_locy || 0;
+            item.width = item.map_wide || 75;
+            item.height = item.map_high || 23;
+            return item;
+          });
+          this.$emit("saveLocSucc", true);
+          console.info("post", param);
+        }
+      });
+    },
     bindUpdate(event) {
       // console.info(event);
       let data = event.detail.data;
@@ -102,6 +141,7 @@ export default {
       console.info(this.devList);
     },
     bindChange(event) {
+      this.$emit("showSaveLocBtn", true);
       // let data = event.detail.data;
       // let original = event.detail.original;
       // const param = {

@@ -113,6 +113,16 @@
                             <el-input v-model="editData.ism_asrc"></el-input>
                         </el-form-item>
                     </el-col>
+
+                    <el-col :span="11" :offset="1">
+                        <el-form-item :label-width="formLabelWidth" label="设备组别:">
+                            <el-select v-model="editData.grp_indx">
+                                <el-option v-for="opt in devgroup_list" :label="opt.grp_name
+" :value="opt.grp_indx" :key="opt.grp_indx">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
 
             </el-form>
@@ -140,6 +150,7 @@ export default {
       editData: {},
       treeData: [],
       optionData: {},
+      devgroup_list: [],
       treeVisible: false,
       treeProp: {
         label: "are_name",
@@ -156,6 +167,7 @@ export default {
             // this.editData = data.data.data;
             this.optionData = data.data;
             this.treeData = data.data.devarea_tree;
+            this.devgroup_list = data.data.devgroup_list;
             console.info(this.optionData, this.treeData);
           } else {
             alert(data.data.msg);
@@ -176,7 +188,12 @@ export default {
     save() {
       const param = this.editData;
       delete param.ROW_NUMBER;
+      delete param.ROW_NUMBER;
+      delete param.p_are_name;
+      delete param.typ_name;
+      delete param.com_name;
       delete param.are_name;
+      delete param.grp_name;
 
       console.info(param);
       axios.post("/deviceinfo/deviceinfo_add", param).then(data => {

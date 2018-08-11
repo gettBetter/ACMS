@@ -226,21 +226,18 @@
           </el-col>
 
           <el-col :span="5" :offset="1">
-            <div style="margin-left:55px;margin-bottom:10px">用户头像</div>
-            <el-upload class="avatar-uploader" :action="action" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-
+            <div style="margin-left:50px;margin-bottom:10px">用户头像</div>
+            <div>
+              <img :src="imageUrl" :style="imgStyle" />
+            </div>
+            <input type="file" name="map_file" id="file" @change="uploadChange">
           </el-col>
         </el-row>
       </el-form>
 
       <el-row style="text-align: center; padding: 30px 0">
-        <!-- <el-col :span="4" :offset="20">  -->
         <el-button class="submit-btn" type="primary" @click="submit">确定</el-button>
         <el-button class="cancel-btn" @click="cancel">取消</el-button>
-        <!-- </el-col>  -->
       </el-row>
 
       <el-dialog width="40%" min-height="200px" title="选择部门" :visible.sync="treeVisible" append-to-body>
@@ -252,6 +249,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -260,6 +258,7 @@ export default {
         children: "children"
       },
       depCn: "",
+      // imageUrls: "",
       imageUrl: "",
       formLabelWidth: "120px",
       treeVisible: false,
@@ -267,26 +266,17 @@ export default {
       depTreeData: [],
       userInfo: {},
       originalData: {},
-      userId: ""
+      userId: "",
+      imgStyle: {
+        width: "178px",
+        height: "178px",
+        border: "1px solid #ccc",
+        overflow: "hidden"
+      },
+      emp_phot: ""
     };
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG，PNG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
-    },
-
     getUserEditData(param) {
       return new Promise(resolve => {
         this.$get("/user/user_edit_data", param).then(
@@ -338,35 +328,52 @@ export default {
       this.treeVisible = true;
     },
     submit() {
-      const hasModifyDep = !this.$_.isEqual(this.userInfo, this.originalData);
-      if (hasModifyDep) {
-        const params = this.getDiffer(this.userInfo, this.originalData);
-        this.$_.merge(params, {
-          emp_indx: this.userInfo.emp_indx
-        });
-        _.has(params, "dep_name") && delete params.dep_name;
-        this.$post("/user/user_edit_save", params)
-          .then(data => {
-            this.$message({
-              type: "success",
-              message: "编辑成功!"
-            });
-            this.$router.go(-1);
-          })
-          .catch(err => alert(err));
-      } else {
-        alert("数据未修改");
+      const param = this.userInfo;
+      delete param.ROW_NUMBER;
+      let url = this.url;
+      let oMyForm = new FormData();
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      };
+
+      for (let p in param) {
+        if (!p.includes("name")) {
+          oMyForm.set(p, param[p]);
+        }
       }
+
+      oMyForm.set("emp_phot", this.emp_phot);
+      console.info("oMyForm", oMyForm, param, oMyForm.get("emp_name"));
+      axios
+        .post(url, oMyForm, config)
+        .then(data => {
+          this.$message({
+            type: "success",
+            message: "编辑成功!"
+          });
+          this.$router.go(-1);
+        })
+        .catch(err => alert(err));
     },
     cancel() {
       this.$router.go(-1);
     },
-    getImg() {
-      this.$get(`/user/show_image/emp_indx/${this.userId}`)
-        .then(data => {})
-        .catch(data => {
-          console.info(data);
-        });
+    uploadChange(e) {
+      const file = e.target.files[0];
+      this.imageUrl = URL.createObjectURL(file);
+      this.emp_phot = file;
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt5M = file.size / 1024 / 1024 < 5;
+
+      if (!isJPG) {
+        this.$message.error("上传图片只能是 JPG/PNG 格式!");
+      }
+      if (!isLt5M) {
+        this.$message.error("上传图片大小不能超过 5MB!");
+      }
+      return isJPG && isLt5M;
     }
   },
   computed: {
@@ -376,19 +383,19 @@ export default {
     username() {
       return JSON.parse(localStorage.userToken).username;
     },
-    action() {
-      return `http://203.195.236.217:9000/admin/user/show_image/emp_indx/${
-        this.userId
-      }/token/${this.token}/username/${this.username}`;
+    url() {
+      return `http://203.195.236.217:9000/admin/user/user_edit_save/token/${
+        this.token
+      }/username/${this.token}`;
     }
   },
   activated() {
     this.userId = this.$route.params.userId;
     this.userInfo = {};
-    this.imageUrl = "";
+    this.imageUrl = `http://203.195.236.217:9000/admin/index/show_image/emp_indx/emp_indx/${
+      this.userId
+    }/token/${this.token}/username/${this.token}`;
     this.userEditData = [];
-    console.info(this.userId);
-    this.getImg();
     this.getUserEditData({ emp_indx: this.userId }).then(data => {
       this.userInfo = data.user_info[0];
       this.userEditData = data;
@@ -397,30 +404,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-</style>
-

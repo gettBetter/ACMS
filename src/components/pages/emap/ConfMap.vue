@@ -10,7 +10,7 @@
         </el-form-item>
 
         <el-form-item label="上传地图:">
-          <input type="file" name="map_file" id="file" @change="uploudChange">
+          <input type="file" name="map_file" id="file" @change="uploadChange">
           <div>只能上传jpg/png文件，且不超过5M</div>
         </el-form-item>
 
@@ -102,16 +102,18 @@ export default {
       };
 
       let msg = "";
+      console.info(this.map_file);
+      debugger;
       if (this.type === "新增电子地图") {
         msg = "新增电子地图成功！";
-        if (Object.keys(this.map_file).length > 0) {
+        if ("lastModified" in this.map_file) {
           oMyForm.set("map_file", this.map_file);
         } else {
           alert("请上传地图");
           return;
         }
       } else if (this.type === "编辑电子地图成功") {
-        if (Object.keys(this.map_file).length > 0) {
+        if ("lastModified" in this.map_file) {
           oMyForm.set("map_file", this.map_file);
         }
         oMyForm.set("map_indx", this.data.map_indx);
@@ -133,7 +135,10 @@ export default {
           console.log(res);
         });
     },
-    uploudChange(e) {
+    uploadChange(e) {
+      console.info("e", e.target.files, e.target.value);
+      // C:\fakepath\xiaocai.jpg
+      // e.target.value
       const file = e.target.files[0];
       this.map_file = file;
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";

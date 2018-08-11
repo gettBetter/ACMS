@@ -223,8 +223,12 @@
 
           </el-col>
 
-          <el-col :span="5">
-            <div>照片在这里</div>
+          <el-col :span="5" :offset="1">
+            <div style="margin-left:50px;margin-bottom:10px">用户头像</div>
+            <div>
+              <img :src="imageUrl" :style="imgStyle" />
+            </div>
+            <input type="file" name="map_file" id="file" @change="uploadChange">
           </el-col>
         </el-row>
       </el-form>
@@ -260,6 +264,14 @@ export default {
       userData: {},
       userInfo: {},
       depTreeData: [],
+      imageUrl: "",
+      imgStyle: {
+        width: "178px",
+        height: "178px",
+        border: "1px solid #ccc",
+        overflow: "hidden"
+      },
+      emp_phot: "",
       rules: {
         emp_code: [
           { required: true, message: "用户编码不得为空", trigger: "blur" }
@@ -313,24 +325,46 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const params = this.userInfo;
-          delete params.dep_name;
+          const param = this.userInfo;
+          delete param.ROW_NUMBER;
+          let url = this.url;
+          let oMyForm = new FormData();
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          };
+
+          for (let p in param) {
+            if (!p.includes("name")) {
+              oMyForm.set(p, param[p]);
+            }
+          }
+
+          oMyForm.set("emp_phot", this.emp_phot);
+          console.info("oMyForm", oMyForm, param, oMyForm.get("emp_name"));
           axios
-            .post("/user/user_add", params)
+            .post(url, oMyForm, config)
             .then(data => {
-              if (data.data.success) {
-                this.$message({
-                  type: "success",
-                  message: "添加成功!"
-                });
-                this.$router.go(-1);
-                // this.$router.push({
-                //   path: "/admin/user",
-                //   query: { saveBack: true }
-                // });
-              }
+              this.$message({
+                type: "success",
+                message: "添加成功!"
+              });
+              this.$router.go(-1);
             })
             .catch(err => alert(err));
+          // axios
+          //   .post("/user/user_add", params)
+          //   .then(data => {
+          //     if (data.data.success) {
+          //       this.$message({
+          //         type: "success",
+          //         message: "添加成功!"
+          //       });
+          //       this.$router.go(-1);
+          //     }
+          //   })
+          //   .catch(err => alert(err));
         } else {
           return false;
         }
@@ -338,9 +372,36 @@ export default {
     },
     cancel() {
       this.$router.go(-1);
+    },
+    uploadChange(e) {
+      const file = e.target.files[0];
+      this.imageUrl = URL.createObjectURL(file);
+      this.emp_phot = file;
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt5M = file.size / 1024 / 1024 < 5;
+
+      if (!isJPG) {
+        this.$message.error("上传图片只能是 JPG/PNG 格式!");
+      }
+      if (!isLt5M) {
+        this.$message.error("上传图片大小不能超过 5MB!");
+      }
+      return isJPG && isLt5M;
     }
   },
-  computed: {},
+  computed: {
+    token() {
+      return JSON.parse(localStorage.userToken).token;
+    },
+    username() {
+      return JSON.parse(localStorage.userToken).username;
+    },
+    url() {
+      return `http://203.195.236.217:9000/admin/user/user_add/token/${
+        this.token
+      }/username/${this.token}`;
+    }
+  },
   activated() {
     this.userData = {};
     this.userInfo = {};
