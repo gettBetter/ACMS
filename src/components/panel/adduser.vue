@@ -341,6 +341,7 @@ export default {
             }
           }
 
+          oMyForm.set("emp_name", param.emp_name);
           oMyForm.set("emp_phot", this.emp_phot);
           console.info("oMyForm", oMyForm, param, oMyForm.get("emp_name"));
           axios

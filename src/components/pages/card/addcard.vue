@@ -118,18 +118,20 @@ export default {
                 getChildren(item.children);
               } else {
                 item.label = item.emp_name || item.dep_name;
-                item.children = item.user_list.map(item => {
-                  item.label = item.emp_name || item.dep_name;
-                  return item;
-                });
+                if (item.user_list) {
+                  item.children = item.user_list.map(item => {
+                    item.label = item.emp_name || item.dep_name;
+                    return item;
+                  });
+                }
               }
             });
           }
           getChildren(temp);
           this.treeData = temp;
         })
-        .catch(data => {
-          alert(data.data.msg);
+        .catch(err => {
+          console.error(err);
         });
     },
     getList(param) {

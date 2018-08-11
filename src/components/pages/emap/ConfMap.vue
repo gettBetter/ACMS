@@ -102,8 +102,7 @@ export default {
       };
 
       let msg = "";
-      console.info(this.map_file);
-      debugger;
+
       if (this.type === "新增电子地图") {
         msg = "新增电子地图成功！";
         if ("lastModified" in this.map_file) {

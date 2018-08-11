@@ -343,7 +343,7 @@ export default {
           oMyForm.set(p, param[p]);
         }
       }
-
+      oMyForm.set("emp_name", param.emp_name);
       oMyForm.set("emp_phot", this.emp_phot);
       console.info("oMyForm", oMyForm, param, oMyForm.get("emp_name"));
       axios
@@ -386,15 +386,15 @@ export default {
     url() {
       return `http://203.195.236.217:9000/admin/user/user_edit_save/token/${
         this.token
-      }/username/${this.token}`;
+      }/username/${this.username}`;
     }
   },
   activated() {
     this.userId = this.$route.params.userId;
     this.userInfo = {};
-    this.imageUrl = `http://203.195.236.217:9000/admin/index/show_image/emp_indx/emp_indx/${
+    this.imageUrl = `http://203.195.236.217:9000/admin/index/show_image/emp_indx/${
       this.userId
-    }/token/${this.token}/username/${this.token}`;
+    }`;
     this.userEditData = [];
     this.getUserEditData({ emp_indx: this.userId }).then(data => {
       this.userInfo = data.user_info[0];

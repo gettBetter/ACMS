@@ -40,7 +40,7 @@ export default {
   computed: {
     ...mapState(["mapId"]),
     emapSrc() {
-      return `http://203.195.236.217:9000/admin//index/map_showimg/map_indx/${
+      return `http://203.195.236.217:9000/admin/index/map_showimg/map_indx/${
         this.mapId
       }`;
     }
