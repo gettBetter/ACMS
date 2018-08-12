@@ -21,7 +21,7 @@
             <el-button type="text" @click="resetPW(scope.row)" title="重置密码">
               <i class="iconfont icon-zhongzhi"></i>
             </el-button>
-            <el-button type="text" @click="assignPermission(scope.row)" title="重置密码">
+            <el-button type="text" @click="assignPermission(scope.row)" title="分配权限">
               <i class="iconfont icon-fenpeiquanxian"></i>
             </el-button>
           </template>

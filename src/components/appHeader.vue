@@ -5,7 +5,7 @@
         <!-- <img :src="logoUrl" width="30px" style="margin-top:16px" /> -->
         <p></p>
       </el-col>
-      <el-col :span="18" :offset="1">
+      <el-col :span="16" :offset="1">
         <el-menu :default-active="currentPath.match(/\/\w+/g) ? currentPath.match(/\/\w+/g)[0] : ''" mode="horizontal" @select="handleSelect" background-color="#262626" router>
           <el-menu-item v-for="menu in menus" :key="menu.path" :index="menu.path">
             <!-- <i class="el-icon-document" ></i> -->
@@ -13,10 +13,12 @@
           </el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="2" :offset="1" v-if="menus.length>0">
+      <el-col :span="4" :offset="1" v-if="menus.length>0">
         <el-row style="font-size:14px">
-          <el-col :span="14" style=“color:white>{{username}}</el-col>
-          <el-col :span="10">
+          <el-col :span="8" style=“color:white>{{username}}</el-col>
+
+          <el-col :span="16">
+            <el-button type="text" style="color:white;font-weight:400" @click="changePw" class="logout">修改密码</el-button>
             <el-button type="text" style="color:white;font-weight:400" @click="logout" class="logout">退出</el-button>
           </el-col>
 
@@ -25,16 +27,24 @@
 
       </el-col>
     </el-row>
+    <!-- <ChangePw ref="changeDialog" @openChangePw="openChangePw"></ChangePw>
+     -->
+
+    <ChangePw ref="changeDialog"></ChangePw>
 
   </div>
 </template>
 
 <script>
-import logoUrl from "@/assets/logo.png";
+// import logoUrl from "@/assets/logo.png";
+import ChangePw from "@/components/ChangePw";
 export default {
+  components: {
+    ChangePw
+  },
   data() {
     return {
-      logoUrl
+      // logoUrl
     };
   },
   props: ["menus"],
@@ -44,6 +54,10 @@ export default {
     },
     logout() {
       this.$router.replace("/login");
+    },
+    changePw() {
+      // this.$emit("openChangePw", true);
+      this.$refs.changeDialog.open();
     }
   },
   computed: {

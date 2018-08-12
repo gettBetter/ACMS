@@ -88,7 +88,8 @@ export default {
     getDefaultCheckedData(arr = [], ret = []) {
       arr.forEach(item => {
         if (item.checked == 1) {
-          ret.push(item.dep_indx);
+          let indx = item.are_indx || item.dep_indx;
+          ret.push(indx);
         }
         if (item.children) {
           this.getDefaultCheckedData(item.children, ret);

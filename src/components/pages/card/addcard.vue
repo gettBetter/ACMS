@@ -23,12 +23,16 @@
         </el-col>
         <el-col :span="18">
           <div style="margin-bottom:20px">发卡列表</div>
-          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="cardConfig" :disabled="disableBtn">发卡</el-button>
+          <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="cardConfig" :disabled="disableBtn">发卡</el-button>
+          <!-- <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="losCard" :disabled="disableBtn">挂失</el-button> -->
           <el-row>
-            <el-col :span="8">
-              <el-form>
+            <el-col :span="18">
+              <el-form :inline="true" class="demo-form-inline">
                 <el-form-item label-width="100px" label="设备端口：">
                   <el-input v-model="dev_param"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="openDev">打开端口</el-button>
                 </el-form-item>
               </el-form>
             </el-col>
@@ -79,7 +83,8 @@ export default {
       list: [],
       user_list: [],
       disableBtn: true,
-      dev_param: ""
+      dev_param: "",
+      card_id: ""
     };
   },
   methods: {
@@ -187,6 +192,24 @@ export default {
         )
         .catch(err => loadingInstance.close());
     },
+    openDev() {
+      // const param = ;
+      this.card_id = WSPCPP.PORT_Open(this.dev_param);
+
+      if (this.card_id < 0) {
+        alert("打开失败，请检测设备连接是否正常");
+      } else {
+        this.$message({
+          type: "success",
+          message: "打开端口成功!"
+        });
+      }
+    },
+    // losCard() {
+    //   const users = this.user_list;
+    //   const count = users.length;
+
+    // },
     cardConfig() {
       // this.$refs.cardConfig.openConfig();
       // const num = this.user_list
@@ -197,15 +220,27 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        this.$confirm(
-          `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
-          "提示",
-          {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }
-        ).then(() => {});
+        for (let i = 0; i < count; i++) {
+          this.$confirm(
+            `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
+            "提示",
+            {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            }
+          ).then(() => {
+            // users
+            const resCardId = WSPCPP.Access_CommandBLX(
+              this.card_id,
+              65535,
+              0x000601,
+              ""
+            );
+            WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+          });
+        }
+        WSPCPP.Port_Close(this.card_id);
       });
     },
     config(val) {
