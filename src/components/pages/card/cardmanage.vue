@@ -26,8 +26,21 @@
           <div style="margin-bottom:20px">发卡列表</div>
           <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button>
 
+          <el-row>
+            <el-col :span="18">
+              <el-form :inline="true" class="demo-form-inline">
+                <el-form-item label-width="100px" label="设备端口：">
+                  <el-input v-model="dev_param"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="openDev">打开端口</el-button>
+                </el-form-item>
+              </el-form>
+            </el-col>
+          </el-row>
+
           <el-table :data="pageData" border>
-            width="80%"
+            <!-- width="80%" -->
             <el-table-column fixed="left" label="操作" width="140px">
               <template slot-scope="scope">
                 <!-- <el-button @click="edit(scope.row)" type="text" title="编辑">
@@ -104,7 +117,9 @@ export default {
       },
       list: [],
       user_list: [],
-      crdIndx: ""
+      crdIndx: "",
+      dev_param: "",
+      card_id: ""
     };
   },
   methods: {
@@ -227,6 +242,19 @@ export default {
         this.getList();
       }
     },
+    openDev() {
+      // const param = ;
+      this.card_id = WSPCPP.PORT_Open(this.dev_param);
+
+      if (this.card_id < 0) {
+        alert("打开失败，请检测设备连接是否正常");
+      } else {
+        this.$message({
+          type: "success",
+          message: "打开端口成功!"
+        });
+      }
+    },
     loss(recored) {
       let param = {
         crd_indx: recored.crd_indx
@@ -244,6 +272,14 @@ export default {
         }
       )
         .then(() => {
+          const resCardId = WSPCPP.Access_CommandBLX(
+            this.card_id,
+            65535,
+            0x000601,
+            ""
+          );
+          WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+
           axios
             .post("/card/card_loss", param)
             .then(data => {
@@ -252,6 +288,7 @@ export default {
                   type: "success",
                   message: "挂失成功!"
                 });
+                WSPCPP.Port_Close(this.card_id);
                 this.getList();
               }
             })
@@ -332,7 +369,7 @@ export default {
     },
     pageData() {
       return this.chunkList[this.currentPage - 1];
-    },
+    }
     // codebase() {
     //   const host = location.host;
     //   return `${host}/WSPCPP.ocx#version=1,0,0,0`;

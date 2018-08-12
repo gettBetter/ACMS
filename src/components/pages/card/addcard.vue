@@ -55,7 +55,7 @@
         </el-col>
       </el-row>
     </el-card>
-    <card-config ref="cardConfig" :config="config"></card-config>
+    <card-config ref="cardConfig" @config="config"></card-config>
   </div>
 </template>
 
@@ -211,37 +211,39 @@ export default {
 
     // },
     cardConfig() {
-      // this.$refs.cardConfig.openConfig();
-      // const num = this.user_list
-      const users = this.user_list;
-      const count = users.length;
-      this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        for (let i = 0; i < count; i++) {
-          this.$confirm(
-            `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
-            "提示",
-            {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "warning"
-            }
-          ).then(() => {
-            // users
-            const resCardId = WSPCPP.Access_CommandBLX(
-              this.card_id,
-              65535,
-              0x000601,
-              ""
-            );
-            WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
-          });
-        }
-        WSPCPP.Port_Close(this.card_id);
-      });
+      this.$refs.cardConfig.openConfig();
+
+      // const users = this.user_list;
+      // const count = users.length;
+      // this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
+      //   confirmButtonText: "确定",
+      //   cancelButtonText: "取消",
+      //   type: "warning"
+      // }).then(() => {
+      //   for (let i = 0; i < count; i++) {
+      //     this.$confirm(
+      //       `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
+      //       "提示",
+      //       {
+      //         confirmButtonText: "确定",
+      //         cancelButtonText: "取消",
+      //         type: "warning"
+      //       }
+      //     ).then(() => {
+      //       // users
+      //       const resCardId = WSPCPP.Access_CommandBLX(
+      //         this.card_id,
+      //         65535,
+      //         0x000601,
+      //         ""
+      //       );
+      //       WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+
+      //       // /card/card_add
+      //     });
+      //   }
+      //   WSPCPP.Port_Close(this.card_id);
+      // });
     },
     config(val) {
       if (val) {
