@@ -24,16 +24,22 @@
         </el-col>
         <el-col :span="18">
           <div style="margin-bottom:20px">发卡列表</div>
-          <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button>
-
+          <!-- <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button> -->
           <el-row>
             <el-col :span="18">
+              <!-- <el-form :inline="true" class="demo-form-inline"> -->
+
               <el-form :inline="true" class="demo-form-inline">
+                <el-form-item>
+                  <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button>
+                </el-form-item>
                 <el-form-item label-width="100px" label="设备端口：">
                   <el-input v-model="dev_param"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="openDev">打开端口</el-button>
+                  <!-- <el-button type="primary" @click="openDev">打开端口</el-button>
+                   -->
+                  <span>如：COM3.38400,0,0</span>
                 </el-form-item>
               </el-form>
             </el-col>
@@ -260,6 +266,7 @@ export default {
         crd_indx: recored.crd_indx
       };
 
+      this.openDev();
       this.$confirm(
         `卡片一经挂失，其卡号被列入各业务系统黑名单中，导致卡片不可用。确实要挂失卡号为${
           recored.crd_indx

@@ -78,6 +78,19 @@ export default {
       this.dialogVisible = true;
       this.getTree();
     },
+    openDev() {
+      // const param = ;
+      this.card_id = WSPCPP.PORT_Open(this.dev_param);
+
+      if (this.card_id < 0) {
+        alert("打开失败，请检测设备连接是否正常");
+      } else {
+        this.$message({
+          type: "success",
+          message: "打开端口成功!"
+        });
+      }
+    },
     handleCheckChange(data, checked, indeterminate) {
       this.areaList = this.$refs.areaTree
         .getCheckedKeys()
@@ -104,6 +117,7 @@ export default {
       console.info(param);
       const users = this.user_list;
       const count = users.length;
+      this.openDev();
       this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
