@@ -24,10 +24,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="首次修改密码:">
-                            <!-- <el-input v-model="data.new_isok"></el-input> -->
-                            <!-- select -->
-                            <el-select v-model="data.new_isok">
+                        <el-form-item :label-width="formLabelWidth" label="是否停用:">
+                            <el-select v-model="data.stp_isok">
                                 <el-option v-for="opt in yseOrNot" :label="opt.label" :value="opt.value" :key="opt.value">
                                 </el-option>
                             </el-select>
@@ -36,11 +34,9 @@
                 </el-row>
                 <el-row>
                     <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="是否停用:">
-                            <!-- <el-input v-model="data.stp_isok"></el-input> -->
-                            <!-- select -->
-                            <el-select v-model="data.stp_isok">
-                                <el-option v-for="opt in yseOrNot" :label="opt.label" :value="opt.value" :key="opt.value">
+                        <el-form-item :label-width="formLabelWidth" label="角色名称:">
+                            <el-select v-model="data.role_id">
+                                <el-option v-for="opt in role_list" :label="opt.role_name" :value="opt.r_id" :key="opt.r_id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -52,29 +48,17 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <!-- <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="角色ID：">
-                            <el-input v-model="data.role_id"></el-input>
-                        </el-form-item>
-                    </el-col> -->
-                    <el-col :span="11" :offset="1">
-                        <el-form-item :label-width="formLabelWidth" label="角色名称:">
-                            <el-input v-model="data.ole_name"></el-input>
-                        </el-form-item>
-                    </el-col>
                     <el-col :span="11" :offset="1">
                         <el-form-item :label-width="formLabelWidth" label="密码:">
-                            <el-input v-model="data.usr_pswd"></el-input>
+                            <el-input v-model="data.usr_pswd" type="password"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
-
             <el-row style="text-align:center;margin-top:40px;margin-bottom:20px">
                 <el-button class="submit-btn" type="primary" @click="save">确定</el-button>
                 <el-button class="cancel-btn" @click="cancel">取消</el-button>
             </el-row>
-
         </el-card>
     </div>
 </template>
@@ -97,14 +81,8 @@ export default {
           value: "0",
           label: "否"
         }
-      ]
-      //   treeData: [],
-      //   treeProp: {
-      //     label: "",
-      //     children: children
-      //   }
-      //   defaultCheckedData: [],
-      //   isIndeterminate: true
+      ],
+      role_list: []
     };
   },
   methods: {
@@ -119,8 +97,7 @@ export default {
           if (data.data.success) {
             console.info(data.data);
             this.data = data.data.data[0];
-            // this.menuTree = data.data.sysmenu_data;
-            // this.defaultCheckedData = this.editData.action_list.split(",");
+            this.role_list = data.data.role_list;
           }
         })
         .catch(err => alert(err));
@@ -144,15 +121,7 @@ export default {
     }
   },
   activated() {
-    // this.editData = {};
-    // this.menuTree = [];
-    // this.defaultCheckedData = [];
     this.getData();
   }
 };
 </script>
-
-<style scoped>
-</style>
-
-

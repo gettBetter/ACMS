@@ -37,8 +37,11 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      data: {},
-      tmr_list: []
+      data: {
+        tmr_indx: ""
+      },
+      tmr_list: [],
+      defaultIndx: ""
     };
   },
   computed: {
@@ -70,6 +73,7 @@ export default {
         .then(data => {
           console.info("添加", data.data);
           this.tmr_list = data.data.data;
+          this.data.tmr_indx = data.data.tmr_indx + "";
         })
         .catch(data => {
           alert(data.data.msg);
@@ -85,7 +89,6 @@ export default {
           })
           .then(data => {
             console.info("编辑", data.data);
-            // this.tmr_list = data.data.data;
             this.data = data.data.data[0];
           })
           .catch(data => {

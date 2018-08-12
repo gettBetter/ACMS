@@ -1,13 +1,10 @@
 <template>
   <div>
     <el-card class="box-card">
-      <!-- <div slot="header" class="clearfix">
-        <span>用户列表</span>
-      </div> -->
       <el-row :gutter="20">
         <el-col :span="6">
           <div style="margin-bottom:20px">部门</div>
-          <el-tree :data="depData" :props="treeProp" accordion @node-click="handleNodeClick" style="max-height:600px;overflow:scroll">
+          <el-tree :data="depData" :props="treeProp" default-expand-all @node-click="handleNodeClick" style="max-height:600px;overflow:scroll">
           </el-tree>
         </el-col>
         <el-col :span="18">

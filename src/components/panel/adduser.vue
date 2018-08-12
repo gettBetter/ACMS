@@ -251,6 +251,7 @@
 import axios from "axios";
 import { Loading } from "element-ui";
 // import _ from "lodash";
+import defaultImg from "@/assets/defaultimg.jpg";
 
 export default {
   data() {
@@ -264,7 +265,7 @@ export default {
       userData: {},
       userInfo: {},
       depTreeData: [],
-      imageUrl: "",
+      imageUrl: defaultImg,
       imgStyle: {
         width: "178px",
         height: "178px",

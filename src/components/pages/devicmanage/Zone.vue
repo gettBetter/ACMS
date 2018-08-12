@@ -1,47 +1,47 @@
 <template>
-    <div>
-        <el-dialog width="40%" style="min-height:400px" :title="zoneType" :visible.sync="dialogVisible" append-to-body center>
-            <el-form :model="data" label-width="80px">
-                <el-form-item label="设备组别:">
-                    <span>{{grpIndx}}</span>
-                </el-form-item>
+  <div>
+    <el-dialog width="40%" style="min-height:400px" :title="zoneType" :visible.sync="dialogVisible" append-to-body center>
+      <el-form :model="data" label-width="80px">
+        <el-form-item label="设备组别:">
+          <span>{{grpIndx}}</span>
+        </el-form-item>
 
-                <el-form-item label="时区编号:">
-                    <el-select v-model="data.tzn_indx">
-                        <el-option v-for="opt in tzn_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
+        <el-form-item label="时区编号:">
+          <el-select v-model="data.tzn_indx">
+            <el-option v-for="opt in tzn_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-                <el-form-item label="段一关联:">
-                    <el-select v-model="data.inx_tmr1">
-                        <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
+        <el-form-item label="段一关联:">
+          <el-select v-model="data.inx_tmr1">
+            <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-                <el-form-item label="段二关联:">
-                    <el-select v-model="data.inx_tmr2">
-                        <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
+        <el-form-item label="段二关联:">
+          <el-select v-model="data.inx_tmr2">
+            <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-                <el-form-item label="段三关联:">
-                    <el-select v-model="data.inx_tmr3">
-                        <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
+        <el-form-item label="段三关联:">
+          <el-select v-model="data.inx_tmr3">
+            <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-            </el-form>
+      </el-form>
 
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="save">确 定</el-button>
-                <el-button @click="dialogVisible = false">取 消</el-button>
-            </span>
-        </el-dialog>
-    </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -84,7 +84,7 @@ export default {
           console.info("添加", data.data);
           this.tzn_list = data.data.data.prmtmrzone_list;
           this.tmr_list = data.data.data.prmtmrclck_list;
-          //   this.data.tzn_indx = data.data.data.tzn_indx;
+          this.data.tzn_indx = data.data.tzn_indx + "";
         })
         .catch(data => {
           alert(data.data.msg);

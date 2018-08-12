@@ -140,7 +140,10 @@ body > .el-container {
 user agent stylesheet div {
   display: block;
 }
-
+.el-table th {
+  background-color: #ecf5ff;
+  text-align: center !important;
+}
 .el-table th,
 .el-table td {
   text-align: center;
@@ -150,6 +153,11 @@ user agent stylesheet div {
 .el-card,
 .el-card__header {
   border: none;
+  padding-bottom: 5px;
+  padding-top: 10px;
+}
+.el-card__body {
+  padding-top: 10px;
 }
 .el-container {
   height: 100%;

@@ -25,8 +25,6 @@
               <i class="iconfont icon-fenpeiquanxian"></i>
             </el-button>
           </template>
-
-          <!-- icon-fenpeiquanxian -->
         </el-table-column>
 
         <el-table-column prop="emp_indx" label="人员序号"></el-table-column>
@@ -117,7 +115,7 @@ export default {
       })
         .then(() => {
           axios
-            .post("/authorlist/authorlist_del", param)
+            .post("/useradmin/useradmin_del", param)
             .then(data => {
               if (data.data.success === true) {
                 this.$message({
@@ -143,7 +141,7 @@ export default {
       })
         .then(() => {
           axios
-            .post("/admin/useradmin/reset_pwd", param)
+            .post("/useradmin/reset_pwd", param)
             .then(data => {
               if (data.data.success === true) {
                 this.$message({

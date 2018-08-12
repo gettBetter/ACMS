@@ -4,11 +4,7 @@
       <div slot="header" class="clearfix">
         <span>添加角色</span>
       </div>
-      <!-- 添加角色     -->
       <el-form :model="addData" ref="addRole" :rules="rules">
-        <!-- <el-form-item :label-width="formLabelWidth" label="角色ID：">
-                    <el-input v-model="addData.r_id"></el-input>
-                </el-form-item> -->
         <el-form-item :label-width="formLabelWidth" label="角色名称：" prop="role_name">
           <el-input v-model="addData.role_name"></el-input>
         </el-form-item>
@@ -16,7 +12,6 @@
           <el-input type="textarea" :rows="2" v-model="addData.description"></el-input>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="菜单权限：">
-
           <div v-for="menu in menuTree" :key="menu.a_id">
             <div class="itemclass">
               <el-checkbox :indeterminate="isIndeterminate" @change="checed=>handleCheckAllChange(checed,menu)"> {{menu.name}}</el-checkbox>
@@ -26,7 +21,6 @@
               <el-checkbox v-for="item in menu.children" :label="item.action_code" :key="item.a_id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
-
         </el-form-item>
       </el-form>
 
@@ -48,7 +42,9 @@ export default {
   data() {
     return {
       formLabelWidth: "20%",
-      addData: {},
+      addData: {
+        action_list: ""
+      },
       menuTree: [],
       menuCheckData: [],
       isIndeterminate: true,
@@ -105,7 +101,7 @@ export default {
       this.$refs.addRole.validate(valid => {
         if (valid) {
           const param = this.addData;
-          delete param.ROW_NUMBER;
+          // delete param.ROW_NUMBER;
           this.$message({
             type: "success",
             message: "添加成功!"
