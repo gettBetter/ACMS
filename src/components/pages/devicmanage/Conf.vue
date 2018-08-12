@@ -94,7 +94,11 @@ export default {
       if (this.type === "添加模组配置") {
         console.info("type", this.type);
         axios
-          .get("/devtermina/prmmodecfg_add_data")
+          .get("/devtermina/prmmodecfg_add_data", {
+            params: {
+              grp_indx: this.grpIndx
+            }
+          })
           .then(data => {
             console.info("添加", data.data);
             this.data.mod_indx = data.data.data.mod_indx;

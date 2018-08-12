@@ -236,7 +236,11 @@ export default {
       if (this.type === "添加报警输入") {
         console.info("type", this.type);
         axios
-          .get("/devtermina/prmtrmwarn_add_data")
+          .get("/devtermina/prmtrmwarn_add_data", {
+            params: {
+              grp_indx: this.grpIndx
+            }
+          })
           .then(data => {
             console.info("添加", data.data);
             this.data.ctr_indx = data.data.data.warn_indx;

@@ -6,7 +6,7 @@
       </div>
 
       <el-row :gutter="30">
-        <el-col :span="8">
+        <el-col :span="6">
           <el-form :model="data" label-width="80px">
             <el-form-item label="设备组别:">
               <el-select v-model="data.grp_indx" @change="changeGrp">
@@ -36,7 +36,7 @@
             </span>
           </el-tree>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="17" :offset="1">
           <el-tabs v-model="activeName" type="card" @tab-click="handleTab" lazy="true">
             <!-- 终端卡机 -->
             <el-tab-pane label="终端卡机" name="termina">

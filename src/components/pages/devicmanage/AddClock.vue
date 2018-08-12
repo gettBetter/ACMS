@@ -69,7 +69,11 @@ export default {
       // if (this.type === "添加时段时钟") {
       console.info("clockType", this.clockType, this.tmrIndx, this.grpIndx);
       axios
-        .get("/timerparam/prmtmrclck_add_data")
+        .get("/timerparam/prmtmrclck_add_data", {
+          params: {
+            grp_indx: this.grpIndx
+          }
+        })
         .then(data => {
           console.info("添加", data.data);
           this.tmr_list = data.data.data;

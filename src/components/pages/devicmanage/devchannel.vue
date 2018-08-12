@@ -5,7 +5,7 @@
         <span>门禁通道</span>
       </div>
       <el-row :gutter="30">
-        <el-col :span="8">
+        <el-col :span="6">
           <el-form :model="data" label-width="80px">
             <el-form-item label="设备组别:">
               <el-select v-model="data.grp_indx" @change="changeGrp">
@@ -35,7 +35,7 @@
             </span>
           </el-tree>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="17" :offset="1">
           <el-tabs v-model="activeName" type="card" @tab-click="handleTab" lazy="true">
             <el-tab-pane label="开门关门" name="door">
               <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="openAddDoorDialog">添加开关门</el-button>
@@ -123,7 +123,6 @@
                 </el-pagination>
               </div>
             </el-tab-pane>
-
           </el-tabs>
         </el-col>
       </el-row>

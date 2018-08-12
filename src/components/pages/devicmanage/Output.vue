@@ -1,65 +1,65 @@
 <template>
-    <div>
-        <el-dialog v-if="type" width="50%" style="min-height:400px" :title="type" :visible.sync="dialogVisible" append-to-body center>
-            <el-form :model="data" label-width="100px" style="max-height:450px;overflow-y:scroll">
-                <el-row>
-                    <el-col :span="11" :offset="1">
-                        <el-form-item label="设备组别:">
-                            <span>{{grpIndx}}</span>
-                        </el-form-item>
+  <div>
+    <el-dialog v-if="type" width="50%" style="min-height:400px" :title="type" :visible.sync="dialogVisible" append-to-body center>
+      <el-form :model="data" label-width="100px" style="max-height:450px;overflow-y:scroll">
+        <el-row>
+          <el-col :span="11" :offset="1">
+            <el-form-item label="设备组别:">
+              <span>{{grpIndx}}</span>
+            </el-form-item>
 
-                        <el-form-item label="群控编号:">
-                            <el-select v-model="data.ctr_indx">
-                                <el-option v-for="opt in prmtrmoutp_list " :label="opt.ctr_name" :value="opt.ctr_indx" :key="opt.ctr_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+            <el-form-item label="群控编号:">
+              <el-select v-model="data.ctr_indx">
+                <el-option v-for="opt in prmtrmoutp_list " :label="opt.ctr_name" :value="opt.ctr_indx" :key="opt.ctr_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
 
-                        <el-form-item label="动作类型:">
-                            <el-select v-model="data.sta_code">
-                                <el-option v-for="opt in sta_list" :label="opt.sta_name" :value="opt.sta_indx" :key="opt.sta_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="周计划时控"></el-form-item>
-                        <el-form-item v-for="(opt,index) in weeks" :key="index" :label="opt+':'">
-                            <el-select v-model="week['data'+(index+1)]">
-                                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
+            <el-form-item label="动作类型:">
+              <el-select v-model="data.sta_code">
+                <el-option v-for="opt in sta_list" :label="opt.sta_name" :value="opt.sta_indx" :key="opt.sta_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="周计划时控"></el-form-item>
+            <el-form-item v-for="(opt,index) in weeks" :key="index" :label="opt+':'">
+              <el-select v-model="week['data'+(index+1)]">
+                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
 
-                    <el-col :span="11" :offset="1">
-                        <el-form-item label="假日前中后三天时控" label-width="140px"></el-form-item>
-                        <el-form-item label="前一天">
-                            <el-select v-model="htz['data'+n]" v-for="n in 8" :key="n" style="margin-top:5px">
-                                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="假日当天">
-                            <el-select v-model="htz['data'+(n+8)]" v-for="n in 8" :key="n" style="margin-top:5px">
-                                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="后一天">
-                            <el-select v-model="htz['data'+(n+16)]" v-for="n in 8" :key="n" style="margin-top:5px">
-                                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+          <el-col :span="11" :offset="1">
+            <el-form-item label="假日前中后三天时控" label-width="140px"></el-form-item>
+            <el-form-item label="前一天">
+              <el-select v-model="htz['data'+n]" v-for="n in 8" :key="n" style="margin-top:5px">
+                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="假日当天">
+              <el-select v-model="htz['data'+(n+8)]" v-for="n in 8" :key="n" style="margin-top:5px">
+                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="后一天">
+              <el-select v-model="htz['data'+(n+16)]" v-for="n in 8" :key="n" style="margin-top:5px">
+                <el-option v-for="opt in zone_list" :label="opt.tzn_name" :value="opt.tzn_indx" :key="opt.tzn_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
 
-                    </el-col>
-                </el-row>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="save">确 定</el-button>
-                <el-button @click="dialogVisible = false">取 消</el-button>
-            </span>
-        </el-dialog>
-    </div>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -215,7 +215,11 @@ export default {
       if (this.type === "添加端口输出") {
         console.info("type", this.type);
         axios
-          .get("/devtermina/prmtrmoutp_add_data")
+          .get("/devtermina/prmtrmoutp_add_data", {
+            params: {
+              grp_indx: this.grpIndx
+            }
+          })
           .then(data => {
             console.info("添加", data.data);
             this.data = data.data.data;

@@ -146,7 +146,11 @@ export default {
       //   if (this.type === "添加终端卡机") {
       console.info("type", this.type, this.trm_indx, this.grpIndx);
       axios
-        .get("/devtermina/devtermina_add_data")
+        .get("/devtermina/devtermina_add_data", {
+            params: {
+              grp_indx: this.grpIndx
+            }
+          })
         .then(data => {
           console.info("添加", data.data);
           this.data.trm_indx = data.data.data.tmr_indx;

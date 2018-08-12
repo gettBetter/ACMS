@@ -101,7 +101,11 @@ export default {
       if (this.type === "添加模组端口") {
         console.info("type", this.type);
         axios
-          .get("/devtermina/prmtrmmods_add_data")
+          .get("/devtermina/prmtrmmods_add_data", {
+            params: {
+              grp_indx: this.grpIndx
+            }
+          })
           .then(data => {
             console.info("添加", data.data);
             this.data = data.data.data;
@@ -143,7 +147,7 @@ export default {
       param.grp_indx = this.grpIndx;
       param.rly_code = this.revertPost(this.rly_code);
       param.act_code = this.revertPost(this.act_code);
-      // delete param.chn_name;
+      delete param.mod_indx_name;
       delete param.ROW_NUMBER;
       console.info(param);
       console.info("type", this.type);

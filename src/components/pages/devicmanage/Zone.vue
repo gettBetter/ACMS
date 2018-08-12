@@ -79,7 +79,11 @@ export default {
       // if (this.type === "添加时段时钟") {
       console.info("zoneType", this.zoneType, this.grpIndx);
       axios
-        .get("/timerparam/prmtmrzone_add_data")
+        .get("/timerparam/prmtmrzone_add_data", {
+          params: {
+            grp_indx: this.grpIndx
+          }
+        })
         .then(data => {
           console.info("添加", data.data);
           this.tzn_list = data.data.data.prmtmrzone_list;

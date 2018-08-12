@@ -1,90 +1,90 @@
 <template>
-    <div>
-        <el-card class="box-card">
-            <div style="margin-bottom:20px">岗位授权列表</div>
-            <el-table :data="pageData" border>
-                <el-table-column fixed="left" label="操作" width="60%">
-                    <template slot-scope="scope">
-                        <el-button @click="edit(scope.row)" type="text" size="">
-                            <i class="el-icon-edit"></i>
-                        </el-button>
-                        <!-- <el-button type="text" @click="del(scope.row)">
+  <div>
+    <el-card class="box-card">
+      <div style="margin-bottom:20px">岗位授权列表</div>
+      <el-table :data="pageData" border>
+        <el-table-column fixed="left" label="操作" width="60%">
+          <template slot-scope="scope">
+            <el-button @click="edit(scope.row)" type="text" size="">
+              <i class="el-icon-edit"></i>
+            </el-button>
+            <!-- <el-button type="text" @click="del(scope.row)">
                             <i class="el-icon-delete"></i>
                         </el-button> -->
-                    </template>
-                </el-table-column>
-                <el-table-column prop="bas_indx" label="岗位ID"></el-table-column>
-                <el-table-column prop="bas_name" label="岗位名称"></el-table-column>
-                <el-table-column prop="mr_name" label="控制群组"></el-table-column>
-                <el-table-column prop="fcd_name" label="检查APB"></el-table-column>
-                <el-table-column prop="mcd_name" label="卡片类型"></el-table-column>
-                <el-table-column prop="use_cdat" label="启用证卡有效日期"></el-table-column>
-                <el-table-column prop="dev_chan" label="设备ID"></el-table-column>
-            </el-table>
+          </template>
+        </el-table-column>
+        <el-table-column prop="bas_indx" label="岗位ID"></el-table-column>
+        <el-table-column prop="bas_name" label="岗位名称"></el-table-column>
+        <el-table-column prop="mr_name" label="控制群组"></el-table-column>
+        <el-table-column prop="fcd_name" label="检查APB"></el-table-column>
+        <el-table-column prop="mcd_name" label="卡片类型"></el-table-column>
+        <el-table-column prop="use_cdat" label="启用证卡有效日期"></el-table-column>
+        <el-table-column prop="dev_chan" label="设备ID"></el-table-column>
+      </el-table>
 
-            <div class="block ">
-                <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
-                </el-pagination>
-            </div>
-        </el-card>
+      <div class="block ">
+        <el-pagination @current-change="handleCurrentChange " :current-page="currentPage " :page-size="10 " layout="total, prev, pager, next, jumper " :total="total ">
+        </el-pagination>
+      </div>
+    </el-card>
 
-        <el-dialog title="岗位授权" :visible.sync="editDialog" width="70%">
-            <el-row :gutter="20">
-                <el-col :span="8">
-                    <div style="margin-bottom:20px">区域设备通道树</div>
-                    <el-tree :data="devTreeData" :props="devTreeProp" :expand-on-click-node="false" highlight-current style="max-height:400px;overflow:scroll">
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <span>
-                                <span v-if="data.tag !== 1">
-                                    <el-checkbox :v-model="devList.includes(data.dev_indx)" @change="checed=>changeDevList(checed,node,data)"></el-checkbox>
-                                </span>
-                                <span v-if="data.tag == 1">
-                                    <i class="iconfont icon-ditu" style="padding:0 4px" />
-                                </span>
-                                <span v-if="data.tag == 2">
-                                    <i class="iconfont icon-menjinshebei" style="padding:0 4px" />
-                                </span>
-                                <span v-if="data.tag == 3">
-                                    <i class="iconfont icon-tongdao" style="padding:0 4px" />
-                                </span>
-                                <span>{{node.label}}</span>
-                            </span>
-                        </span>
-                    </el-tree>
-                </el-col>
-                <el-col :span="16">
-                    <el-form>
-                        <el-form-item :label-width="formLabelWidth" label="应用群组:">
-                            <el-select v-model="editData.tmr_indx">
-                                <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item :label-width="formLabelWidth" label="检查APB:">
-                            <el-select v-model="editData.fcd_indx">
-                                <el-option v-for="opt in fcd_list" :label="opt.fcd_name" :value="opt.fcd_indx" :key="opt.fcd_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item :label-width="formLabelWidth" label="卡片类型:">
-                            <el-select v-model="editData.mcd_indx">
-                                <el-option v-for="opt in mcd_list" :label="opt.mcd_name" :value="opt.mcd_indx" :key="opt.mcd_indx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                    </el-form>
-                </el-col>
-            </el-row>
-
-            <span slot="footer" class="dialog-footer" style="text-align:center">
-                <el-button type="primary" @click="save">确 定</el-button>
-                <el-button @click="editDialog = false">取 消</el-button>
+    <el-dialog title="岗位授权" :visible.sync="editDialog" width="70%">
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div style="margin-bottom:20px">区域设备通道树</div>
+          <el-tree :data="devTreeData" :props="devTreeProp" :expand-on-click-node="false" highlight-current style="max-height:400px;overflow:scroll">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>
+                <span v-if="data.tag !== 1">
+                  <el-checkbox :v-model="devList.includes(data.dev_indx)" @change="checed=>changeDevList(checed,node,data)"></el-checkbox>
+                </span>
+                <span v-if="data.tag == 1">
+                  <i class="iconfont icon-ditu" style="padding:0 4px" />
+                </span>
+                <span v-if="data.tag == 2">
+                  <i class="iconfont icon-menjinshebei" style="padding:0 4px" />
+                </span>
+                <span v-if="data.tag == 3">
+                  <i class="iconfont icon-tongdao" style="padding:0 4px" />
+                </span>
+                <span>{{node.label}}</span>
+              </span>
             </span>
-        </el-dialog>
-    </div>
+          </el-tree>
+        </el-col>
+        <el-col :span="16">
+          <el-form>
+            <el-form-item :label-width="formLabelWidth" label="应用群组:">
+              <el-select v-model="editData.tmr_indx">
+                <el-option v-for="opt in tmr_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item :label-width="formLabelWidth" label="检查APB:">
+              <el-select v-model="editData.fcd_indx">
+                <el-option v-for="opt in fcd_list" :label="opt.fcd_name" :value="opt.fcd_indx" :key="opt.fcd_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item :label-width="formLabelWidth" label="卡片类型:">
+              <el-select v-model="editData.mcd_indx">
+                <el-option v-for="opt in mcd_list" :label="opt.mcd_name" :value="opt.mcd_indx" :key="opt.mcd_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+          </el-form>
+        </el-col>
+      </el-row>
+
+      <span slot="footer" class="dialog-footer" style="text-align:center">
+        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button @click="editDialog = false">取 消</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -160,10 +160,12 @@ export default {
                 getChildren(item.children);
               } else {
                 item.label = item.are_name || item.dev_name;
-                item.children = item.dev_list.map(item => {
-                  item.label = item.emp_name || item.dev_name;
-                  return item;
-                });
+                if (item.dev_list) {
+                  item.children = item.dev_list.map(item => {
+                    item.label = item.emp_name || item.dev_name;
+                    return item;
+                  });
+                }
               }
             });
           }
@@ -182,7 +184,7 @@ export default {
             this.editData = temp.data[0];
             this.devList =
               temp.data[0].dev_chan.length > 0
-                ? temp.data[0].dev_chan.length.split(";")
+                ? temp.data[0].dev_chan.split(";")
                 : [];
             console.info("devlist", this.devList);
             this.mcd_list = temp.mcd_list;

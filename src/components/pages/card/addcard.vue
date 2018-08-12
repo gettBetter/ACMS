@@ -272,19 +272,19 @@ export default {
     this.getTree();
   },
   mounted() {
-    // try {
-    //   var objCard = new ActiveXObject("WSPCPP.WSPCPPCtrl.1");
-    // } catch (e) {
-    //   this.$confirm("调用控件失败，先进行下载安装!", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning"
-    //   }).then(() => {
-    //     // http://203.195.236.217:9000/WSPCPP.rar
-    //     window.open("http://203.195.236.217:9000/WSPCPP.rar");
-    //   });
-    //   //注意:弹出一个下载地址,或者一个页面.http://网站地址/WSPCPP.rar
-    // }
+    try {
+      var objCard = new ActiveXObject("WSPCPP.WSPCPPCtrl.1");
+    } catch (e) {
+      this.$confirm("调用控件失败，先进行下载安装!", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        // http://203.195.236.217:9000/WSPCPP.rar
+        window.open("http://203.195.236.217:9000/WSPCPP.rar");
+      });
+      //注意:弹出一个下载地址,或者一个页面.http://网站地址/WSPCPP.rar
+    }
   }
 };
 </script>
