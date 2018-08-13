@@ -25,7 +25,9 @@ axios.interceptors.request.use(
     const token = localStorage.userToken;
     if (token) {
       const param = JSON.parse(token);
-      config.url += '/token/' + param.token + '/username/' + param.username + '?_t=' + Date.now()
+      config.url += '/token/' + param.token + '/username/' + param.username + '/t/' + Date.now()
+    } else {
+      config.url += '/t/' + Date.now()
     }
     return config;
   },

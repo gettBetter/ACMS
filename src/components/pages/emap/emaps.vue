@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>电子地图</span>
       </div>
-      <div style="margin-bottom:10px;margin-top:-20px">
+      <div style="margin-bottom:10px;margin-top:-10px">
         <el-button-group>
           <el-button type="primary" @click="enlarge">放大</el-button>
           <el-button type="primary" @click="narrow">缩小</el-button>

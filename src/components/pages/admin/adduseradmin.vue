@@ -146,29 +146,31 @@ export default {
       //部门人员树
       axios.get("/index/dept_users_tree").then(data => {
         if (data.data.success) {
-          let temp = data.data.data;
+          let temp = data.data.data[0];
 
           // this.userTreeData = data.data.data;
           console.info("user", data.data);
-            function getChildren(arr) {
-              arr.forEach(item => {
-                item.label = item.dep_name || item.emp_name;
-                if (item.children) {
-                  if (item.user_list) {
-                    item.children = item.children.concat(item.user_list);
-                  }
-                  getChildren(item.children);
-                } else {
-                  item.label = item.emp_name || item.dep_name;
+          function getChildren(arr) {
+            arr.forEach(item => {
+              item.label = item.dep_name || item.emp_name;
+              if (item.children) {
+                if (item.user_list) {
+                  item.children = item.children.concat(item.user_list);
+                }
+                getChildren(item.children);
+              } else {
+                item.label = item.emp_name || item.dep_name;
+                if (item.user_list) {
                   item.children = item.user_list.map(item => {
                     item.label = item.emp_name || item.dep_name;
                     return item;
                   });
                 }
-              });
-            }
-            getChildren(temp);
-            this.userTreeData = temp;
+              }
+            });
+          }
+          getChildren(temp);
+          this.userTreeData = temp;
         }
       });
     },
