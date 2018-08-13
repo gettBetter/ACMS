@@ -110,8 +110,8 @@ export default {
         });
     },
     save() {
-      const param = {};
-      param.config = [this.data];
+      const param = this.data;
+      // param.config = [];
       param.user_list = this.user_list;
       param.are_list = this.are_list;
       console.info(param);
@@ -122,46 +122,55 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        for (let i = 0; i < count; i++) {
-          this.$confirm(
-            `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
-            "提示",
-            {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "warning"
-            }
-          ).then(() => {
-            // users
-            const resCardId = WSPCPP.Access_CommandBLX(
-              this.card_id,
-              65535,
-              0x000601,
-              ""
-            );
-            WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+      })
+        .then(() => {
+          for (let i = 0; i < count; i++) {
+            // console.info(i);
+            this.$confirm(
+              `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
+              "提示",
+              {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              }
+            ).then(() => {
+              // console.info(i);
+              const resCardId = WSPCPP.Access_CommandBLX(
+                this.card_id,
+                65535,
+                0x000601,
+                ""
+              );
+              param.user_list[i].crd_code = resCardId;
+              WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+            });
+          }
 
-            // /card/card_add
-          });
-        }
-        axios
-          .post("/card/card_add", param)
-          .then(data => {
-            this.dialogVisible = false;
-            if (data.data.success) {
-              this.$message({
-                type: "success",
-                message: "发卡成功!"
-              });
-              WSPCPP.Port_Close(this.card_id);
-              this.$emit("config", true);
-            }
-          })
-          .catch(err => {
-            this.dialogVisible = false;
-          });
-      });
+          return Promise.resolve();
+        })
+        .then(() => {
+          this.send(param);
+        });
+    },
+    send(param) {
+      console.info("send");
+      axios
+        .post("/card/card_add", param)
+        .then(data => {
+          this.dialogVisible = false;
+          if (data.data.success) {
+            this.$message({
+              type: "success",
+              message: "发卡成功!"
+            });
+            WSPCPP.Port_Close(this.card_id);
+            this.$emit("config", true);
+          }
+        })
+        .catch(err => {
+          this.dialogVisible = false;
+        });
     }
   },
   created() {},
