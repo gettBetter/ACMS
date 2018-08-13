@@ -125,10 +125,12 @@ export default {
                 getChildren(item.children);
               } else {
                 item.label = item.emp_name || item.dep_name;
-                item.children = item.dev_list.map(item => {
-                  item.label = item.emp_name || item.dep_name;
-                  return item;
-                });
+                if (item.dev_list) {
+                  item.children = item.dev_list.map(item => {
+                    item.label = item.emp_name || item.dep_name;
+                    return item;
+                  });
+                }
               }
             });
           }

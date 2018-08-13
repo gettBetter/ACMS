@@ -101,7 +101,7 @@ export default {
         .get("/index/dept_users_tree")
         .then(data => {
           console.info("tree", data.data);
-          const temp = data.data.data[0].children;
+          const temp = data.data.data[0];
           function getChildren(arr) {
             arr.forEach(item => {
               item.label = item.dep_name || item.emp_name;
@@ -112,10 +112,12 @@ export default {
                 getChildren(item.children);
               } else {
                 item.label = item.emp_name || item.dep_name;
-                item.children = item.user_list.map(item => {
-                  item.label = item.emp_name || item.dep_name;
-                  return item;
-                });
+                if (item.user_list) {
+                  item.children = item.user_list.map(item => {
+                    item.label = item.emp_name || item.dep_name;
+                    return item;
+                  });
+                }
               }
             });
           }
