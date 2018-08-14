@@ -9,7 +9,7 @@
             </el-form-item>
             <el-form-item label="终端编号:">
               <el-select v-model="data.trm_indx">
-                <el-option v-for="opt in termina_list" :label="opt.tmr_name" :value="opt.tmr_indx" :key="opt.tmr_indx" @>
+                <el-option v-for="opt in termina_list" :label="opt.trm_name" :value="opt.trm_indx" :key="opt.trm_indx" @>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -147,10 +147,10 @@ export default {
       console.info("type", this.type, this.trm_indx, this.grpIndx);
       axios
         .get("/devtermina/devtermina_add_data", {
-            params: {
-              grp_indx: this.grpIndx
-            }
-          })
+          params: {
+            grp_indx: this.grpIndx
+          }
+        })
         .then(data => {
           console.info("添加", data.data);
           this.data.trm_indx = data.data.data.tmr_indx;

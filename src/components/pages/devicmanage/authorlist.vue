@@ -53,7 +53,7 @@
         <el-table-column prop="dev_indx" label="设备编号"></el-table-column>
         <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
         <el-table-column prop="tmr_name" label="应用群组"></el-table-column>
-        <el-table-column prop="mcd_name" label="设备组别"></el-table-column>
+        <el-table-column prop="mcd_name" label="卡片类别"></el-table-column>
         <el-table-column prop="grp_name" label="设备组别"></el-table-column>
         <el-table-column prop="fcd_name" label="检查APB"></el-table-column>
         <el-table-column prop="aut_flag" label="是否授权"></el-table-column>

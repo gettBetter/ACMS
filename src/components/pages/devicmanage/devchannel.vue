@@ -53,8 +53,8 @@
                 <!-- <el-table-column prop="grp_indx" label="设备组别"></el-table-column> -->
                 <el-table-column prop="chn_indx" label="通道编号"></el-table-column>
                 <el-table-column prop="chn_name" label="通道名称"></el-table-column>
-
-                <el-table-column prop="dly_time" label="控制方式"></el-table-column>
+                <el-table-column prop="ctl_name" label="控制方式"></el-table-column>
+                <el-table-column prop="dly_time" label="打开延时"></el-table-column>
                 <el-table-column prop="chn_stat_name" label="门位状态"></el-table-column>
                 <!-- <el-table-column prop="apb_name" label="反潜回名称"></el-table-column> -->
                 <!-- <el-table-column prop="pin_spwd" label="安全密码"></el-table-column> -->
