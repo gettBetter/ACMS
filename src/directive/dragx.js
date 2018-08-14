@@ -82,6 +82,23 @@ Vue.directive("dragx", (el, binding, vnode) => {
     }
   }
 
+  let emitEvent = (function() {
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+      return function(el, eventName, config) {
+        const event = document.createEvent("CustomEvent");
+        event.initCustomEvent(eventName, true, true, config);
+        return el.dispatchEvent(event);
+      };
+    } else {
+      return function(el, eventName, config) {
+        const event = new CustomEvent(eventName, {
+          detail: config
+        });
+        return el.dispatchEvent(event);
+      };
+    }
+  })();
+
   el.onmousemove = function(e) {
     if (
       cfg.dragBarClass.length > 0 &&
@@ -102,7 +119,6 @@ Vue.directive("dragx", (el, binding, vnode) => {
   el.onmouseleave = function(e) {
     el.style.cursor = "";
   };
-
   el.onmousedown = function(e) {
     isMove = false;
     if (
@@ -179,18 +195,18 @@ Vue.directive("dragx", (el, binding, vnode) => {
       }
       if (cfg.dirctDom) {
         if (cfg.canResize) {
-          el.style.height = data.height + "px";
-          el.style.width = data.width + "px";
+          el.style.height = parseInt(data.height) + "px";
+          el.style.width = parseInt(data.width) + "px";
         }
         if (cfg.canDrag) {
-          el.style.left = data.left + "px";
-          el.style.top = data.top + "px";
+          el.style.left = parseInt(data.left) + "px";
+          el.style.top = parseInt(data.top) + "px";
         }
       }
-      el.dispatchEvent(
-        new CustomEvent("bindUpdate", { detail: { data, original } })
-      );
-      //
+      emitEvent(el, "bindUpdate", {
+        data,
+        original
+      });
     };
 
     document.onmouseup = function(e) {
@@ -199,11 +215,11 @@ Vue.directive("dragx", (el, binding, vnode) => {
       document.onmouseup = null;
       isMove = false;
       document.body.removeChild(mask);
-      el.dispatchEvent(
-        new CustomEvent("bindChange", {
-          detail: { data, original }
-        })
-      );
+
+      emitEvent(el, "bindChange", {
+        data,
+        original
+      });
     };
     document.body.style.cursor = dir + "-resize";
   };

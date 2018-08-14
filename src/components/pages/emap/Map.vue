@@ -89,11 +89,10 @@ export default {
     saveLoc() {
       const param = {
         dev_chan_list: this.devList.map(item => {
-          item.map_wide = item.width;
-          item.map_high = item.height;
-          item.map_locx = item.left;
-          item.map_locy = item.top;
-          // item.dev_chan = '00'
+          item.map_wide = parseInt(item.width);
+          item.map_high = parseInt(item.height);
+          item.map_locx = parseInt(item.left);
+          item.map_locy = parseInt(item.top);
           delete item.ROW_NUMBER;
           delete item.width;
           delete item.height;
@@ -120,8 +119,9 @@ export default {
             item.height = item.map_high || 23;
             return item;
           });
-          this.$emit("saveLocSucc", true);
+          // this.$emit("saveLocSucc", true);
           console.info("post", param);
+          this.getDevList(this.mapId);
         }
       });
     },
@@ -134,6 +134,7 @@ export default {
       if (data.height <= 23) data.height = 23;
       if (data.top <= 0) data.top = 0;
       if (data.left <= 0) data.left = 0;
+
       original.top = data.top;
       original.left = data.left;
       original.width = data.width;
@@ -142,44 +143,7 @@ export default {
       console.info(this.devList);
     },
     bindChange(event) {
-      this.$emit("showSaveLocBtn", true);
-      // let data = event.detail.data;
-      // let original = event.detail.original;
-      // const param = {
-      //   dev_chan_list: this.devList.map(item => {
-      //     item.map_wide = item.width;
-      //     item.map_high = item.height;
-      //     item.map_locx = item.left;
-      //     item.map_locy = item.top;
-      //     // item.dev_chan = '00'
-      //     delete item.ROW_NUMBER;
-      //     delete item.width;
-      //     delete item.height;
-      //     delete item.left;
-      //     delete item.top;
-      //     delete item.dragBarClass;
-      //     return item;
-      //   })
-      // };
-      // console.info("param", param);
-      // axios.post("/mapdevchan/map_devchan_save", param).then(data => {
-      //   if (data.data.success) {
-      //     this.$message({
-      //       type: "success",
-      //       message: "坐标已保存!"
-      //     });
-      //   }
-      // });
-      // this.devList = param.dev_chan_list.map((item, index) => {
-      //   item.dirctDom = false;
-      //   item.dragBarClass = "drag" + index;
-      //   item.left = item.map_locx || 0;
-      //   item.top = item.map_locy || 0;
-      //   item.width = item.map_wide || 75;
-      //   item.height = item.map_high || 23;
-      //   return item;
-      // });
-      // console.info("change", this.devList);
+      // this.$emit("showSaveLocBtn", true);
     }
   },
   watch: {

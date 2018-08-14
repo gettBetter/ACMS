@@ -14,7 +14,8 @@
           <el-button type="primary" @click="del">删除</el-button>
           <!-- <el-button type="primary">入库</el-button> -->
         </el-button-group>
-        <el-button type="primary" v-if="btnShow" @click="saveLoc">保存坐标</el-button>
+        <!-- v-if="btnShow" -->
+        <el-button type="primary" @click="saveLoc">保存坐标</el-button>
       </div>
 
       <el-tabs v-model="curMap" type="card" @tab-click="handleTabClick">
@@ -23,7 +24,7 @@
         </el-tab-pane>
 
       </el-tabs>
-      <Map ref="map" :changedev="changedev" @showSaveLocBtn="showBtn" @saveLocSucc="hideBtn"></Map>
+      <Map ref="map" :changedev="changedev"></Map>
       <ConfMap ref="confMap" @configSucc="configSucc"></ConfMap>
       <SelectMap ref="selectMap" @slectDev="changeDev"></SelectMap>
     </el-card>
@@ -49,8 +50,8 @@ export default {
       curMap: "",
       list: [],
       type: "",
-      changedev: false,
-      btnShow: false
+      changedev: false
+      // btnShow: false
     };
   },
   computed: {
@@ -76,16 +77,16 @@ export default {
     saveLoc() {
       this.$refs.map.saveLoc();
     },
-    showBtn(val) {
-      if (val === true) {
-        this.btnShow = true;
-      }
-    },
-    hideBtn(val) {
-      if (val === true) {
-        this.btnShow = false;
-      }
-    },
+    // showBtn(val) {
+    //   if (val === true) {
+    //     this.btnShow = true;
+    //   }
+    // },
+    // hideBtn(val) {
+    //   if (val === true) {
+    //     this.btnShow = false;
+    //   }
+    // },
     selectMap() {
       this.$nextTick(() => {
         this.$refs.selectMap.open();

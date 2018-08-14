@@ -344,11 +344,11 @@ export default {
           if (param[p] === null) {
             param[p] = "";
           }
-          oMyForm.set(p, param[p]);
+          oMyForm.append(p, param[p]);
         }
       }
-      oMyForm.set("emp_name", param.emp_name);
-      oMyForm.set("emp_phot", this.emp_phot);
+      oMyForm.append("emp_name", param.emp_name);
+      oMyForm.append("emp_phot", this.emp_phot);
       console.info("oMyForm", oMyForm, param, oMyForm.get("emp_name"));
       axios
         .post(url, oMyForm, config)

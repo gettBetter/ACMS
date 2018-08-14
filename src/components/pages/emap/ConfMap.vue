@@ -84,7 +84,7 @@ export default {
       const url = this.actionUrl;
       let oMyForm = new FormData();
 
-      oMyForm.set("map_name", this.data.map_name);
+      oMyForm.append("map_name", this.data.map_name);
 
       let config = {
         headers: {
@@ -98,17 +98,17 @@ export default {
       if (this.type === "新增电子地图") {
         msg = "新增电子地图成功！";
         if ("lastModified" in this.map_file) {
-          oMyForm.set("map_file", this.map_file);
+          oMyForm.append("map_file", this.map_file);
         } else {
           alert("请上传地图");
           return;
         }
       } else if (this.type === "编辑电子地图") {
         if ("lastModified" in this.map_file) {
-          oMyForm.set("map_file", this.map_file);
-          // oMyForm.set("map_indx", this.map_indx);
+          oMyForm.append("map_file", this.map_file);
+          // oMyForm.append("map_indx", this.map_indx);
         }
-        oMyForm.set("map_indx", this.mapId);
+        oMyForm.append("map_indx", this.mapId);
         console.info("map_indx", oMyForm.get("map_indx"));
         msg = "编辑电子地图成功！";
       }
