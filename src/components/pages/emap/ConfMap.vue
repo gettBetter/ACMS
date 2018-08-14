@@ -109,7 +109,7 @@ export default {
           // oMyForm.append("map_indx", this.map_indx);
         }
         oMyForm.append("map_indx", this.mapId);
-        console.info("map_indx", oMyForm.get("map_indx"));
+        // console.info("map_indx", oMyForm.get("map_indx"));
         msg = "编辑电子地图成功！";
       }
       axios

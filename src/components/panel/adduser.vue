@@ -344,7 +344,7 @@ export default {
 
           oMyForm.append("emp_name", param.emp_name);
           oMyForm.append("emp_phot", this.emp_phot);
-          console.info("oMyForm", oMyForm, param, oMyForm.get("emp_name"));
+          // console.info("oMyForm", oMyForm, param, oMyForm.get("emp_name"));
           axios
             .post(url, oMyForm, config)
             .then(data => {

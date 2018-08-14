@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog width="40%" style="min-height:400px" title="关联门" :visible.sync="dialogVisible" append-to-body center>
+    <el-dialog width="60%" style="min-height:400px" title="关联门" :visible.sync="dialogVisible" append-to-body center>
 
       <el-transfer v-model="map_devchann" :props="{key: 'dev_chan',label: 'dev_chan'}" :data="no_user_devchan" @change="handleChange">
       </el-transfer>
