@@ -208,6 +208,13 @@ export default new Router({
           component: () =>
             import ("@/components/pages/devicmanage/devchannel")
         },
+        //门禁出入报表
+        {
+          path: "/devicmanage/accrecord",
+          name: "accrecord",
+          component: () =>
+            import ("@/components/pages/devicmanage/accrecord")
+        },
         // {
         //   path: "/devicmanage/timerparam/editdevchannel/:dev/:chn",
         //   name: "editdevchannel",

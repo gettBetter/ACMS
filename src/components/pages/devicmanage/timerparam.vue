@@ -81,7 +81,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="grp_indx" label="设备组别"></el-table-column>
-                <el-table-column prop="tzn_indx" label="设备组别"></el-table-column>
+                <el-table-column prop="tzn_indx" label="时区编号"></el-table-column>
                 <el-table-column prop="tzn_name" label="时区名称"></el-table-column>
                 <el-table-column prop="tmr1_name" label="段一关联"></el-table-column>
                 <el-table-column prop="tmr2_name" label="段二关联"></el-table-column>
