@@ -2,5 +2,6 @@ export default {
   isLogin: false,
   children: [],
   menus: [],
-  mapId: ''
+  mapId: '',
+  changeDev: "123"
 }

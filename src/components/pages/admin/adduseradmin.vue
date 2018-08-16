@@ -1,22 +1,19 @@
 <template>
   <div>
     <el-card class="box-card">
-      <!-- <div slot="header" class="clearfix">
-                <span>添加管理员</span>
-            </div> -->
       <el-row :gutter="20">
         <el-col :span="8">
           <div style="margin-bottom:20px">部门人员树</div>
           <el-tree :data="userTreeData" :props="userTreeProp" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
-                <span v-if="data.tag == 2">
+                <span v-if="data.emp_indx">
                   <el-checkbox :v-model="false" :id="data.emp_indx" class="usercheckbox" @change="checed=>changeUserList(checed,node,data)" on-click=""></el-checkbox>
                 </span>
-                <span v-if="data.tag == 1">
+                <span v-if="!data.emp_indx">
                   <i class="iconfont icon-plus-departments" style="padding:0 4px" />
                 </span>
-                <span v-if="data.tag == 2">
+                <span v-if="data.emp_indx">
                   <i class="iconfont icon-renyuan" style="padding:0 4px" />
                 </span>
                 <span>{{node.label}}</span>
@@ -25,17 +22,11 @@
           </el-tree>
         </el-col>
         <el-col :span="14" :offset="1">
-          <!-- <div style="margin-bottom:20px">g</div> -->
           <el-form :model="data" style="margin-top:20px">
 
             <el-form-item :label-width="formLabelWidth" label="用户ID:">
               <el-input v-model="addUser.emp_indx" disabled></el-input>
             </el-form-item>
-
-            <!-- <el-form-item :label-width="formLabelWidth" label="用户编号:">
-                            <el-input v-model="addUser.emp_code" disabled></el-input>
-                        </el-form-item> -->
-
             <el-form-item :label-width="formLabelWidth" label="用户姓名:">
               <el-input v-model="addUser.emp_name" disabled></el-input>
             </el-form-item>
@@ -46,14 +37,6 @@
                 </el-option>
               </el-select>
             </el-form-item>
-
-            <!-- <el-form-item :label-width="formLabelWidth" label="角色ID:">
-                            <el-input v-model="data.r_id"></el-input>
-                        </el-form-item> -->
-
-            <!-- <el-form-item :label-width="formLabelWidth" label="角色名称:">
-                            <el-input v-model="data.ole_name"></el-input>
-                        </el-form-item> -->
 
             <el-form-item :label-width="formLabelWidth" label="角色说明:">
               <el-input v-model="data.usr_role"></el-input>
@@ -119,13 +102,6 @@ export default {
       },
       firstChange: true,
       addUser: {}
-      //   treeData: [],
-      //   treeProp: {
-      //     label: "",
-      //     children: children
-      //   }
-      //   defaultCheckedData: [],
-      //   isIndeterminate: true
     };
   },
   methods: {
@@ -147,9 +123,6 @@ export default {
       axios.get("/index/dept_users_tree").then(data => {
         if (data.data.success) {
           let temp = data.data.data[0];
-
-          // this.userTreeData = data.data.data;
-          console.info("user", data.data);
           function getChildren(arr) {
             arr.forEach(item => {
               item.label = item.dep_name || item.emp_name;

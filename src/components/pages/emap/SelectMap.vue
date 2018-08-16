@@ -28,15 +28,11 @@ export default {
     };
   },
   computed: {
-    // type() {
-    //   console.info(this.$parent.$data);
-    //   return this.$parent.$data.type;
-    // },
-
     ...mapState(["mapId"])
   },
   watch: {},
   methods: {
+    ...mapMutations(["changeDevs"]),
     handleChange(val1, val2) {
       console.info(val1, val2);
       console.info(this.map_devchann.length, this.map_devchann);
@@ -46,9 +42,6 @@ export default {
     },
     open() {
       this.dialogVisible = true;
-      //   console.info("123123", this.type);
-      //   this.reset();
-      //   this.$watch(mapId,)
       if (this.mapId) this.getData(this.mapId);
     },
     getData(param) {
@@ -77,21 +70,16 @@ export default {
             type: "success",
             message: "关联门成功!"
           });
-          this.$emit("slectDev", true);
+          // this.$emit("slectDev", true);
+          this.changeDevs(new Date().getTime());
           this.dialogVisible = false;
-          //   this.getList();
-          // this.$router.go(-1);
         }
       });
     }
-    // cancel(){}
   },
   watch: {
     mapId(newVal, oldVal) {
       console.info("mapId2", newVal, oldVal);
-      //   if (newVal) {
-      //     this.getData(newVal);
-      //   }
     }
   },
   mounted() {}

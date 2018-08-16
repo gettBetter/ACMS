@@ -24,9 +24,9 @@
         </el-tab-pane>
 
       </el-tabs>
-      <Map ref="map" :changedev="changedev"></Map>
+      <Map ref="map"></Map>
       <ConfMap ref="confMap" @configSucc="configSucc"></ConfMap>
-      <SelectMap ref="selectMap" @slectDev="changeDev"></SelectMap>
+      <SelectMap ref="selectMap"></SelectMap>
     </el-card>
   </div>
 </template>
@@ -49,9 +49,8 @@ export default {
     return {
       curMap: "",
       list: [],
-      type: "",
-      changedev: false
-      // btnShow: false
+      type: ""
+      // changedev: ""
     };
   },
   computed: {
@@ -77,16 +76,6 @@ export default {
     saveLoc() {
       this.$refs.map.saveLoc();
     },
-    // showBtn(val) {
-    //   if (val === true) {
-    //     this.btnShow = true;
-    //   }
-    // },
-    // hideBtn(val) {
-    //   if (val === true) {
-    //     this.btnShow = false;
-    //   }
-    // },
     selectMap() {
       this.$nextTick(() => {
         this.$refs.selectMap.open();
@@ -139,9 +128,11 @@ export default {
     narrow() {
       this.$refs.map.narrow();
     },
-    changeDev(val) {
+    slectDev(val) {
       if (val === true) {
-        this.changeDev = true;
+        console.info("change");
+        this.changeDev = "1" + new Date().getTime();
+        console.info(this.changeDev);
       }
     }
   },

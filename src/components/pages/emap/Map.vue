@@ -17,12 +17,7 @@ import axios from "axios";
 import url from "@/assets/Untitled.jpg";
 import "@/directive/dragx";
 export default {
-  props: {
-    changedev: {
-      type: Boolean,
-      defaule: false
-    }
-  },
+  // props: ["changedev"],
   data() {
     return {
       // emapSrc: "url",
@@ -38,14 +33,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["mapId"]),
     emapSrc() {
       return `http://203.195.236.217:9000/admin/index/map_showimg/map_indx/${
         this.mapId
       }`;
-    }
+    },
+    ...mapState(["mapId", "changeDev"])
   },
-  watch: {},
   methods: {
     reset() {},
     getDevList(param) {
@@ -62,8 +56,6 @@ export default {
           return item;
         });
         console.info("devlist", this.devList);
-
-        // dragBarClass
       });
     },
     enlarge() {
@@ -153,13 +145,14 @@ export default {
         this.getDevList(newVal);
       }
     },
-    changedev(newVal, oldVal) {
-      if (newVal) {
-        this.getDevList(this.mapId);
-      }
+    changeDev(newVal, oldVal) {
+      console.info("changeDev", newVal);
+      this.getDevList(this.mapId);
     }
   },
-  updated() {}
+  mounted() {
+    console.info("changedev", this.changedev, this.mapId);
+  }
 };
 </script>
 

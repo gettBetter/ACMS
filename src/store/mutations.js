@@ -19,5 +19,8 @@ export default {
   },
   setMapId(state, mapId) {
     state.mapId = mapId
+  },
+  changeDevs(state, val) {
+    state.changeDev = val
   }
 }
