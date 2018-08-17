@@ -5,11 +5,21 @@
         <el-col :span="6">
           <div style="margin-bottom:20px">部门</div>
           <el-tree :data="depData" :props="treeProp" default-expand-all @node-click="handleNodeClick" style="max-height:600px;overflow:scroll">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>
+                <span>
+                  <i class="iconfont icon-plus-departments" style="padding:0 4px" />
+                </span>
+                <span>{{node.label}}</span>
+              </span>
+            </span>
           </el-tree>
         </el-col>
         <el-col :span="18">
           <div style="margin-bottom:20px">用户列表</div>
           <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="addUser">添加</el-button>
+          <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="exportTemplate">导出模板</el-button>
+          <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="importExcel">导入</el-button>
 
           <el-table :data="pageData" border :default-sort="{prop: 'reg_time', order: 'descending'}">
             <el-table-column fixed="left" label="操作" width="80%">
@@ -46,6 +56,7 @@
 <script>
 import axios from "axios";
 import { Loading } from "element-ui";
+import "../../../assets/iconfont/iconfont.css";
 import _ from "lodash";
 
 export default {
@@ -71,10 +82,9 @@ export default {
     },
     getTree() {
       axios
-        .get("/index/dept_tree")
+        .get("/index/dept_users_tree")
         .then(data => {
-          // console.info(data.data.data.deptree);
-          this.depData = data.data.deptree;
+          this.depData = data.data.data[0];
         })
         .catch(data => {
           alert(data.data.msg);
@@ -103,6 +113,28 @@ export default {
     },
     addUser() {
       this.$parent.$router.push("/admin/user/adduser");
+    },
+    importExcel() {},
+    exportTemplate() {
+      let loadingInstance = Loading.service({
+        lock: true,
+        background: "rgba(0, 0, 0, 0.5)",
+        target: document.querySelector(".adminpage")
+      });
+      axios
+        .get("/user/exportexcel")
+        .then(
+          data => {
+            if (data.data.success === true) {
+              loadingInstance.close();
+              this.allListData = data.data.listuser;
+            } else {
+              alert(data.data.msg);
+            }
+          },
+          data => loadingInstance.close()
+        )
+        .catch(err => loadingInstance.close());
     },
     delUser(recored) {
       let param = {

@@ -58,7 +58,9 @@ export default {
       data: {},
       formLabelWidth: "80px",
       type_list: [],
-      are_list: []
+      are_list: [],
+      card_id: -1,
+      openSucess: false
     };
   },
   computed: {
@@ -67,19 +69,19 @@ export default {
     },
     dev_param() {
       return this.$parent.$data.dev_param;
-    },
-    card_id() {
-      return this.$parent.$data.card_id;
     }
+    // card_id() {
+    //   return this.$parent.$data.card_id;
+    // }
   },
   methods: {
     openConfig() {
       console.info("user_list", this.user_list);
       this.dialogVisible = true;
       this.getTree();
+      this.openDev();
     },
     openDev() {
-      // const param = ;
       this.card_id = WSPCPP.PORT_Open(this.dev_param);
 
       if (this.card_id < 0) {
@@ -89,6 +91,7 @@ export default {
           type: "success",
           message: "打开端口成功!"
         });
+        this.openSucess = true;
       }
     },
     handleCheckChange(data, checked, indeterminate) {
@@ -110,14 +113,16 @@ export default {
         });
     },
     save() {
+      if (!this.openSucess) {
+        alert("端口打开失败，请重新打开端口");
+        return;
+      }
       const param = this.data;
-      // param.config = [];
       param.user_list = this.user_list;
       param.are_list = this.are_list;
-      console.info(param);
       const users = this.user_list;
       const count = users.length;
-      this.openDev();
+
       this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -125,17 +130,8 @@ export default {
       })
         .then(() => {
           for (let i = 0; i < count; i++) {
-            // console.info(i);
-            this.$confirm(
-              `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
-              "提示",
-              {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-              }
-            ).then(() => {
-              // console.info(i);
+            if (confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)) {
+              console.info(i);
               const resCardId = WSPCPP.Access_CommandBLX(
                 this.card_id,
                 65535,
@@ -144,17 +140,38 @@ export default {
               );
               param.user_list[i].crd_code = resCardId;
               WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
-            });
+            }
+            // console.info(i);
+            // this.$confirm(
+            //   `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
+            //   "提示",
+            //   {
+            //     confirmButtonText: "确定",
+            //     cancelButtonText: "取消",
+            //     type: "warning"
+            //   }
+            // ).then(() => {
+            //   // console.info(i);
+            //   const resCardId = WSPCPP.Access_CommandBLX(
+            //     this.card_id,
+            //     65535,
+            //     0x000601,
+            //     ""
+            //   );
+            //   param.user_list[i].crd_code = resCardId;
+            //   WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+            // });
           }
-
+          console.info("end");
           return Promise.resolve();
         })
         .then(() => {
+          console.info("send1");
           this.send(param);
         });
     },
     send(param) {
-      console.info("send");
+      console.info("send2");
       axios
         .post("/card/card_add", param)
         .then(data => {

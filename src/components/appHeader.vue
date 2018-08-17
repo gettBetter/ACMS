@@ -16,7 +16,6 @@
       <el-col :span="4" :offset="1" v-if="menus.length>0">
         <el-row style="font-size:14px">
           <el-col :span="8" style=“color:white>{{username}}</el-col>
-
           <el-col :span="16">
             <el-button type="text" style="color:white;font-weight:400" @click="changePw" class="logout">修改密码</el-button>
             <el-button type="text" style="color:white;font-weight:400" @click="logout" class="logout">退出</el-button>

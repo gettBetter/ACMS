@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
 
         store.commit("setMenus", menus);
 
-        let acceptMenus = ["/", "*", "/login", "/unauthority"];
+        let acceptMenus = ["/", "*", "/login", "/unauthority", "/test"];
 
         if (localStorage.acceptMenus) {
           acceptMenus = JSON.parse(localStorage.acceptMenus)

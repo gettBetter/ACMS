@@ -68,10 +68,6 @@
                 <el-button @click="remove(scope.row)" type="text" title="注销">
                   <i class="iconfont icon-xiaohu"></i>
                 </el-button>
-
-                <!-- <el-button type="text" @click="delUser(scope.row)" title="删除">
-                                    <i class="el-icon-delete"></i>
-                                </el-button> -->
               </template>
             </el-table-column>
             <el-table-column prop="emp_indx" label="用户ID"></el-table-column>
@@ -160,6 +156,7 @@ export default {
         .then(data => {
           console.info("tree", data.data);
           const temp = data.data.data[0];
+          console.info("data", temp);
           function getChildren(arr) {
             arr.forEach(item => {
               item.label = item.dep_name || item.emp_name;
@@ -182,8 +179,8 @@ export default {
           getChildren(temp);
           this.treeData = temp;
         })
-        .catch(data => {
-          alert(data.data.msg);
+        .catch(err => {
+          console.error(err);
         });
     },
     getList(param) {

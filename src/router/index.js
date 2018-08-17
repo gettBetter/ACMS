@@ -15,6 +15,12 @@ export default new Router({
         import ("@/components/login")
     },
     {
+      path: "/test",
+      name: "test",
+      component: () =>
+        import ("@/test/test")
+    },
+    {
       path: "*",
       name: "404",
       component: () =>

@@ -90,8 +90,8 @@ export default {
       list: [],
       user_list: [],
       disableBtn: true,
-      dev_param: "",
-      card_id: ""
+      dev_param: ""
+      // card_id: ""
     };
   },
   methods: {
@@ -122,7 +122,7 @@ export default {
     },
     getTree() {
       axios
-        .get("/card/card_add_data_tree")
+        .get("/index/dept_users_tree")
         .then(data => {
           console.info("tree", data.data);
           // this.treeData = data.data.data[0].children;
@@ -199,19 +199,19 @@ export default {
         )
         .catch(err => loadingInstance.close());
     },
-    openDev() {
-      // const param = ;
-      this.card_id = WSPCPP.PORT_Open(this.dev_param);
+    // openDev() {
+    //   // const param = ;
+    //   this.card_id = WSPCPP.PORT_Open(this.dev_param);
 
-      if (this.card_id < 0) {
-        alert("打开失败，请检测设备连接是否正常");
-      } else {
-        this.$message({
-          type: "success",
-          message: "打开端口成功!"
-        });
-      }
-    },
+    //   if (this.card_id < 0) {
+    //     alert("打开失败，请检测设备连接是否正常");
+    //   } else {
+    //     this.$message({
+    //       type: "success",
+    //       message: "打开端口成功!"
+    //     });
+    //   }
+    // },
     // losCard() {
     //   const users = this.user_list;
     //   const count = users.length;

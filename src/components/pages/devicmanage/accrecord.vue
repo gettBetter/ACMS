@@ -6,12 +6,12 @@
                     <el-form :model="data" label-width="80px">
                         <el-form-item label="部门人员:">
                             <el-input v-model="data.user_list" @focus="openUserDialog">
-                                <el-button slot="append"  icon="el-icon-close" title="清空" @click="clearUser"></el-button>
+                                <el-button slot="append" icon="el-icon-close" title="清空" @click="clearUser"></el-button>
                             </el-input>
                         </el-form-item>
                         <el-form-item label="区域设备:">
                             <el-input v-model="data.dev_list" @focus="openDevDialog">
-                                <el-button slot="append"  icon="el-icon-close" title="清空" @click="clearDev"></el-button>
+                                <el-button slot="append" icon="el-icon-close" title="清空" @click="clearDev"></el-button>
                             </el-input>
                         </el-form-item>
                         <el-form-item label="出入时间:" style="margin-bottom:0">
@@ -26,7 +26,7 @@
                         </el-form-item>
                         <el-form-item label="出入类型:">
                             <el-select v-model="data.ver_list" multiple>
-                                <el-option v-for="opt in access_list" :label="opt.ver_name" :value="opt.ver_indx" :key="opt.ver_indx" >
+                                <el-option v-for="opt in access_list" :label="opt.ver_name" :value="opt.ver_indx" :key="opt.ver_indx">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -71,13 +71,13 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 // import "../../../assets/iconfont/iconfont.css";
-import DepUser from './DepUser'
-import AreaDev from './AreaDev'
+import DepUser from "./DepUser";
+import AreaDev from "./AreaDev";
 
 export default {
-  components:{
-      DepUser,
-      AreaDev
+  components: {
+    DepUser,
+    AreaDev
   },
   data() {
     return {
@@ -97,66 +97,69 @@ export default {
     };
   },
   methods: {
-    selecta(val){
-        console.info('selecta',val,this.data)
+    selecta(val) {
+      console.info("selecta", val, this.data);
     },
     openUserDialog() {
-        this.$refs.depUser.open()
+      this.$refs.depUser.open();
     },
-    getUserList(val){
-        console.info('list',val)
-        this.$set(this.data,'user_list',val)
+    getUserList(val) {
+      console.info("list", val);
+      this.$set(this.data, "user_list", val);
     },
-    clearUser(){
-        this.data.user_list = ''
+    clearUser() {
+      this.data.user_list = "";
     },
-    getDevList(val){
-        this.$set(this.data,'dev_list',val)
+    getDevList(val) {
+      this.$set(this.data, "dev_list", val);
     },
     openDevDialog() {
-        this.$refs.areaDev.open()
+      this.$refs.areaDev.open();
     },
     clearDev() {
-        this.data.dev_list = ''
+      this.data.dev_list = "";
     },
     query() {
-    //   const param = this.data;
+      //   const param = this.data;
       const {
-          user_list,
-          dev_list,
-          ver_list,
-          usr_list,
-          bgn_date,
-          end_Date
-      } = this.data
+        user_list,
+        dev_list,
+        ver_list,
+        usr_list,
+        bgn_date,
+        end_Date
+      } = this.data;
 
       const param = {
-          user_list,
-          dev_list,
-          ver_list: ver_list.join(','),
-          usr_list : usr_list.join(','),
-          bgn_date,
-          end_Date
-      }
-    //   param.usr_list = this.data.usr_list.join(',')
-    //   param.ver_list = this.data.ver_list.join(',')
-      console.info(param,this.data)
-      let url = '/accrecord/accrecord_list'
-      for(let p in param){
-          if(param[p]){
-              url += `/${p}/${param[p]}`
-          }
+        user_list,
+        dev_list,
+        ver_list: ver_list.join(","),
+        usr_list: usr_list.join(","),
+        bgn_date,
+        end_Date
+      };
+      //   param.usr_list = this.data.usr_list.join(',')
+      //   param.ver_list = this.data.ver_list.join(',')
+      console.info(param, this.data);
+      let url = "/index/dept_users_tree";
+      for (let p in param) {
+        if (param[p]) {
+          url += `/${p}/${param[p]}`;
+        }
       }
       this.getList(url);
     },
-    getSelectData(){
-        axios.get('/accrecord/select_data').then(({data})=>{
-            if(data.success === true){
-                console.info(data)
-                this.admin_list = data.admin_list
-                this.access_list = data.access_list
-            }
-        }).catch(err=>console.error(err))
+    getSelectData() {
+      axios
+        .get("/accrecord/select_data")
+        .then(({ data }) => {
+          if (data.success === true) {
+            console.info(data);
+            this.admin_list = data.admin_list;
+            this.access_list = data.access_list;
+          }
+        })
+        .catch(err => console.error(err));
     },
     getTree() {
       axios
@@ -190,7 +193,7 @@ export default {
           alert(data.data.msg);
         });
     },
-    getList(url= '/accrecord/accrecord_list',cb) {
+    getList(url = "/accrecord/accrecord_list", cb) {
       let loadingInstance = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.5)",
@@ -205,8 +208,8 @@ export default {
             if (data.data.success === true) {
               loadingInstance.close();
               this.list = data.data.data ? data.data.data : [];
-              console.info(this.data)
-              cb && cb()
+              console.info(this.data);
+              cb && cb();
             } else {
               alert(data.data.msg);
             }
@@ -235,14 +238,15 @@ export default {
   activated() {
     // this.getTree();
     this.getList();
-    this.getSelectData()
+    this.getSelectData();
   }
 };
 </script>
 
 <style>
-#adduserdialog .el-input-group__append, .el-input-group__prepend{
-    background-color:transparent;
+#adduserdialog .el-input-group__append,
+.el-input-group__prepend {
+  background-color: transparent;
 }
 </style>
 
