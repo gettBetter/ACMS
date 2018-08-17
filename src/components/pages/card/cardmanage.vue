@@ -39,7 +39,7 @@
                 <el-form-item>
                   <!-- <el-button type="primary" @click="openDev">打开端口</el-button>
                    -->
-                  <span>如：COM3.38400,0,0</span>
+                  <span>如：COM3.38400,8,0</span>
                 </el-form-item>
               </el-form>
             </el-col>

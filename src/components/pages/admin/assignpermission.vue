@@ -4,12 +4,10 @@
       <el-row :gutter="20">
         <el-col :span="11" :offset="1">
           <div style="margin-bottom:20px">部门树</div>
-          <el-tree ref="depTree" :data="depTreeData" :props="depTreeProp" show-checkbox node-key="dep_indx" :default-checked-keys="depChecked" :expand-on-click-node="false" highlight-current style="max-height:600px;overflow:scroll">
+          <el-tree ref="depTree" :data="depTreeData" :props="depTreeProp" show-checkbox node-key="dep_indx" :default-checked-keys="depChecked" :expand-on-click-node="false" highlight-current style="max-height:600px;overflow:scroll" @check-change="handleDepCheckChange">
           </el-tree>
         </el-col>
         <el-col :span="11" :offset="1">
-          <!-- <div style="margin-bottom:20px">区域设备树</div>
-          <el-tree :data="devTreeData" :props="devTreeProp" :expand-on-click-node="false" highlight-current style="max-height:600px;overflow:scroll"> -->
           <div style="margin-bottom:20px">区域树</div>
           <el-tree ref="devTree" :data="devTreeData" :props="devTreeProp" show-checkbox node-key="are_indx" :default-checked-keys="devChecked" :expand-on-click-node="false" highlight-current style="max-height:600px;overflow:scroll">
           </el-tree>
@@ -43,13 +41,20 @@ export default {
       devTreeProp: {
         label: "are_name",
         children: "children"
-      }
+      },
+      // getDepTop: false,
+      // getAreTop: false
     };
   },
   methods: {
     refresh() {
       this.getTreeData();
     },
+    // handleDepCheckChange(data, checked, indeterminate) {
+    //   console.log(data, checked, indeterminate);
+    //   if (checked && data.children) {
+    //   }
+    // },
     getTreeData() {
       axios.get(`/index/dept_noauth_tree/emp_indx/${this.emp}`).then(data => {
         if (data.data.success) {
