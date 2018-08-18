@@ -35,10 +35,7 @@
                 <el-form-item label-width="100px" label="设备端口：">
                   <el-input v-model="dev_param"></el-input>
                 </el-form-item>
-
                 <el-form-item>
-                  <!-- <el-button type="primary" @click="openDev">打开端口</el-button>
-                   -->
                   <span>如：COM3.38400,0,0</span>
                 </el-form-item>
               </el-form>
@@ -91,7 +88,6 @@ export default {
       user_list: [],
       disableBtn: true,
       dev_param: ""
-      // card_id: ""
     };
   },
   methods: {

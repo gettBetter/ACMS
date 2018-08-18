@@ -1,5 +1,5 @@
 <template>
-  <el-dialog width="70%" style="min-height:400px" title="换卡" :visible.sync="dialogVisible" append-to-body center>
+  <el-dialog width="70%" style="min-height:400px" title="发卡" :visible.sync="dialogVisible" append-to-body center>
     <el-row :gutter="20">
       <el-col :span="8">
         <div style="margin-bottom:20px">区域</div>
@@ -70,18 +70,17 @@ export default {
     dev_param() {
       return this.$parent.$data.dev_param;
     }
-    // card_id() {
-    //   return this.$parent.$data.card_id;
-    // }
   },
   methods: {
     openConfig() {
       console.info("user_list", this.user_list);
+      console.info("open", this.dev_param);
       this.dialogVisible = true;
       this.getTree();
       this.openDev();
     },
     openDev() {
+      console.info("openDEV", this.dev_param);
       this.card_id = WSPCPP.PORT_Open(this.dev_param);
 
       if (this.card_id < 0) {
@@ -108,8 +107,9 @@ export default {
           this.treeData = data.data.data[0].children;
           this.type_list = data.data.type_list;
         })
-        .catch(data => {
-          alert(data.data.msg);
+        .catch(err => {
+          console.info(err);
+          // alert(data.data.msg);
         });
     },
     save() {
@@ -141,26 +141,6 @@ export default {
               param.user_list[i].crd_code = resCardId;
               WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
             }
-            // console.info(i);
-            // this.$confirm(
-            //   `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
-            //   "提示",
-            //   {
-            //     confirmButtonText: "确定",
-            //     cancelButtonText: "取消",
-            //     type: "warning"
-            //   }
-            // ).then(() => {
-            //   // console.info(i);
-            //   const resCardId = WSPCPP.Access_CommandBLX(
-            //     this.card_id,
-            //     65535,
-            //     0x000601,
-            //     ""
-            //   );
-            //   param.user_list[i].crd_code = resCardId;
-            //   WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
-            // });
           }
           console.info("end");
           return Promise.resolve();
@@ -191,6 +171,13 @@ export default {
     }
   },
   created() {},
-  mounted() {}
+  watch: {
+    dev_param(val1, val2) {
+      console.info("dev_param watched", val1, val2);
+    }
+  },
+  mounted() {
+    console.info("dev_param", this.dev_param);
+  }
 };
 </script>
