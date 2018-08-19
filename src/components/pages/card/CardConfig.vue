@@ -45,6 +45,7 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
+let card_id = -1
 
 export default {
   data() {
@@ -59,7 +60,7 @@ export default {
       formLabelWidth: "80px",
       type_list: [],
       are_list: [],
-      card_id: -1,
+      // card_id: -1,
       openSucess: false
     };
   },
@@ -73,17 +74,14 @@ export default {
   },
   methods: {
     openConfig() {
-      console.info("user_list", this.user_list);
-      console.info("open", this.dev_param);
       this.dialogVisible = true;
       this.getTree();
       this.openDev();
     },
     openDev() {
-      console.info("openDEV", this.dev_param);
-      this.card_id = WSPCPP.PORT_Open(this.dev_param);
+      card_id = WSPCPP.PORT_Open(this.dev_param);
 
-      if (this.card_id < 0) {
+      if (card_id < 0) {
         alert("打开失败，请检测设备连接是否正常");
       } else {
         this.$message({
@@ -133,13 +131,13 @@ export default {
             if (confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)) {
               console.info(i);
               const resCardId = WSPCPP.Access_CommandBLX(
-                this.card_id,
+                card_id,
                 65535,
                 0x000601,
                 ""
               );
               param.user_list[i].crd_code = resCardId;
-              WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+              WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
             }
           }
           console.info("end");
@@ -161,7 +159,7 @@ export default {
               type: "success",
               message: "发卡成功!"
             });
-            WSPCPP.Port_Close(this.card_id);
+            WSPCPP.Port_Close(card_id);
             this.$emit("config", true);
           }
         })

@@ -142,6 +142,7 @@ export default {
           data => {
             if (data.data.success === true) {
               loadingInstance.close();
+              console.info("data", data.data.data);
               this.list = data.data.data;
             } else {
               alert(data.data.msg);
@@ -170,6 +171,7 @@ export default {
   },
   activated() {
     this.getTree();
+    this.getList();
   }
 };
 </script>

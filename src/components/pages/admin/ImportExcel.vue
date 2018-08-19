@@ -1,0 +1,125 @@
+<template>
+    <div>
+        <el-dialog width="40%" style="min-height:400px" title="导入" :visible.sync="dialogVisible" append-to-body center>
+            <el-button type="text" @click="downloadTemplate">下载模板</el-button>
+            <el-form :model="data" label-width="80px" style="max-height:450px;overflow-y:scroll">
+                <!-- <el-form-item label="地图编号:" v-if="type === '编辑电子地图'">
+          <span>{{mapId}}</span>
+        </el-form-item>
+        <el-form-item label="地图名称:">
+          <el-input v-model="data.map_name"></el-input>
+        </el-form-item> -->
+
+                <el-form-item label="上传文件:">
+                    <input type="file" name="map_file" id="file" @change="uploadChange">
+                    <!-- <div>只能上传jpg/png文件，且不超过5M</div> -->
+                </el-form-item>
+
+            </el-form>
+
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="save">确 定</el-button>
+                <el-button @click="dialogVisible = false">取 消</el-button>
+            </span>
+
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+// import { mapState, mapMutations } from "vuex";
+import axios from "axios";
+// import url from "@/assets/Untitled.jpg";
+// import "@/directive/dragx";
+
+export default {
+  data() {
+    return {
+      dialogVisible: false,
+      data: {},
+      fileList: [],
+      imageUrl: "",
+      map_file: {}
+    };
+  },
+  computed: {
+    actionUrl() {
+      const token = JSON.parse(localStorage.userToken);
+      //   if (this.type === "新增电子地图") {
+      //     return `http://203.195.236.217:9000/admin/mapdevchan/map_add/token/${
+      //       token.token
+      //     }/username/${token.username}`;
+      //   }
+      //   return `http://203.195.236.217:9000/admin/mapdevchan/map_edit_save/token/${
+      //     token.token
+      //   }/username/${token.username}`;
+    }
+    // ...mapState(["mapId"])
+  },
+  methods: {
+    reset() {},
+
+    open() {
+      this.dialogVisible = true;
+    },
+    downloadTemplate() {
+      window.open("downloadTemplateURL", "_blank");
+    },
+
+    save() {
+      console.info(typeof this.map_file);
+      const url = this.actionUrl;
+
+      let oMyForm = new FormData();
+
+      oMyForm.append("map_name", this.data.map_name);
+
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      };
+
+      if ("lastModified" in this.map_file) {
+        oMyForm.append("map_file", this.map_file);
+      } else {
+        alert("请选择文件");
+        return;
+      }
+
+      axios
+        .post(url, oMyForm, config)
+        .then(data => {
+          if (data.data.success) {
+            this.$message({
+              type: "success",
+              message: "导入成功"
+            });
+            // this.$emit("configSucc", true);
+            this.dialogVisible = false;
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
+    },
+    uploadChange(e) {
+      console.info("e", e.target.files, e.target.value);
+      // C:\fakepath\xiaocai.jpg
+      // e.target.value
+      const file = e.target.files[0];
+      this.map_file = file;
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt5M = file.size / 1024 / 1024 < 5;
+
+      if (!isJPG) {
+        this.$message.error("上传图片只能是 JPG/PNG 格式!");
+      }
+      if (!isLt5M) {
+        this.$message.error("上传图片大小不能超过 5MB!");
+      }
+      return isJPG && isLt5M;
+    }
+  }
+};
+</script>
