@@ -28,12 +28,14 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import axios from "axios";
+import baseURL from "@/utils/baseURL";
 import url from "@/assets/Untitled.jpg";
 import "@/directive/dragx";
 
 export default {
   data() {
     return {
+      baseURL,
       dialogVisible: false,
       data: {},
       fileList: [],
@@ -49,11 +51,11 @@ export default {
     actionUrl() {
       const token = JSON.parse(localStorage.userToken);
       if (this.type === "新增电子地图") {
-        return `http://203.195.236.217:9000/admin/mapdevchan/map_add/token/${
+        return `${this.baseURL}/mapdevchan/map_add/token/${
           token.token
         }/username/${token.username}`;
       }
-      return `http://203.195.236.217:9000/admin/mapdevchan/map_edit_save/token/${
+      return `${this.baseURL}/mapdevchan/map_edit_save/token/${
         token.token
       }/username/${token.username}`;
     },

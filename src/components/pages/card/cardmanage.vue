@@ -5,12 +5,8 @@
         <el-col :span="6">
           <div style="margin-bottom:20px">部门人员树</div>
           <el-tree :data="treeData" :props="treeProp" @node-click="handleNodeClick" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll">
-            <!-- show-checkbox @check-change="handleCheckChange" -->
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
-                <!-- <span v-if="data.emp_indx">
-                                    <el-checkbox :v-model="false" :id="data.emp_indx" @change="checed=>changeUserList(checed,node,data)"></el-checkbox>
-                                </span> -->
                 <span v-if="!data.emp_indx">
                   <i class="iconfont icon-plus-departments" style="padding:0 4px" />
                 </span>
@@ -24,11 +20,8 @@
         </el-col>
         <el-col :span="18">
           <div style="margin-bottom:20px">发卡列表</div>
-          <!-- <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button> -->
           <el-row>
             <el-col :span="18">
-              <!-- <el-form :inline="true" class="demo-form-inline"> -->
-
               <el-form :inline="true" class="demo-form-inline">
                 <el-form-item>
                   <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">发卡</el-button>
@@ -46,13 +39,8 @@
           </el-row>
 
           <el-table :data="pageData" border>
-            <!-- width="80%" -->
             <el-table-column fixed="left" label="操作" width="140px">
               <template slot-scope="scope">
-                <!-- <el-button @click="edit(scope.row)" type="text" title="编辑">
-                  <i class="el-icon-edit"></i>
-                </el-button> -->
-
                 <el-button @click="loss(scope.row)" type="text" title="挂失" style="font-size:12px" v-if="scope.row.sta_indx != '4'">
                   <i class="iconfont icon-guashi"></i>
                 </el-button>

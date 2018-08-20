@@ -19,12 +19,12 @@
 
         <el-form-item :label-width="formLabelWidth" label="菜单权限：">
 
-          <div v-for="menu in menuTree" :key="menu.a_id">
+          <div v-for="(menu,index) in menuTree" :key="menu.a_id">
             <div class="itemclass">
-              <el-checkbox :indeterminate="isIndeterminate" @change="checed=>handleCheckAllChange(checed,menu)"> {{menu.name}}</el-checkbox>
+              <el-checkbox v-model="isIndeterminate[index]" @change="checed=>handleCheckAllChange(checed,menu,index)"> {{menu.name}}</el-checkbox>
             </div>
             <div style="margin: 15px 0;"></div>
-            <el-checkbox-group v-model="defaultCheckedData" @change="CheckedChange">
+            <el-checkbox-group v-model="defaultCheckedData" @change="node=>CheckedChange(node,menu.children,index)">
               <el-checkbox v-for="item in menu.children" :label="item.action_code" :key="item.a_id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
@@ -52,16 +52,24 @@ export default {
       editData: {},
       menuTree: [],
       defaultCheckedData: [],
-      isIndeterminate: true
+      isIndeterminate: []
     };
   },
   methods: {
-    CheckedChange(node, data) {
+    CheckedChange(node, data, index) {
       this.editData.action_list = node.join(",");
+      const ret = data
+        .map(item => item.action_code)
+        .every(item => node.includes(item));
+      this.$set(this.isIndeterminate, index, ret);
+    },
+    checkedBox(checked, data) {
+      console.info("checked", checked, data);
     },
 
-    handleCheckAllChange(val, menu) {
-      console.info("val", val, menu);
+    handleCheckAllChange(val, menu, index) {
+      console.info("val111", val, menu, index);
+      this.$set(this.isIndeterminate, index, val);
       if (val) {
         menu.children.forEach(chlid => {
           if (chlid.action_code) {
@@ -80,7 +88,7 @@ export default {
           }
         });
       }
-      this.isIndeterminate = false;
+      this.editData.action_list = this.defaultCheckedData.join(",");
     },
     editRole() {
       const param = {
@@ -91,10 +99,19 @@ export default {
         .get("/role/role_edit_data", { params: param })
         .then(data => {
           if (data.data.success) {
-            console.info(data.data);
+            console.info("data", data.data);
             this.editData = data.data.role_data[0];
             this.menuTree = data.data.sysmenu_data;
+
+            // isIndeterminate
             this.defaultCheckedData = this.editData.action_list.split(",");
+            console.info("defaultCheckedData", this.defaultCheckedData);
+            this.menuTree.forEach((menus, index) => {
+              this.isIndeterminate[index] = menus.children.every(menu =>
+                this.defaultCheckedData.includes(menu.action_code)
+              );
+            });
+            console.info("isIndeterminate", this.isIndeterminate);
           } else {
           }
         })

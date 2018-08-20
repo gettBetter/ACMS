@@ -250,9 +250,12 @@
 </template>
 <script>
 import axios from "axios";
+import baseURL from "@/utils/baseURL";
+
 export default {
   data() {
     return {
+      baseURL,
       treeProp: {
         label: "dep_name",
         children: "children"
@@ -388,7 +391,7 @@ export default {
       return JSON.parse(localStorage.userToken).username;
     },
     url() {
-      return `http://203.195.236.217:9000/admin/user/user_edit_save/token/${
+      return `${this.baseURL}/user/user_edit_save/token/${
         this.token
       }/username/${this.username}`;
     }
@@ -396,9 +399,7 @@ export default {
   activated() {
     this.userId = this.$route.params.userId;
     this.userInfo = {};
-    this.imageUrl = `http://203.195.236.217:9000/admin/index/show_image/emp_indx/${
-      this.userId
-    }`;
+    this.imageUrl = `${this.baseURL}/index/show_image/emp_indx/${this.userId}`;
     this.userEditData = [];
     this.getUserEditData({ emp_indx: this.userId }).then(data => {
       this.userInfo = data.user_info[0];

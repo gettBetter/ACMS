@@ -250,12 +250,13 @@
 <script>
 import axios from "axios";
 import { Loading } from "element-ui";
-// import _ from "lodash";
+import baseURL from "@/utils/baseURL";
 import defaultImg from "@/assets/defaultimg.jpg";
 
 export default {
   data() {
     return {
+      baseURL,
       treeProp: {
         label: "dep_name",
         children: "children"
@@ -399,9 +400,9 @@ export default {
       return JSON.parse(localStorage.userToken).username;
     },
     url() {
-      return `http://203.195.236.217:9000/admin/user/user_add/token/${
+      return `${this.baseURL}/user/user_add/token/${this.token}/username/${
         this.token
-      }/username/${this.token}`;
+      }`;
     }
   },
   activated() {

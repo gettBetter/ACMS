@@ -32,6 +32,10 @@
             <el-form-item>
               <el-button type="primary" @click="query">查询</el-button>
             </el-form-item>
+            <el-form-item>
+              <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="exportExcel">导出</el-button>
+            </el-form-item>
+
           </el-form>
           <div style="margin-bottom:20px">日志查询列表</div>
           <el-table :data="pageData" border>
@@ -61,9 +65,12 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
+import baseURL from "@/utils/baseURL";
+
 export default {
   data() {
     return {
+      baseURL,
       currentPage: 1,
       pageCurSize: 10,
       treeData: [],
@@ -82,6 +89,7 @@ export default {
         .getCheckedKeys()
         .filter(item => !!item);
     },
+    exportExcel() {},
     query() {
       const param = {};
       if (this.user_list.length > 0) {
@@ -156,6 +164,11 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
+    },
+    exportExcel() {
+      const url = this.exportUrl;
+      console.info("exportUrl", url, this.exportUrl);
+      window.open(url, "_blank");
     }
   },
   computed: {
@@ -167,6 +180,12 @@ export default {
     },
     pageData() {
       return this.chunkList[this.currentPage - 1];
+    },
+    exportUrl() {
+      const token = JSON.parse(localStorage.userToken);
+      return `${this.baseURL}/card/card_report /token/${token.token}/username/${
+        token.username
+      }`;
     }
   },
   activated() {

@@ -39,8 +39,8 @@ export default {
   },
   computed: {
     codebase() {
-      const host = location.host;
-      return `${host}/WSPCPP.ocx#version=1,0,0,0`;
+      const origin = location.origin;
+      return `${origin}/WSPCPP.ocx#version=1,0,0,0`;
     },
     children() {
       let path = this.$route.path;
@@ -66,7 +66,7 @@ export default {
     }
   },
   mounted() {
-    console.info("location", location);
+    console.info("codebase", this.codebase);
   }
 };
 </script>

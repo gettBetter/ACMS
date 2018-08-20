@@ -51,7 +51,7 @@
       </el-row>
 
     </el-card>
-    <ImportExcel ref="importExcel"></ImportExcel>
+    <ImportExcel ref="importExcel" @importSuccess="importSuccess"></ImportExcel>
   </div>
 </template>
 
@@ -61,6 +61,7 @@ import { Loading } from "element-ui";
 import "../../../assets/iconfont/iconfont.css";
 import _ from "lodash";
 import ImportExcel from "./ImportExcel";
+import baseURL from "@/utils/baseURL";
 
 export default {
   components: {
@@ -68,6 +69,7 @@ export default {
   },
   data() {
     return {
+      baseURL,
       currentPage: 1,
       pageCurSize: 10,
       userInfo: {},
@@ -96,6 +98,9 @@ export default {
           alert(data.data.msg);
         });
     },
+    importSuccess() {
+      this.getUserList();
+    },
     getUserList(param) {
       let loadingInstance = Loading.service({
         lock: true,
@@ -121,37 +126,12 @@ export default {
       this.$parent.$router.push("/admin/user/adduser");
     },
     exportExcel() {
-      window.open(
-        "http:/203.195.236.217:9000/admin/user/user_report",
-        "_blank"
-      );
-      // axios.get("/user/user_report").then(data => {
-      //   console.info(data);
-      // });
+      const url = this.exportUrl;
+      console.info("exportUrl", url, this.exportUrl);
+      window.open(url, "_blank");
     },
     importExcel() {
       this.$refs.importExcel.open();
-    },
-    exportTemplate() {
-      let loadingInstance = Loading.service({
-        lock: true,
-        background: "rgba(0, 0, 0, 0.5)",
-        target: document.querySelector(".adminpage")
-      });
-      axios
-        .get("/user/exportexcel")
-        .then(
-          data => {
-            if (data.data.success === true) {
-              loadingInstance.close();
-              this.allListData = data.data.listuser;
-            } else {
-              alert(data.data.msg);
-            }
-          },
-          data => loadingInstance.close()
-        )
-        .catch(err => loadingInstance.close());
     },
     delUser(recored) {
       let param = {
@@ -199,6 +179,12 @@ export default {
     },
     pageData() {
       return this.chunkList[this.currentPage - 1];
+    },
+    exportUrl() {
+      const token = JSON.parse(localStorage.userToken);
+      return `${this.baseURL}/user/user_report/token/${
+        token.token
+      }/username/${token.username}`;
     }
   },
   activated() {

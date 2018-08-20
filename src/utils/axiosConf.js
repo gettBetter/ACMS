@@ -1,15 +1,11 @@
 import axios from 'axios';
 import qs from 'qs';
 import router from '@/router'
+import baseURL from './baseURL'
 // axios.defaults.timeout = 5000;
-axios.defaults.baseURL = '';
+axios.defaults.baseURL = baseURL;
 // axios.defaults.withCredentials = true 
 
-if (process.env.NODE_ENV == 'development') {
-  axios.defaults.baseURL = 'http://203.195.236.217:9000/admin';
-} else if (process.env.NODE_ENV == 'production') {
-  axios.defaults.baseURL = 'http://203.195.236.217:9000/admin';
-}
 
 //http request 拦截器
 axios.interceptors.request.use(

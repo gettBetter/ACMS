@@ -14,6 +14,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import axios from "axios";
+import baseURL from "@/utils/baseURL";
 import url from "@/assets/Untitled.jpg";
 import "@/directive/dragx";
 export default {
@@ -21,6 +22,7 @@ export default {
   data() {
     return {
       // emapSrc: "url",
+      baseURL,
       imgStyle: {
         width: "100%"
       },
@@ -34,9 +36,7 @@ export default {
   },
   computed: {
     emapSrc() {
-      return `http://203.195.236.217:9000/admin/index/map_showimg/map_indx/${
-        this.mapId
-      }`;
+      return `${this.baseURL}/index/map_showimg/map_indx/${this.mapId}`;
     },
     ...mapState(["mapId", "changeDev"])
   },
