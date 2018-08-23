@@ -99,14 +99,14 @@ export default {
       console.info(this.type, "this.type");
       if (this.type === "新增电子地图") {
         msg = "新增电子地图成功！";
-        if ("lastModified" in this.map_file) {
+        if ("size" in this.map_file) {
           oMyForm.append("map_file", this.map_file);
         } else {
           alert("请上传地图");
           return;
         }
       } else if (this.type === "编辑电子地图") {
-        if ("lastModified" in this.map_file) {
+        if ("size" in this.map_file) {
           oMyForm.append("map_file", this.map_file);
           // oMyForm.append("map_indx", this.map_indx);
         }

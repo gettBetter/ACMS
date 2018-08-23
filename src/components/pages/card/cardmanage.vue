@@ -239,11 +239,13 @@ export default {
 
       if (this.card_id < 0) {
         alert("打开失败，请检测设备连接是否正常");
+        return false;
       } else {
         this.$message({
           type: "success",
           message: "打开端口成功!"
         });
+        return true;
       }
     },
     loss(recored) {
@@ -251,42 +253,43 @@ export default {
         crd_indx: recored.crd_indx
       };
 
-      this.openDev();
-      this.$confirm(
-        `卡片一经挂失，其卡号被列入各业务系统黑名单中，导致卡片不可用。确实要挂失卡号为${
-          recored.crd_indx
-        }的卡片?`,
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
-      )
-        .then(() => {
-          const resCardId = WSPCPP.Access_CommandBLX(
-            this.card_id,
-            65535,
-            0x000601,
-            ""
-          );
-          WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
+      if (this.openDev()) {
+        this.$confirm(
+          `卡片一经挂失，其卡号被列入各业务系统黑名单中，导致卡片不可用。确实要挂失卡号为${
+            recored.crd_indx
+          }的卡片?`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
+        )
+          .then(() => {
+            const resCardId = WSPCPP.Access_CommandBLX(
+              this.card_id,
+              65535,
+              0x000601,
+              ""
+            );
+            WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
 
-          axios
-            .post("/card/card_loss", param)
-            .then(data => {
-              if (data.data.success === true) {
-                this.$message({
-                  type: "success",
-                  message: "挂失成功!"
-                });
-                WSPCPP.Port_Close(this.card_id);
-                this.getList();
-              }
-            })
-            .catch(err => alert(err));
-        })
-        .catch(() => {});
+            axios
+              .post("/card/card_loss", param)
+              .then(data => {
+                if (data.data.success === true) {
+                  this.$message({
+                    type: "success",
+                    message: "挂失成功!"
+                  });
+                  WSPCPP.Port_Close(this.card_id);
+                  this.getList();
+                }
+              })
+              .catch(err => alert(err));
+          })
+          .catch(() => {});
+      }
     },
     unloss(recored) {
       let param = {

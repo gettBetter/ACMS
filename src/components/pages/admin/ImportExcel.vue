@@ -30,7 +30,6 @@ export default {
   data() {
     return {
       baseURL,
-      url,
       dialogVisible: false,
       data: {},
       fileList: [],
@@ -66,7 +65,7 @@ export default {
         }
       };
 
-      if ("lastModified" in this.user_excel) {
+      if ("size" in this.user_excel) {
         oMyForm.append("user_excel", this.user_excel);
       } else {
         alert("请选择文件");
@@ -101,6 +100,11 @@ export default {
       console.info("e", e.target.files, e.target.value);
       const file = e.target.files[0];
       this.user_excel = file;
+      console.info(
+        "xxxx",
+        "size" in this.user_excel,
+        Object.keys(this.user_excel).length
+      );
     }
   },
   mounted() {
