@@ -41,6 +41,7 @@ export default {
     };
     let checkPass2 = (rule, value, callback) => {
       console.info("check", this.data.newpasswd1);
+      debugger;
       if (this.data.newpasswd1 == "") {
         callback(new Error("请再次输入密码"));
       } else if (this.data.newpasswd1 != this.data.newpasswd) {

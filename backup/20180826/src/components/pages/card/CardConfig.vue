@@ -45,8 +45,8 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
+let card_id = -1
 
-let card_id=-1;
 export default {
   data() {
     return {
@@ -79,8 +79,7 @@ export default {
       this.openDev();
     },
     openDev() {
-
-    card_id=WSPCPP.PORT_Open(this.dev_param);
+      card_id = WSPCPP.PORT_Open(this.dev_param);
 
       if (card_id < 0) {
         alert("打开失败，请检测设备连接是否正常");

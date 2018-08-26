@@ -36,7 +36,7 @@
                   <el-input v-model="dev_param"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <span>如：COM3.38400,0,8,0</span>
+                  <span>如：COM3.38400,0,0</span>
                 </el-form-item>
               </el-form>
             </el-col>
