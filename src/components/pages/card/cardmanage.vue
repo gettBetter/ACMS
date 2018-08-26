@@ -108,7 +108,7 @@ export default {
       list: [],
       user_list: [],
       crdIndx: "",
-      dev_param: "",
+      dev_param: "COM3,38400,0,8,0",
       card_id: ""
     };
   },

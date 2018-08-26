@@ -87,7 +87,7 @@ export default {
       list: [],
       user_list: [],
       disableBtn: true,
-      dev_param: ""
+      dev_param: "COM3.38400,0,8,0"
     };
   },
   methods: {

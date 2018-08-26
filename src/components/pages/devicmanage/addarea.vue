@@ -59,10 +59,10 @@ export default {
       rules: {
         are_name: [
           { required: true, message: "区域名称不能为空", trigger: "blur" }
-        ],
-        par_indx: [
-          { required: true, message: "上级区域不能为空", trigger: "blur" }
         ]
+        // par_indx: [
+        //   { required: true, message: "上级区域不能为空", trigger: "blur" }
+        // ]
       }
     };
   },

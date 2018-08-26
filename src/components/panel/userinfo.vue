@@ -282,7 +282,7 @@ export default {
   methods: {
     getUserEditData(param) {
       return new Promise(resolve => {
-        this.$get("/user/user_edit_data", param).then(
+        this.$get(`/user/user_edit_data/emp_indx/${param}`).then(
           data => {
             if (data.success == true) {
               resolve(data);

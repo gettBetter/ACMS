@@ -282,7 +282,7 @@ export default {
   methods: {
     getUserEditData(param) {
       return new Promise(resolve => {
-        this.$get("/user/user_edit_data", param).then(
+        this.$get(`/user/user_edit_data/emp_indx/${param}`).then(
           data => {
             if (data.success == true) {
               resolve(data);
@@ -401,7 +401,7 @@ export default {
     this.userInfo = {};
     this.imageUrl = `${this.baseURL}/index/show_image/emp_indx/${this.userId}`;
     this.userEditData = [];
-    this.getUserEditData({ emp_indx: this.userId }).then(data => {
+    this.getUserEditData(this.userId).then(data => {
       this.userInfo = data.user_info[0];
       this.userEditData = data;
       this.originalData = JSON.parse(JSON.stringify(data.user_info[0]));
