@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="11" :offset="1">
           <div style="margin-bottom:20px">部门人员树</div>
-          <el-tree :data="userTreeData" :props="userTreeProp" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll">
+          <el-tree :data="userTreeData1" :props="userTreeProp1" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <span v-if="data.tag == 2">
@@ -24,7 +24,7 @@
 
         <el-col :span="11" :offset="1">
           <div style="margin-bottom:20px">待授权人员树</div>
-          <el-tree :data="userTreeData" :props="userTreeProp" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll">
+          <el-tree :data="userTreeData2" :props="userTreeProp2" :expand-on-click-node="false" highlight-current style="height:400px;overflow:scroll">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <span v-if="data.tag == 2">
@@ -60,8 +60,13 @@ import _ from "lodash";
 export default {
   data() {
     return {
-      userTreeData: [],
-      userTreeProp: {
+      userTreeData1: [],
+      userTreeProp1: {
+        label: "label",
+        children: "children"
+      },
+      userTreeData2: [],
+      userTreeProp2: {
         label: "label",
         children: "children"
       },
@@ -97,7 +102,7 @@ export default {
     },
     getTreeData() {
       //部门人员树
-      axios.get("/authorlist/dept_users_auth_tree").then(data => {
+      axios.get("/authorlist/dept_users_auth1_tree").then(data => {
         if (data.data.success) {
           let temp = data.data.data;
           function getChildren(arr) {
@@ -120,7 +125,35 @@ export default {
             });
           }
           getChildren(temp);
-          this.userTreeData = temp;
+          this.userTreeData1 = temp;
+          console.info("userTreeData", this.userTreeData);
+        }
+      });
+
+      axios.get("/authorlist/dept_users_auth2_tree").then(data => {
+        if (data.data.success) {
+          let temp = data.data.data;
+          function getChildren(arr) {
+            arr.forEach(item => {
+              item.label = item.dep_name || item.emp_name;
+              if (item.children) {
+                if (item.dev_list) {
+                  item.children = item.children.concat(item.dev_list);
+                }
+                getChildren(item.children);
+              } else {
+                item.label = item.emp_name || item.dep_name;
+                if (item.dev_list) {
+                  item.children = item.dev_list.map(item => {
+                    item.label = item.emp_name || item.dep_name;
+                    return item;
+                  });
+                }
+              }
+            });
+          }
+          getChildren(temp);
+          this.userTreeData2 = temp;
           console.info("userTreeData", this.userTreeData);
         }
       });

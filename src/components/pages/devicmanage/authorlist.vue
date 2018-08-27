@@ -32,7 +32,7 @@
       <el-row>
         <el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px;text-align:center" @click="add">添加</el-button>
         <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="copyAuth">复制权限</el-button>
-        <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="jobAuth">岗位授权</el-button>
+        <!-- <el-button type="primary" style="margin-bottom:10px;text-align:center" @click="jobAuth">岗位授权</el-button> -->
       </el-row>
       <el-table :data="pageData" border>
         <el-table-column fixed="left" label="操作" width="80%">

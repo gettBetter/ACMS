@@ -46,7 +46,7 @@ import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
 
-let card_id=-1;
+let card_id = -1;
 export default {
   data() {
     return {
@@ -56,7 +56,12 @@ export default {
         label: "are_name",
         children: "children"
       },
-      data: {},
+      data: {
+        typ_indx: "1",
+        inc_cost: 0,
+        exp_cost: 0,
+        end_date: "2099-12-31"
+      },
       formLabelWidth: "80px",
       type_list: [],
       are_list: [],
@@ -79,8 +84,7 @@ export default {
       this.openDev();
     },
     openDev() {
-
-    card_id=WSPCPP.PORT_Open(this.dev_param);
+      card_id = WSPCPP.PORT_Open(this.dev_param);
 
       if (card_id < 0) {
         alert("打开失败，请检测设备连接是否正常");
@@ -156,12 +160,18 @@ export default {
         .then(data => {
           this.dialogVisible = false;
           if (data.data.success) {
-            this.$message({
-              type: "success",
-              message: "发卡成功!"
-            });
-            WSPCPP.Port_Close(card_id);
-            this.$emit("config", true);
+            if (data.data.msg == "ok") {
+              this.$message({
+                type: "success",
+                message: "发卡成功!"
+              });
+              WSPCPP.Port_Close(card_id);
+              this.$emit("config", true);
+            } else {
+              this.$message.error(data.data.msg);
+            }
+          } else {
+            this.$message.error(data.data.msg);
           }
         })
         .catch(err => {

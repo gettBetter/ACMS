@@ -10,6 +10,7 @@ axios.defaults.baseURL = baseURL;
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
+    console.info(config.params)
     const isFormData = config.headers['Content-Type'] == 'multipart/form-data';
     // debugger
     if (!isFormData) {
