@@ -1,5 +1,5 @@
 export default {
-  isLogin: false,
+  isLogin: 0,
   children: [],
   menus: [],
   mapId: '',

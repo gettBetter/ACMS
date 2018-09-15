@@ -1,6 +1,7 @@
 export default {
-  isLogin(state, bool) {
-    state.isLogin = bool;
+  isLogin(state, val) {
+    // debugger
+    state.isLogin = val;
   },
   getChildren(state, path) {
 

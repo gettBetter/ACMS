@@ -2,7 +2,7 @@
   <div class="map">
     <img v-if="!!this.mapId" :src="emapSrc" :style="imgStyle" />
 
-    <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' }">
+    <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' ,backgroundColor:item.bg}">
       <span>{{item.dev_chan}}
       </span><br/>
       <div :class="'drag'+index"></div>
@@ -42,6 +42,18 @@ export default {
   },
   methods: {
     reset() {},
+    setColor(val) {
+      let bg = "#ccc";
+
+      // switch(val){
+      //   case 1:
+      //     bg = 'green'
+      //     break;
+      //     case
+      // }
+
+      return bg;
+    },
     getDevList(param) {
       this.devList = [];
       axios.get(`/mapdevchan/map_devchan/map_indx/${param}`).then(data => {
@@ -53,6 +65,7 @@ export default {
           item.top = item.map_locy || 0;
           item.width = item.map_wide || 75;
           item.height = item.map_high || 23;
+          item.bg = this.setColor(item.USE_ISOK);
           return item;
         });
         console.info("devlist", this.devList);
@@ -169,7 +182,7 @@ export default {
 [class*="dBox"] {
   border: solid 1px rgba(33, 61, 223, 0.5);
   position: absolute;
-  background-color: #ccc;
+  /* background-color: #ccc; */
   text-align: center;
 }
 [class*="drag"] {

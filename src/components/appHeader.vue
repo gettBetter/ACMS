@@ -20,15 +20,9 @@
             <el-button type="text" style="color:white;font-weight:400" @click="changePw" class="logout">修改密码</el-button>
             <el-button type="text" style="color:white;font-weight:400" @click="logout" class="logout">退出</el-button>
           </el-col>
-
         </el-row>
-        <!-- <span style=" font-size:14px " :span="14 ">{{username}}</span> -->
-
       </el-col>
     </el-row>
-    <!-- <ChangePw ref="changeDialog" @openChangePw="openChangePw"></ChangePw>
-     -->
-
     <ChangePw ref="changeDialog"></ChangePw>
 
   </div>
@@ -37,13 +31,15 @@
 <script>
 // import logoUrl from "@/assets/logo.png";
 import ChangePw from "@/components/ChangePw";
+import { mapGetters } from "vuex";
+
 export default {
   components: {
     ChangePw
   },
   data() {
     return {
-      // logoUrl
+      username: ""
     };
   },
   props: ["menus"],
@@ -55,21 +51,24 @@ export default {
       this.$router.replace("/login");
     },
     changePw() {
-      // this.$emit("openChangePw", true);
       this.$refs.changeDialog.open();
     }
   },
   computed: {
+    ...mapGetters(["isLogin"]),
     currentPath() {
       return this.$route.path;
-    },
-    username() {
-      if (localStorage.userToken) {
-        return JSON.parse(localStorage.userToken).username;
-      }
-    },
-    islogin() {
-      return !!localStorage.userToken;
+    }
+  },
+  watch: {
+    isLogin(newVal, oldVal) {
+      debugger;
+      this.username = JSON.parse(localStorage.userToken).username;
+    }
+  },
+  mounted() {
+    if (localStorage.userToken) {
+      this.username = JSON.parse(localStorage.userToken).username;
     }
   }
 };

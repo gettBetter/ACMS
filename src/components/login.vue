@@ -66,9 +66,10 @@ export default {
             this.loginError = false;
             axios.get("/index/left").then(data => {
               that.$parent.$store.commit("setMenus", data.data.menu);
+              that.$parent.$store.commit("isLogin", Date.now());
               localStorage.setItem("userMenus", JSON.stringify(data.data.menu));
               const FirstPage = data.data.menu[0].path;
-              console.info("FirstPage", FirstPage);
+              // console.info("FirstPage", FirstPage);
               if (data.data.success) {
                 this.$message({
                   type: "success",
