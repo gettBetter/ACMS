@@ -35,7 +35,7 @@ export default new Router({
     {
       path: "/",
       name: "index",
-      redirect: '/admin'
+      // redirect: '/admin'
     },
     {
       path: "/personal",

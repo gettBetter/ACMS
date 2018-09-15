@@ -77,12 +77,15 @@ export default {
         .then(data => {
           console.info("添加", data.data);
           this.tmr_list = data.data.data;
-          this.data.tmr_indx = data.data.tmr_indx + "";
+          // debugger;
+          if (this.clockType === "添加时段时钟") {
+            this.data.tmr_indx = data.data.tmr_indx + "";
+          }
         })
         .catch(data => {
           alert(data.data.msg);
         });
-
+      // }
       if (this.clockType === "编辑时段时钟") {
         axios
           .get("/timerparam/prmtmrclck_edit_data", {

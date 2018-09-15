@@ -401,7 +401,7 @@ export default {
     this.userInfo = {};
     this.imageUrl = `${this.baseURL}/index/show_image/emp_indx/${this.userId}`;
     this.userEditData = [];
-    this.getUserEditData({ emp_indx: this.userId }).then(data => {
+    this.getUserEditData(this.userId).then(data => {
       this.userInfo = data.user_info[0];
       this.userEditData = data;
       this.originalData = JSON.parse(JSON.stringify(data.user_info[0]));

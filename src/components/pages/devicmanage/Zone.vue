@@ -88,7 +88,9 @@ export default {
           console.info("添加", data.data);
           this.tzn_list = data.data.data.prmtmrzone_list;
           this.tmr_list = data.data.data.prmtmrclck_list;
-          this.data.tzn_indx = data.data.tzn_indx + "";
+          if (this.zoneType === "添加时段时钟"){
+             this.data.tzn_indx = data.data.tzn_indx + "";
+          }
         })
         .catch(data => {
           alert(data.data.msg);

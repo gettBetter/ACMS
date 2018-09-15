@@ -148,7 +148,7 @@ export default {
   data() {
     return {
       formLabelWidth: "80px",
-      enableDate: false,
+      enableDate: true,
       userTreeData: [],
       userTreeProp: {
         label: "label",
@@ -159,7 +159,20 @@ export default {
         label: "label",
         children: "children"
       },
-      addData: {},
+      addData: {
+        tmr_indx: "1",
+        fcd_indx: "0",
+        mcd_indx: "1",
+        grp_indx: "1",
+        aut_flag: "1",
+        bgn_date:
+          new Date().getFullYear() +
+          "-" +
+          (new Date().getMonth() + 1) +
+          "-" +
+          new Date().getDate(),
+        end_date: "2099-12-31"
+      },
       mcd_list: [],
       grp_list: [],
       tmr_list: [],

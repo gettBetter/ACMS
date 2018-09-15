@@ -39,6 +39,13 @@ router.beforeEach((to, from, next) => {
     } else {
       const token = JSON.parse(localStorage.userToken)
       const menus = JSON.parse(localStorage.userMenus)
+      const homePage = menus[0].path
+      // console.info('/', )
+      if (to.path === '/') {
+        next({
+          path: homePage
+        })
+      }
 
       if (to.path !== '/unauthority') {
 
@@ -80,13 +87,6 @@ router.beforeEach((to, from, next) => {
       }
     }
   }
-
-  // if (!token && to.fullPath !== '/login') {
-  //   next({
-  //     path: '/login',
-  //     replace: true
-  //   })
-  // }
 
   next()
 })

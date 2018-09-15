@@ -67,6 +67,8 @@ export default {
             axios.get("/index/left").then(data => {
               that.$parent.$store.commit("setMenus", data.data.menu);
               localStorage.setItem("userMenus", JSON.stringify(data.data.menu));
+              const FirstPage = data.data.menu[0].path;
+              console.info("FirstPage", FirstPage);
               if (data.data.success) {
                 this.$message({
                   type: "success",
@@ -79,7 +81,7 @@ export default {
                 if (query) {
                   that.$router.push({ path: query });
                 } else {
-                  that.$router.push({ path: "/" });
+                  that.$router.push({ path: FirstPage });
                 }
               }, 1000);
             });
