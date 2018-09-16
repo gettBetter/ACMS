@@ -120,6 +120,12 @@ Vue.directive("dragx", (el, binding, vnode) => {
     el.style.cursor = "";
   };
   el.onmousedown = function(e) {
+    // e.preventDefault()
+    if(!e.button == 0){
+
+      return
+    }
+    console.info('eeee',e)
     isMove = false;
     if (
       cfg.dragBarClass.length > 0 &&

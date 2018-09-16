@@ -20,10 +20,9 @@
 
       <el-tabs v-model="curMap" type="card" @tab-click="handleTabClick">
         <el-tab-pane v-for="item in list" :label="item.map_name" :name="item.map_indx" :key="item.map_indx">
-
         </el-tab-pane>
-
       </el-tabs>
+
       <Map ref="map"></Map>
       <ConfMap ref="confMap" @configSucc="configSucc"></ConfMap>
       <SelectMap ref="selectMap"></SelectMap>

@@ -1,13 +1,25 @@
 <template>
   <div class="map">
-    <img v-if="!!this.mapId" :src="emapSrc" :style="imgStyle" />
-
-    <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' ,backgroundColor:item.bg}">
-      <span>{{item.dev_chan}}
-      </span><br/>
-      <div :class="'drag'+index"></div>
-    </div>
-
+    <!-- <img v-if="!!this.mapId" :src="emapSrc" :style="imgStyle" /> -->
+    <!-- <div v-contextmenu:contextmenu styl> -->
+      <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' ,backgroundColor:item.bg}" >
+        <span >{{item.dev_chan}}</span><br/>
+        <div :class="'drag'+index" >
+          <!-- @mousedown="isButton" -->
+          <!-- <div  ></div> -->
+          <div class="i-contextmenu" v-contextmenu:contextmenu @contextmenu="contextMenu(item)"></div>
+           
+        </div>
+        
+        
+      </div>
+    <!-- </div> -->
+      <!-- <div v-contextmenu:contextmenu @click.native="showBtn"></div> -->
+        <v-contextmenu ref="contextmenu">
+          <v-contextmenu-item @click="openDoor">设为常开</v-contextmenu-item>
+          <v-contextmenu-item @click="closeDoor">设为常闭</v-contextmenu-item>
+          <v-contextmenu-item @click="remoteOpen">远程开门</v-contextmenu-item>
+        </v-contextmenu>
   </div>
 </template>
 
@@ -17,8 +29,12 @@ import axios from "axios";
 import baseURL from "@/utils/baseURL";
 import url from "@/assets/Untitled.jpg";
 import "@/directive/dragx";
+import Vue from "vue";
+import contentmenu from "v-contextmenu";
+import 'v-contextmenu/dist/index.css'
+Vue.use(contentmenu);
+
 export default {
-  // props: ["changedev"],
   data() {
     return {
       // emapSrc: "url",
@@ -31,7 +47,8 @@ export default {
       marginLeft: 0,
       marginTop: 0,
       devList: [],
-      data: {}
+      data: {},
+      curData: {}
     };
   },
   computed: {
@@ -42,17 +59,46 @@ export default {
   },
   methods: {
     reset() {},
-    setColor(val) {
-      let bg = "#ccc";
-
-      // switch(val){
-      //   case 1:
-      //     bg = 'green'
-      //     break;
-      //     case
-      // }
-
-      return bg;
+    showMenu(e){
+      console.info(e)
+    },
+    contextMenu(data){
+      console.info('ppp',p1,p2)
+      this.curData = data
+    },
+    openDoor(e1,e2) {
+      let {dev_chan,dly_time} = this.curData
+      let cmd_indx = 19010
+      let cmd_text = 1
+      let param = {dev_chan,dly_time,cmd_indx,cmd_text}
+      this.confDoor(param)
+    },
+    closeDoor(e) {
+      let {dev_chan,dly_time} = this.curData
+      let cmd_indx = 19010
+      let cmd_text = 0
+      let param = {dev_chan,dly_time,cmd_indx,cmd_text}
+      console.info("close");
+      this.confDoor(param)
+    },
+    remoteOpen() {
+      let {dev_chan,dly_time} = this.curData
+      let cmd_indx = 19009
+      let cmd_text = 2
+      let param = {dev_chan,dly_time,cmd_indx,cmd_text}
+      console.info("remote");
+      this.confDoor(param)
+    },
+    confDoor(param){
+      // /admin/mapdevchan/oper_devchan
+      axios.post('/admin/mapdevchan/oper_devchan',param).then(data=>{
+        if (data.data.success) {
+          this.$message({
+            type: "success",
+            message: "设置成功!"
+          });
+        }
+      })
     },
     getDevList(param) {
       this.devList = [];
@@ -65,7 +111,7 @@ export default {
           item.top = item.map_locy || 0;
           item.width = item.map_wide || 75;
           item.height = item.map_high || 23;
-          item.bg = this.setColor(item.USE_ISOK);
+          item.bg = item.dev_color || "#0000FF";
           return item;
         });
         console.info("devlist", this.devList);
@@ -125,7 +171,6 @@ export default {
             return item;
           });
           // this.$emit("saveLocSucc", true);
-          console.info("post", param);
           this.getDevList(this.mapId);
         }
       });
@@ -191,6 +236,16 @@ export default {
   left: 2px;
   bottom: 2px;
   right: 2px;
+}
+.i-contextmenu{
+  width:70%;
+  height:100%;
+  margin-left:15%;
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; */
 }
 .bindBox {
   clear: both;
