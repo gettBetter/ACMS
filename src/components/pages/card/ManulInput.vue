@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog width="30%" style="min-height:400px" title="手工输入物理卡号" :visible.sync="dialogVisible" append-to-body center>
+    <el-dialog width="35%" style="min-height:400px" title="手工输入物理卡号" :visible.sync="dialogVisible" append-to-body center>
       <el-form :model="cardInfo" :label-width="formLabelWidth">
         <el-form-item v-for="(item,index) in userList" :key="index" :label="item.emp_name+':'">
           <el-input v-model="cardInfo[item.emp_indx]" placeholder="请输入十位数十进制物理卡号"></el-input>

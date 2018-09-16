@@ -169,26 +169,22 @@ export default {
           type: "warning"
         })
           .then(() => {
-            if (this.manualInput) {
-              this.$refs.cardInput.open();
-            } else {
-              for (let i = 0; i < count; i++) {
-                if (
-                  confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)
-                ) {
-                  console.info(i);
-                  const resCardId = WSPCPP.Access_CommandBLX(
-                    card_id,
-                    65535,
-                    0x000601,
-                    ""
-                  );
-                  param.user_list[i].crd_code = resCardId;
-                  WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
-                }
+            for (let i = 0; i < count; i++) {
+              if (
+                confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)
+              ) {
+                console.info(i);
+                const resCardId = WSPCPP.Access_CommandBLX(
+                  card_id,
+                  65535,
+                  0x000601,
+                  ""
+                );
+                param.user_list[i].crd_code = resCardId;
+                WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
               }
-              return Promise.resolve();
             }
+            return Promise.resolve();
           })
           .then(() => {
             console.info("send1");

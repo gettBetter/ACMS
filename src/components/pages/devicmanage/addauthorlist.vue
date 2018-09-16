@@ -46,7 +46,6 @@
       </el-row>
 
       <el-form style="margin-top:20px">
-
         <el-row>
           <el-col :span="11" :offset="1">
             <el-form-item :label-width="formLabelWidth" label="人员组别
