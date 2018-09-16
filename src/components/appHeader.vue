@@ -62,7 +62,7 @@ export default {
   },
   watch: {
     isLogin(newVal, oldVal) {
-      debugger;
+      //  ;
       this.username = JSON.parse(localStorage.userToken).username;
     }
   },

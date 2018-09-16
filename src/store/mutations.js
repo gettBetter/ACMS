@@ -1,6 +1,6 @@
 export default {
   isLogin(state, val) {
-    // debugger
+    //  
     state.isLogin = val;
   },
   getChildren(state, path) {
@@ -23,5 +23,8 @@ export default {
   },
   changeDevs(state, val) {
     state.changeDev = val
+  },
+  setCardParam(state,val){
+    state.cardParam = val
   }
 }

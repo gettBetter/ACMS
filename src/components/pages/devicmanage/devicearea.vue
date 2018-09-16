@@ -84,7 +84,7 @@ export default {
         .catch(err => loadingInstance.close());
     },
     edit(record) {
-      // debugger
+      //  
       this.$parent.$router.push({
         name: "editarea",
         params: { id: record.are_indx }

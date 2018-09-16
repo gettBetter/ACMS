@@ -12,7 +12,7 @@ axios.interceptors.request.use(
   config => {
     console.info(config.params)
     const isFormData = config.headers['Content-Type'] == 'multipart/form-data';
-    // debugger
+    //  
     if (!isFormData) {
       config.headers = {
         'Content-Type': 'application/x-www-form-urlencoded'

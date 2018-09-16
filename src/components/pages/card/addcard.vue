@@ -97,8 +97,8 @@ export default {
     selectionChange(data) {
       console.info(data);
       this.user_list = data.map(item => {
-        let { emp_indx, crd_code } = item;
-        return { emp_indx, crd_code };
+        let { emp_indx, crd_code, emp_name } = item;
+        return { emp_indx, crd_code, emp_name };
       });
       if (this.user_list.length) this.disableBtn = false;
     },
@@ -195,58 +195,8 @@ export default {
         )
         .catch(err => loadingInstance.close());
     },
-    // openDev() {
-    //   // const param = ;
-    //   this.card_id = WSPCPP.PORT_Open(this.dev_param);
-
-    //   if (this.card_id < 0) {
-    //     alert("打开失败，请检测设备连接是否正常");
-    //   } else {
-    //     this.$message({
-    //       type: "success",
-    //       message: "打开端口成功!"
-    //     });
-    //   }
-    // },
-    // losCard() {
-    //   const users = this.user_list;
-    //   const count = users.length;
-
-    // },
     cardConfig() {
       this.$refs.cardConfig.openConfig();
-
-      // const users = this.user_list;
-      // const count = users.length;
-      // this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消",
-      //   type: "warning"
-      // }).then(() => {
-      //   for (let i = 0; i < count; i++) {
-      //     this.$confirm(
-      //       `请放入卡片，点击【确定】进行发卡，点击【取消】退出`,
-      //       "提示",
-      //       {
-      //         confirmButtonText: "确定",
-      //         cancelButtonText: "取消",
-      //         type: "warning"
-      //       }
-      //     ).then(() => {
-      //       // users
-      //       const resCardId = WSPCPP.Access_CommandBLX(
-      //         this.card_id,
-      //         65535,
-      //         0x000601,
-      //         ""
-      //       );
-      //       WSPCPP.Access_CommandBLX(this.card_id, 65535, 0x000608, "1,100");
-
-      //       // /card/card_add
-      //     });
-      //   }
-      //   WSPCPP.Port_Close(this.card_id);
-      // });
     },
     config(val) {
       if (val) {

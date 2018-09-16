@@ -46,6 +46,28 @@
       </el-row>
 
       <el-form style="margin-top:20px">
+
+        <el-row>
+          <el-col :span="11" :offset="1">
+            <el-form-item :label-width="formLabelWidth" label="人员组别
+:">
+              <el-select v-model="addData.rank_indx" @change="changeUserTree">
+                <el-option v-for="opt in rank_list" :label="opt.rank_name" :value="opt.rank_indx" :key="opt.rank_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11" :offset="1">
+            <el-form-item :label-width="formLabelWidth" label="设备组别
+:">
+              <el-select v-model="addData.grp_indx" @change="changeDepTree">
+                <el-option v-for="opt in grp_list" :label="opt.grp_name" :value="opt.grp_indx" :key="opt.grp_indx">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-row>
           <el-col :span="11" :offset="1">
             <el-form-item :label-width="formLabelWidth" label="应用群组:">
@@ -75,20 +97,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="11" :offset="1">
-            <el-form-item :label-width="formLabelWidth" label="设备组别
-:">
-              <el-select v-model="addData.grp_indx">
-                <el-option v-for="opt in grp_list" :label="opt.grp_name" :value="opt.grp_indx" :key="opt.grp_indx">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
 
-        <el-row>
           <el-col :span="11" :offset="1">
-
             <el-form-item :label-width="formLabelWidth" label="是否授权:">
               <el-select v-model="addData.aut_flag">
                 <el-option v-for="opt in aut_list" :label="opt.aut_name" :value="opt.aut_indx" :key="opt.aut_indx">
@@ -96,11 +106,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="11" :offset="1">
-                    <el-form-item :label-width="formLabelWidth" label="门禁密码:">
-                        <el-input v-model="addData.acc_pswd"></el-input>
-                    </el-form-item>
-                </el-col> -->
         </el-row>
         <el-row>
           <el-col :span="24">
@@ -163,7 +168,8 @@ export default {
         tmr_indx: "1",
         fcd_indx: "0",
         mcd_indx: "1",
-        grp_indx: "1",
+        // grp_indx: "1",
+        // rank_indx: "1",
         aut_flag: "1",
         bgn_date:
           new Date().getFullYear() +
@@ -177,6 +183,7 @@ export default {
       grp_list: [],
       tmr_list: [],
       fcd_list: [],
+      rank_list: [],
       aut_list: [
         {
           aut_name: "是",
@@ -200,6 +207,14 @@ export default {
     },
     handleNodeClick(node, data) {
       console.info(node, data);
+    },
+    changeUserTree(val) {
+      //  ;
+      this.getUserTree(val);
+    },
+    changeDepTree(val) {
+      //  ;
+      this.getDepTree(val);
     },
     changeUserList(checked, node, data) {
       if (checked) {
@@ -233,62 +248,72 @@ export default {
       }
       console.info("list", list);
     },
-    getTreeData() {
+    getTreeData(param) {
       //部门人员树
-      axios.get("/authorlist/dept_users_auth_tree").then(data => {
-        if (data.data.success) {
-          let temp = data.data.data;
-          function getChildren(arr) {
-            arr.forEach(item => {
-              item.label = item.dep_name || item.emp_name;
-              if (item.children) {
-                if (item.dev_list) {
-                  item.children = item.children.concat(item.dev_list);
-                }
-                getChildren(item.children);
-              } else {
-                item.label = item.emp_name || item.dep_name;
-                if (item.dev_list) {
-                  item.children = item.dev_list.map(item => {
-                    item.label = item.emp_name || item.dep_name;
-                    return item;
-                  });
-                }
-              }
-            });
-          }
-          getChildren(temp);
-          this.userTreeData = temp;
-        }
-      });
+      this.getUserTree();
       //   区域设备通道树
-      axios.get("/authorlist/authorlist_channel_tree").then(data => {
-        if (data.data.success) {
-          console.info(data.data);
-          let temp = data.data.data;
-          function getChildren(arr) {
-            arr.forEach(item => {
-              item.label = item.are_name || item.dev_name;
-              if (item.children) {
-                if (item.dev_list) {
-                  item.children = item.children.concat(item.dev_list);
+      this.getDepTree();
+    },
+    getUserTree(param = 0) {
+      axios
+        .get(`/authorlist/dept_users_auth_tree/rank_indx/${param}`)
+        .then(data => {
+          if (data.data.success) {
+            let temp = data.data.data;
+            function getChildren(arr) {
+              arr.forEach(item => {
+                item.label = item.dep_name || item.emp_name;
+                if (item.children) {
+                  if (item.dev_list) {
+                    item.children = item.children.concat(item.dev_list);
+                  }
+                  getChildren(item.children);
+                } else {
+                  item.label = item.emp_name || item.dep_name;
+                  if (item.dev_list) {
+                    item.children = item.dev_list.map(item => {
+                      item.label = item.emp_name || item.dep_name;
+                      return item;
+                    });
+                  }
                 }
-                getChildren(item.children);
-              } else {
-                item.label = item.are_name || item.dev_name;
-                if (item.dev_list) {
-                  item.children = item.dev_list.map(item => {
-                    item.label = item.emp_name || item.dev_name;
-                    return item;
-                  });
-                }
-              }
-            });
+              });
+            }
+            getChildren(temp);
+            this.userTreeData = temp;
           }
-          getChildren(temp);
-          this.devTreeData = temp;
-        }
-      });
+        });
+    },
+    getDepTree(param = 0) {
+      axios
+        .get(`/authorlist/authorlist_channel_tree/grp_indx/${param}`)
+        .then(data => {
+          if (data.data.success) {
+            console.info(data.data);
+            let temp = data.data.data;
+            function getChildren(arr) {
+              arr.forEach(item => {
+                item.label = item.are_name || item.dev_name;
+                if (item.children) {
+                  if (item.dev_list) {
+                    item.children = item.children.concat(item.dev_list);
+                  }
+                  getChildren(item.children);
+                } else {
+                  item.label = item.are_name || item.dev_name;
+                  if (item.dev_list) {
+                    item.children = item.dev_list.map(item => {
+                      item.label = item.emp_name || item.dev_name;
+                      return item;
+                    });
+                  }
+                }
+              });
+            }
+            getChildren(temp);
+            this.devTreeData = temp;
+          }
+        });
     },
     getAddData() {
       axios.get("/authorlist/authorlist_add_data").then(
@@ -300,6 +325,7 @@ export default {
             this.grp_list = temp.grp_list;
             this.tmr_list = temp.tmr_list;
             this.fcd_list = temp.fcd_list;
+            this.rank_list = temp.rank_list;
           } else {
             alert(data.data.msg);
           }

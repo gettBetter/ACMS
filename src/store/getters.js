@@ -7,5 +7,8 @@ export default {
   },
   children(state) {
     return state.children
+  },
+  cardParam(state){
+    return state.cardParam
   }
 }

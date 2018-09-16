@@ -113,7 +113,7 @@ export default {
       );
     },
     edit(record) {
-      // debugger
+      //  
       this.$parent.$router.push({
         name: "editdevice",
         params: { id: record.dev_indx }

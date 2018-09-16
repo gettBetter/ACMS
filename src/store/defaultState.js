@@ -3,5 +3,6 @@ export default {
   children: [],
   menus: [],
   mapId: '',
-  changeDev: "123"
+  changeDev: "123",
+  cardParam:{}
 }

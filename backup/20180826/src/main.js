@@ -23,7 +23,7 @@ Vue.prototype.$_ = _;
 router.beforeEach((to, from, next) => {
   const expireDate = localStorage.expire;
   const isExpire = new Date().getDate() != expireDate
-  // debugger
+  //  
   if (to.path === '/login') {
     localStorage.clear()
     store.commit('setMenus', [])

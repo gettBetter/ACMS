@@ -125,6 +125,19 @@
                     </el-col>
                 </el-row>
 
+                <el-row>
+                    <el-col :span="11" :offset="1">
+                        <el-form-item :label-width="formLabelWidth" label="卡位格式:">
+                            <el-select v-model="editData.fmt_indx">
+                                <el-option v-for="opt in cardbit_list" :label="opt.fmt_name
+" :value="opt.fmt_indx" :key="opt.fmt_indx">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+
+                </el-row>
+
             </el-form>
 
             <el-row style="text-align:center;margin-top:40px;margin-bottom:20px">
@@ -151,6 +164,7 @@ export default {
       treeData: [],
       optionData: {},
       devgroup_list: [],
+      cardbit_list: [],
       treeVisible: false,
       treeProp: {
         label: "are_name",
@@ -168,6 +182,7 @@ export default {
             this.optionData = data.data;
             this.treeData = data.data.devarea_tree;
             this.devgroup_list = data.data.devgroup_list;
+            this.cardbit_list = data.data.cardbit_list;
             console.info(this.optionData, this.treeData);
           } else {
             alert(data.data.msg);
@@ -194,6 +209,7 @@ export default {
       delete param.com_name;
       delete param.are_name;
       delete param.grp_name;
+      delete param.fmt_name;
 
       console.info(param);
       axios.post("/deviceinfo/deviceinfo_add", param).then(data => {

@@ -28,6 +28,10 @@
             <el-date-picker value-format="yyyy-MM-dd" v-model="data.end_date" type="date">
             </el-date-picker>
           </el-form-item>
+
+          <el-form-item :label-width="formLabelWidth" label="">
+            <el-checkbox v-model="manualInput">手工输入物理卡号</el-checkbox>
+          </el-form-item>
         </el-form>
 
       </el-col>
@@ -37,6 +41,8 @@
       <el-button type="primary" @click="save">确 定</el-button>
       <el-button @click="dialogVisible = false">取 消</el-button>
     </span>
+    <!-- @setCardId="setCardId" -->
+    <ManulInput ref="cardInput" :userList="user_list"></ManulInput>
   </el-dialog>
 </template>
 
@@ -45,9 +51,12 @@ import axios from "axios";
 import { Loading } from "element-ui";
 import _ from "lodash";
 import "../../../assets/iconfont/iconfont.css";
+import ManulInput from "./ManulInput";
+import { mapMutations } from "vuex";
 
 let card_id = -1;
 export default {
+  components: { ManulInput },
   data() {
     return {
       dialogVisible: false,
@@ -65,7 +74,9 @@ export default {
       formLabelWidth: "80px",
       type_list: [],
       are_list: [],
-      // card_id: -1,
+      manualInput: false,
+      // manulSucc: false,
+      user_lists: [],
       openSucess: false
     };
   },
@@ -78,6 +89,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["setCardParam"]),
     openConfig() {
       this.dialogVisible = true;
       this.getTree();
@@ -115,43 +127,74 @@ export default {
           // alert(data.data.msg);
         });
     },
+    // param.user_list[i].crd_code = resCardId;
+    // setCardId(val){
+    //   this.user_lists = val
+    //   this.manulSucc = true
+    // },
     save() {
       if (!this.openSucess) {
         alert("端口打开失败，请重新打开端口");
         return;
       }
-      const param = this.data;
-      param.user_list = this.user_list;
-      param.are_list = this.are_list;
-      const users = this.user_list;
-      const count = users.length;
 
-      this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          for (let i = 0; i < count; i++) {
-            if (confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)) {
-              console.info(i);
-              const resCardId = WSPCPP.Access_CommandBLX(
-                card_id,
-                65535,
-                0x000601,
-                ""
-              );
-              param.user_list[i].crd_code = resCardId;
-              WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
-            }
-          }
-          console.info("end");
-          return Promise.resolve();
-        })
-        .then(() => {
-          console.info("send1");
-          this.send(param);
+      const param = this.data;
+
+      param.are_list = this.are_list;
+
+      const count = this.user_list.length;
+      if (this.manualInput) {
+        // this.manulSucc = false
+        this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.setCardParam(param);
+          this.$refs.cardInput.open();
         });
+      } else {
+        const users = this.user_list.map(item => {
+          // delete item.emp_name;
+          return {
+            emp_indx: item.emp_indx,
+            crd_code: item.crd_code
+          };
+        });
+        param.user_list = users;
+        param.card_tag = 1;
+        this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            if (this.manualInput) {
+              this.$refs.cardInput.open();
+            } else {
+              for (let i = 0; i < count; i++) {
+                if (
+                  confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)
+                ) {
+                  console.info(i);
+                  const resCardId = WSPCPP.Access_CommandBLX(
+                    card_id,
+                    65535,
+                    0x000601,
+                    ""
+                  );
+                  param.user_list[i].crd_code = resCardId;
+                  WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
+                }
+              }
+              return Promise.resolve();
+            }
+          })
+          .then(() => {
+            console.info("send1");
+            this.send(param);
+          });
+      }
     },
     send(param) {
       console.info("send2");
@@ -165,7 +208,10 @@ export default {
                 type: "success",
                 message: "发卡成功!"
               });
+              // if (!this.manualInput){
               WSPCPP.Port_Close(card_id);
+              // }
+
               this.$emit("config", true);
             } else {
               this.$message.error(data.data.msg);
@@ -184,9 +230,6 @@ export default {
     dev_param(val1, val2) {
       console.info("dev_param watched", val1, val2);
     }
-  },
-  mounted() {
-    console.info("dev_param", this.dev_param);
   }
 };
 </script>

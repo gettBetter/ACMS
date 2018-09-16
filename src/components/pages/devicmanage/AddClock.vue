@@ -77,7 +77,7 @@ export default {
         .then(data => {
           console.info("添加", data.data);
           this.tmr_list = data.data.data;
-          // debugger;
+          //  ;
           if (this.clockType === "添加时段时钟") {
             this.data.tmr_indx = data.data.tmr_indx + "";
           }

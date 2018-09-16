@@ -90,7 +90,7 @@ export default {
       );
     },
     edit(record) {
-      // debugger
+      //  
       this.$parent.$router.push({
         name: "edittimerparam",
         params: { id: record.tmr_indx }

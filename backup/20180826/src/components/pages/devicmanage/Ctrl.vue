@@ -224,7 +224,7 @@ export default {
             this.ctrinfo_list = data.data.ctrinfo_list;
             this.zninf_list = data.data.zninf_list;
             const temp = data.data.data;
-            // debugger;
+            //  ;
             this.phd_hdtz = this.revertSelectDataGet(temp.phd_hdtz, 8);
             console.info("this.phd_hdtz", this.phd_hdtz);
             this.thd_hdtz = this.revertSelectDataGet(temp.thd_hdtz, 8);
