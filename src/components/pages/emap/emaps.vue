@@ -22,8 +22,10 @@
         <el-tab-pane v-for="item in list" :label="item.map_name" :name="item.map_indx" :key="item.map_indx">
         </el-tab-pane>
       </el-tabs>
-
+      <!-- <keep-alive> -->
       <Map ref="map"></Map>
+      <!-- </keep-alive> -->
+
       <ConfMap ref="confMap" @configSucc="configSucc"></ConfMap>
       <SelectMap ref="selectMap"></SelectMap>
     </el-card>

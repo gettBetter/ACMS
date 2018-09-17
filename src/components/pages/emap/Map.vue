@@ -2,24 +2,23 @@
   <div class="map">
     <!-- <img v-if="!!this.mapId" :src="emapSrc" :style="imgStyle" /> -->
     <!-- <div v-contextmenu:contextmenu styl> -->
-      <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' ,backgroundColor:item.bg}" >
-        <span >{{item.dev_chan}}</span><br/>
-        <div :class="'drag'+index" >
-          <!-- @mousedown="isButton" -->
-          <!-- <div  ></div> -->
-          <div class="i-contextmenu" v-contextmenu:contextmenu @contextmenu="contextMenu(item)"></div>
-           
+    <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' ,backgroundColor:item.bg}">
+      <div style="text-index:-3px">{{item.dev_chan}}</div><br/>
+      <div :class="'drag'+index">
+        <div class="i-contextmenu" v-contextmenu:contextmenu @contextmenu="contextMenu(item)">
+          <i class="el-icon-info"></i>
         </div>
-        
-        
+
       </div>
+
+    </div>
     <!-- </div> -->
-      <!-- <div v-contextmenu:contextmenu @click.native="showBtn"></div> -->
-        <v-contextmenu ref="contextmenu">
-          <v-contextmenu-item @click="openDoor">设为常开</v-contextmenu-item>
-          <v-contextmenu-item @click="closeDoor">设为常闭</v-contextmenu-item>
-          <v-contextmenu-item @click="remoteOpen">远程开门</v-contextmenu-item>
-        </v-contextmenu>
+    <!-- <div v-contextmenu:contextmenu @click.native="showBtn"></div> -->
+    <v-contextmenu ref="contextmenu" eventType="click">
+      <v-contextmenu-item @click="openDoor">设为常开</v-contextmenu-item>
+      <v-contextmenu-item @click="closeDoor">设为常闭</v-contextmenu-item>
+      <v-contextmenu-item @click="remoteOpen">远程开门</v-contextmenu-item>
+    </v-contextmenu>
   </div>
 </template>
 
@@ -31,7 +30,7 @@ import url from "@/assets/Untitled.jpg";
 import "@/directive/dragx";
 import Vue from "vue";
 import contentmenu from "v-contextmenu";
-import 'v-contextmenu/dist/index.css'
+import "v-contextmenu/dist/index.css";
 Vue.use(contentmenu);
 
 export default {
@@ -59,46 +58,48 @@ export default {
   },
   methods: {
     reset() {},
-    showMenu(e){
-      console.info(e)
+    showMenu(e) {
+      console.info(e);
     },
-    contextMenu(data){
-      console.info('ppp',p1,p2)
-      this.curData = data
+    contextMenu(data) {
+      // console.info('ppp',p1,p2)
+      this.curData = data;
     },
-    openDoor(e1,e2) {
-      let {dev_chan,dly_time} = this.curData
-      let cmd_indx = 19010
-      let cmd_text = 1
-      let param = {dev_chan,dly_time,cmd_indx,cmd_text}
-      this.confDoor(param)
+    openDoor() {
+      console.info(this.curData);
+      let { dev_chan, dly_time } = this.curData;
+      let cmd_indx = 19010;
+      let cmd_text = 1;
+      let param = { dev_chan, dly_time, cmd_indx, cmd_text };
+      console.info(param);
+      this.confDoor(param);
     },
-    closeDoor(e) {
-      let {dev_chan,dly_time} = this.curData
-      let cmd_indx = 19010
-      let cmd_text = 0
-      let param = {dev_chan,dly_time,cmd_indx,cmd_text}
+    closeDoor() {
+      let { dev_chan, dly_time } = this.curData;
+      let cmd_indx = 19010;
+      let cmd_text = 0;
+      let param = { dev_chan, dly_time, cmd_indx, cmd_text };
       console.info("close");
-      this.confDoor(param)
+      this.confDoor(param);
     },
     remoteOpen() {
-      let {dev_chan,dly_time} = this.curData
-      let cmd_indx = 19009
-      let cmd_text = 2
-      let param = {dev_chan,dly_time,cmd_indx,cmd_text}
+      let { dev_chan, dly_time } = this.curData;
+      let cmd_indx = 19009;
+      let cmd_text = 2;
+      let param = { dev_chan, dly_time, cmd_indx, cmd_text };
       console.info("remote");
-      this.confDoor(param)
+      this.confDoor(param);
     },
-    confDoor(param){
+    confDoor(param) {
       // /admin/mapdevchan/oper_devchan
-      axios.post('/admin/mapdevchan/oper_devchan',param).then(data=>{
+      axios.post("/mapdevchan/oper_devchan", param).then(data => {
         if (data.data.success) {
           this.$message({
             type: "success",
             message: "设置成功!"
           });
         }
-      })
+      });
     },
     getDevList(param) {
       this.devList = [];
@@ -230,22 +231,28 @@ export default {
   /* background-color: #ccc; */
   text-align: center;
 }
+.drag-box {
+}
 [class*="drag"] {
   position: absolute;
   top: 2px;
   left: 2px;
   bottom: 2px;
-  right: 2px;
+  right: 16px;
+  padding-right: 12px;
 }
-.i-contextmenu{
-  width:70%;
-  height:100%;
-  margin-left:15%;
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0; */
+.i-contextmenu {
+  /* width: 70%;
+  height: 100%;
+  margin-left: 15%; */
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 12px;
+  height: 12px;
+  margin-top: -11px;
+  /* margin-left: 0px; */
+  font-size: 10px;
 }
 .bindBox {
   clear: both;
