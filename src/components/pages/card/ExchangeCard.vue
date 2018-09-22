@@ -99,7 +99,7 @@ export default {
         crd_indx: this.crdIndx
       };
       this.getData(param);
-      this.openDev();
+
       console.info("param", param);
     },
     openDev() {
@@ -107,6 +107,7 @@ export default {
 
       if (card_id < 0) {
         alert("打开失败，请检测设备连接是否正常");
+        return false;
       } else {
         this.$message({
           type: "success",
@@ -154,10 +155,10 @@ export default {
     save() {
       //...
 
-      if (!this.openSucess) {
-        alert("端口打开失败，请重新打开端口");
-        return;
-      }
+      // if (!this.openSucess) {
+      //   alert("端口打开失败，请重新打开端口");
+      //   return;
+      // }
       // let crd_code = "";
       if (this.manualInput) {
         this.$confirm(
@@ -173,31 +174,36 @@ export default {
           this.new_crd_code = "";
         });
       } else {
-        this.$confirm(
-          "卡片一经补还，原卡号在系统中将不可用，是否继续？",
-          "提示",
-          {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }
-        )
-          .then(() => {
-            if (confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)) {
-              const resCardId = WSPCPP.Access_CommandBLX(
-                card_id,
-                65535,
-                0x000601,
-                ""
-              );
-              let crd_code = resCardId;
-              WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
+        // Promise.resolve(this.openDev).then
+        if (this.openDev()) {
+          this.$confirm(
+            "卡片一经补还，原卡号在系统中将不可用，是否继续？",
+            "提示",
+            {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
             }
-            return Promise.resolve(crd_code);
-          })
-          .then(crd_code => {
-            this.send(crd_code, 0);
-          });
+          )
+            .then(() => {
+              if (
+                confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)
+              ) {
+                const resCardId = WSPCPP.Access_CommandBLX(
+                  card_id,
+                  65535,
+                  0x000601,
+                  ""
+                );
+                let crd_code = resCardId;
+                WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
+              }
+              return Promise.resolve(crd_code);
+            })
+            .then(crd_code => {
+              this.send(crd_code, 0);
+            });
+        }
       }
 
       console.info(param);

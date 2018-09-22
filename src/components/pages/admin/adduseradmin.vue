@@ -33,7 +33,7 @@
 
             <el-form-item :label-width="formLabelWidth" label="选择角色:">
               <el-select v-model="data.role_id">
-                <el-option v-for="opt in roles" :label="opt.id" :value="opt.role_name" :key="opt.id">
+                <el-option v-for="opt in roles" :label="opt.role_name" :value="opt.id" :key="opt.id">
                 </el-option>
               </el-select>
             </el-form-item>

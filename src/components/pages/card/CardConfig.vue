@@ -93,19 +93,20 @@ export default {
     openConfig() {
       this.dialogVisible = true;
       this.getTree();
-      this.openDev();
+      // this.openDev();
     },
     openDev() {
       card_id = WSPCPP.PORT_Open(this.dev_param);
 
       if (card_id < 0) {
         alert("打开失败，请检测设备连接是否正常");
-      } else {
+        return false;
         this.$message({
           type: "success",
           message: "打开端口成功!"
         });
-        this.openSucess = true;
+        // this.openSucess = true;
+        return true;
       }
     },
     handleCheckChange(data, checked, indeterminate) {
@@ -133,10 +134,10 @@ export default {
     //   this.manulSucc = true
     // },
     save() {
-      if (!this.openSucess) {
-        alert("端口打开失败，请重新打开端口");
-        return;
-      }
+      // if (!this.openSucess) {
+      //   alert("端口打开失败，请重新打开端口");
+      //   return;
+      // }
 
       const param = this.data;
 
@@ -154,42 +155,54 @@ export default {
           this.$refs.cardInput.open();
         });
       } else {
-        const users = this.user_list.map(item => {
-          // delete item.emp_name;
-          return {
-            emp_indx: item.emp_indx,
-            crd_code: item.crd_code
-          };
-        });
-        param.user_list = users;
-        param.card_tag = 1;
-        this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            for (let i = 0; i < count; i++) {
-              if (
-                confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)
-              ) {
-                console.info(i);
-                const resCardId = WSPCPP.Access_CommandBLX(
-                  card_id,
-                  65535,
-                  0x000601,
-                  ""
-                );
-                param.user_list[i].crd_code = resCardId;
-                WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
-              }
-            }
-            return Promise.resolve();
-          })
-          .then(() => {
-            console.info("send1");
-            this.send(param);
+        // Promise.resolve()
+        // .then(data => {
+        if (this.openDev()) {
+          const users = this.user_list.map(item => {
+            // delete item.emp_name;
+            return {
+              emp_indx: item.emp_indx,
+              crd_code: item.crd_code
+            };
           });
+          param.user_list = users;
+          param.card_tag = 1;
+          this.$confirm(`发卡人数：${count}，确定发卡？`, "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              for (let i = 0; i < count; i++) {
+                if (
+                  confirm(`请放入卡片，点击【确定】进行发卡，点击【取消】退出`)
+                ) {
+                  console.info(i);
+                  const resCardId = WSPCPP.Access_CommandBLX(
+                    card_id,
+                    65535,
+                    0x000601,
+                    ""
+                  );
+                  param.user_list[i].crd_code = resCardId;
+                  WSPCPP.Access_CommandBLX(card_id, 65535, 0x000608, "1,100");
+                }
+              }
+              return Promise.resolve(true);
+            })
+            .then(data => {
+              if (data) {
+                console.info("send1" );
+                this.send(param);
+              } else {
+                return;
+              }
+            });
+          //   } else {
+          //     return false;
+          //   }
+          // })
+        }
       }
     },
     send(param) {

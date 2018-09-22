@@ -1,24 +1,22 @@
 <template>
   <div class="map">
-    <!-- <img v-if="!!this.mapId" :src="emapSrc" :style="imgStyle" /> -->
-    <!-- <div v-contextmenu:contextmenu styl> -->
+
     <div :class="'dBox'+index" v-for="(item,index) in devList" :key="index" v-dragx="item" @bindUpdate="bindUpdate" @bindChange="bindChange" :style="{left: item.left + 'px',top: item.top + 'px',width: item.width +'px',height: item.height + 'px',lineHeight:item.height+'px' ,backgroundColor:item.bg}">
       <div style="text-index:-3px">{{item.dev_chan}}</div><br/>
       <div :class="'drag'+index">
         <div class="i-contextmenu" v-contextmenu:contextmenu @contextmenu="contextMenu(item)">
           <i class="el-icon-info"></i>
         </div>
-
       </div>
-
     </div>
-    <!-- </div> -->
-    <!-- <div v-contextmenu:contextmenu @click.native="showBtn"></div> -->
+
     <v-contextmenu ref="contextmenu" eventType="click">
       <v-contextmenu-item @click="openDoor">设为常开</v-contextmenu-item>
       <v-contextmenu-item @click="closeDoor">设为常闭</v-contextmenu-item>
       <v-contextmenu-item @click="remoteOpen">远程开门</v-contextmenu-item>
     </v-contextmenu>
+
+    <img v-show="!!this.mapId" :src="emapSrc" :style="imgStyle" />
   </div>
 </template>
 
